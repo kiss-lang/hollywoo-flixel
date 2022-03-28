@@ -4,6 +4,7 @@
 	"classPath": "src/",
 	"dependencies": {
 		"kiss": "",
+		"kiss-flixel": "",
 		"hollywoo": ""
 	},
 	"url": "https://github.com/NQNStudios/kisslang",
