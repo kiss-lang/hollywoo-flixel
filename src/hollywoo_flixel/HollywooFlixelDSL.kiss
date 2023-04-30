@@ -18,7 +18,7 @@
                             (when cc (cc))
                         }))
 
-(method linearMotion [:FlxSprite sprite :Float destX :Float destY :Float speed &opt :Void->Void cc :String soundLoop :Float volumeMod]
+(method linearMotion [:FlxSprite sprite :Float destX :Float destY :Float speed &opt :Void->Void cc :String soundLoop :Float volumeMod :Array<FlxSprite> connectedSprites]
     (when soundLoop
         (let [oldCC cc]
             (set cc
@@ -28,12 +28,17 @@
                         (oldCC)))))
         (loopSound soundLoop (makeCC null) volumeMod))
     (tween
-        (FlxTween.linearMotion sprite sprite.x sprite.y destX destY speed false (tweenOpts cc))))
+        (FlxTween.linearMotion sprite sprite.x sprite.y destX destY speed false (tweenOpts cc)))
+    (when connectedSprites
+        (doFor cSprite connectedSprites
+            (let [xOffset (- cSprite.x sprite.x)
+                    yOffset (- cSprite.y sprite.y)]
+                (linearMotion cSprite (+ destX xOffset) (+ destY yOffset) speed)))))
 (defAlias &ident FlxTween.linearMotion CHANGE_TO_MOVIE_LINEARMOTION)
 
-(method linearMotionTo [:FlxSprite sprite :String positionKey :Float speed &opt :Void->Void cc :String soundLoop :Float volumeMod]
+(method linearMotionTo [:FlxSprite sprite :String positionKey :Float speed &opt :Void->Void cc :String soundLoop :Float volumeMod :Array<FlxSprite> connectedSprites]
     (let [position (resolvePosition positionKey)]
-        (linearMotion sprite position.x position.y speed cc soundLoop volumeMod)))
+        (linearMotion sprite position.x position.y speed cc soundLoop volumeMod connectedSprites)))
 
 (method newFlxSet [name assetPath]
     (let [setSprite (new FlxSprite 0 0)]
