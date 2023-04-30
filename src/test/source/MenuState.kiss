@@ -1,0 +1,53 @@
+(method &override :Void create []
+    (super.create)
+    
+    (set SimpleWindow.defaultCamera FlxG.camera)
+    (prop &mut :SimpleWindow menu) 
+    
+    (set menu (new SimpleWindow 
+        "HOLLYWOO-FLIXEL TEST"
+        FlxColor.BLACK
+        FlxColor.WHITE
+        0.8
+        0.8))
+
+    (menu.makeText
+        "RUN TESTS"
+        FlxColor.WHITE
+        ->_ (FlxG.switchState (new TestState)))
+    (menu.makeText "Options" FlxColor.WHITE
+        ->_ {
+                (menu.hide)
+                (optionsMenu ->:Void (menu.show))
+            })
+    (menu.makeText "Quit to Desktop" FlxColor.WHITE
+        ->_ (Sys.exit 0))
+
+    (menu.show))
+
+(function optionsMenu [:Void->Void back]
+    (let [menu (new SimpleWindow "OPTIONS"
+                                    FlxColor.BLACK
+                                        FlxColor.WHITE
+                                        0.8
+                                        0.8)
+            makeText ->[text :Void->Void action]
+                            (menu.makeText text FlxColor.WHITE ->_ {(menu.hide)(action)} true)]
+        (defMacro soundTypeVolume [label property]
+            `(let [ticks (* 10 ,property)]
+                (makeText (+ ,label ": [" (* ticks "#") (* (- 10 ticks) "_") "]")
+                    ->:Void {
+                                (if (= ,property 1.0)
+                                        (set ,property 0)
+                                    (+= ,property 0.1))
+                                // Options buttons need to call optionsMenu recursively
+                                (optionsMenu back)
+                            })))
+        (soundTypeVolume "Sound Volume" FlxDirector.soundVolume)
+        (soundTypeVolume "Voice Volume" FlxDirector.voiceVolume)
+        (soundTypeVolume "Music Volume" FlxDirector.musicVolume)
+
+        // TODO read mode vs. watch mode option
+
+        (makeText "Back" back)
+        (menu.show)))
