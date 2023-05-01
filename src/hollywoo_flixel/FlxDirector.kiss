@@ -297,7 +297,7 @@
                 (if wryly
                         (actor.playAnimation wryly)
                     (actor.playAnimation "neutral"))))
-        ((or (OffScreen actor) (VoiceOver actor) (TextMessage actor) (FromPhone actor) (Custom _ actor _))
+        ((or (OffScreen actor) (VoiceOver actor) (TextMessage actor) (FromPhone actor))
             (if wryly
                         (actor.playAnimation wryly)
                     (actor.playAnimation "neutral")))
