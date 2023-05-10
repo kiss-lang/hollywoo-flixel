@@ -22,6 +22,7 @@ import flixel.util.FlxTimer;
 import flixel.math.FlxPoint;
 import haxe.Constraints;
 import kiss_flixel.SpriteTools;
+import kiss_flixel.SimpleWindow;
 import haxe.ds.Option;
 import kiss_tools.KeyShortcutHandler;
 import kiss_tools.FlxKeyShortcutHandler;

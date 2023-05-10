@@ -51,16 +51,21 @@
     (when music
         (resumeAndUpdateCurrentVolume [music] musicVolume)))
 
+(prop &mut :SimpleWindow pauseMenu null)
+
 (method :Void showPauseMenu [:Continuation resume]
     // register escape to resume (and register escape to pause when resuming lol)
     (sh.registerItem "{escape} resume" ->cc {
+        (pauseMenu.hide)
         (sh.registerItem "{escape} pause" ->cc (showPauseMenu cc) true)
         (resume)
     } true)
     (chooseString "PAUSED" ["Resume" "Options" "Main Menu" "Quit to Desktop"]
         ->choice
             (case choice
-                ("Resume" (resume))
+                ("Resume"
+                    (sh.registerItem "{escape} pause" ->cc (showPauseMenu cc) true)
+                    (resume))
                 ("Options"
                     (sh.registerItem "{escape} nil" ->cc {} true)
                     (MenuState.optionsMenu ->(showPauseMenu resume)))
@@ -123,18 +128,19 @@
 (var &mut :FlxMouseEventManager mm null)
 
 (method :Void chooseString [:String prompt :Array<String> choices :String->Void submit]
-    (kiss_flixel.SimpleWindow.promptForChoice
-        prompt
-        choices
-        submit
-        FlxColor.BLACK
-        FlxColor.WHITE
-        0.8
-        0.8
-        true
-        ""
-        "left"
-        "right"))
+    (set pauseMenu
+        (kiss_flixel.SimpleWindow.promptForChoice
+            prompt
+            choices
+            submit
+            FlxColor.BLACK
+            FlxColor.WHITE
+            0.8
+            0.8
+            true
+            ""
+            "left"
+            "right")))
 
 (method :Void defineFlxPoint [:FlxPoint->Void submit]
     (unless mm
