@@ -19,6 +19,7 @@ import flixel.text.FlxText;
 import flixel.system.FlxSound;
 import flixel.FlxCamera;
 import flixel.util.FlxTimer;
+import flixel.ui.FlxBar;
 import flixel.math.FlxPoint;
 import haxe.Constraints;
 import kiss_flixel.SpriteTools;

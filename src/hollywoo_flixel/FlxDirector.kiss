@@ -271,9 +271,26 @@
     (FlxG.state.add titleCard)
     (cc))
 
-(method :Void doLoading [:Void->Void _load :Continuation cc]
-    (let [loop (new flixel.addons.util.FlxAsyncLoop 1 ->:Void {(_load)(cc)})]
+(method :Void doLoading [:Array<Void->Void> _load :Continuation cc]
+    (let [doneFuncs []
+            bar (new FlxBar 0 0 LEFT_TO_RIGHT (iThird FlxG.width) SimpleWindow.textSize doneFuncs "length" 0 _load.length true)
+            loop (new flixel.addons.util.FlxAsyncLoop (+ 1 _load.length)
+                    ->:Void 
+                        (ifLet [nextLoad (_load.shift)]
+                                {
+                                    (nextLoad)
+                                    (doneFuncs.push nextLoad)
+                                }
+                            {
+                                (FlxG.state.remove bar)
+                                (cc)
+                            }) 1)]
         (haxe.Timer.delay ->:Void (loop.start) 1)
+        // (set bar.cameras [flxMovie.uiCamera])
+        (bar.createColoredEmptyBar FlxColor.BLACK true FlxColor.WHITE)
+        (bar.createColoredFilledBar FlxColor.WHITE false)
+        (bar.screenCenter)
+        (FlxG.state.add bar)
         (FlxG.state.add loop)))
 
 (method :Void hideTitleCard []
