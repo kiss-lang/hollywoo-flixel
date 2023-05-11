@@ -97,6 +97,22 @@
     (let [[x y] (SpriteTools.positionOn pixel (canvas) rpos)]
         (new StagePosition x y layer)))
 
+(method namePlates [:Array<String> names :Dynamic delayLength :Bool delayWhileShown :Void->Void cc]
+    (let [plates
+                (for name names
+                    (let [plate (SpriteTools.textPlate name FlxDirector.DIALOG_SIZE FlxDirector.SUPER_MARGIN)
+                            actor .actor (dictGet .characters (_currentScene) name)]
+                        (set plate.x (- (+ actor.x (/ actor.width 2))
+                                        (/ plate.width 2)))
+                        (set plate.y (+ actor.y actor.height))
+                        (FlxG.state.add plate)
+                        plate))]
+        (delay delayLength 
+            (makeCC
+                (doFor plate plates (FlxG.state.remove plate))
+                (when delayWhileShown (cc)))))
+    (unless delayWhileShown (cc)))
+
 (method loopSound [name :Void->Void cc &opt :Float volumeMod]
     (playSound name (makeCC null) volumeMod false)
     (let [cs flxDirector.currentSounds
