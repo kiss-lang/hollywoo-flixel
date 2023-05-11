@@ -285,8 +285,10 @@
 (var DIALOG_SIZE 24)
 
 (prop &mut :FlxSprite dialogBox)
+(prop &mut :FlxSprite superText)
 (prop &mut :FlxText dialogText)
 (prop &mut :FlxText speakerNameText)
+(var SUPER_MARGIN 10)
 
 (method showDialog [:String speakerName :SpeechType<ActorFlxSprite> type :String wryly :String text :Continuation cc]
     // TODO handle text messages, wrylies, off-screen, from-phone, etc. via (case type)
@@ -295,6 +297,13 @@
     // TODO allow sounds for wrylies, like the dispatch click
     (localVar &mut nameOnRight false)
     (case type
+        (Super
+            (set superText (SpriteTools.textPlate text DIALOG_SIZE SUPER_MARGIN))
+            (superText.screenCenter)
+            (set superText.y flxMovie.DIALOG_Y)
+            (FlxG.state.add superText)
+            (startWaitForInput cc)
+            (return))
         ((OnScreen character)
             (when (> character.stagePosition.x (/ FlxG.width 2))
                 (set nameOnRight true))
@@ -346,9 +355,10 @@
     (startWaitForInput cc))
 
 (method :Void hideDialog []
-    (dialogText.kill)
-    (speakerNameText.kill)
-    (dialogBox.kill))
+    (dialogText?.kill)
+    (speakerNameText?.kill)
+    (dialogBox?.kill)
+    (when superText (FlxG.state.remove superText)))
 
 (savedVar :Float soundVolume 1.0)
 
