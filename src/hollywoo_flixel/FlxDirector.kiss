@@ -31,6 +31,13 @@
 
 (method :Void pause []
     (FlxG.inputs.remove actionManager)
+    (FlxG.state.forEach
+        ->:Void child
+            (typeCase [child]
+                ([:FlxSprite sprite]
+                    (sprite.animation?.pause))
+                (otherwise))
+        true)
     (doFor sound currentSounds
         (sound.pause))
     (doFor track currentVoiceTracks
@@ -46,6 +53,13 @@
 
 (method :Void resume []
     (FlxG.inputs.add actionManager)
+    (FlxG.state.forEach
+        ->:Void child
+            (typeCase [child]
+                ([:FlxSprite sprite]
+                    (sprite.animation?.resume))
+                (otherwise))
+        true)
     (resumeAndUpdateCurrentVolume currentSounds soundVolume)
     (resumeAndUpdateCurrentVolume currentVoiceTracks voiceVolume)
     (when music
