@@ -156,6 +156,10 @@
             "left"
             "right")))
 
+(method :Void enterString [:String prompt :String->Void submit]
+    (set pauseMenu
+        (SimpleWindow.promptForString prompt submit)))
+
 (method :Void defineFlxPoint [:FlxPoint->Void submit]
     (unless mm
         (set mm (new FlxMouseEventManager))
