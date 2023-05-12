@@ -330,6 +330,7 @@
     (case type
         (Super
             (set superText (SpriteTools.textPlate text DIALOG_SIZE SUPER_MARGIN))
+            (set superText.cameras [flxMovie.uiCamera])
             (superText.screenCenter)
             (set superText.y flxMovie.DIALOG_Y)
             (FlxG.state.add superText)
