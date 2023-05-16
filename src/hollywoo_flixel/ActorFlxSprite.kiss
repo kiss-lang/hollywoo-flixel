@@ -6,6 +6,8 @@
 
 (prop :Float z 0)
 
+(prop &mut :Bool portraitFacingForward false)
+
 (defNew [&prop :String assetPath &opt frameWidth frameHeight :StageFacing defaultFacing :Map<String,AnimationArgs> animations]
     (super)
 

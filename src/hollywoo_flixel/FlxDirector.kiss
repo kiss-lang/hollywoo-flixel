@@ -239,6 +239,9 @@
     // TODO  also allow for manually defined flipped frames so text on clothing doesn't mirror
     (set character.actor.cameras [camera])
     (set character.actor.flipX ?!(= character.stageFacing character.actor.defaultFacing))
+    // For characters whose images are forward-facing portraits, it's wrong to flip them based on facing:
+    (when character.actor.portraitFacingForward
+        (set character.actor.flipX false))
     // All actors same width, display centered on x
     (character.actor.setGraphicSize flxMovie.ACTOR_WIDTH)
     (character.actor.updateHitbox)
