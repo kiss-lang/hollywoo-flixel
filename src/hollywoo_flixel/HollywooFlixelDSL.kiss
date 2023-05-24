@@ -76,8 +76,8 @@
             (prepareSprite propSprite))
         (newProp name propSprite)))
 
-(defMacro flxSprite [asset &builder b]
-    `(new FlxSprite 0 0 ,(b.field (symbolNameValue asset) (b.symbol "AssetPaths"))))
+(function flxSprite [:String asset]
+    (new FlxSprite 0 0 asset))
 
 (method :Void update [:Float elapsed]
     (unless paused
