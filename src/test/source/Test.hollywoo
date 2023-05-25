@@ -8,25 +8,33 @@ AWAITPLAYSOUND "pageFlip"
 {(set soundPlayed true) (cc)}
 
 // Through scene transitions, set background sprites need to maintain the same size.
-(defMacro makeSetAndScene [asset]
+(defMacro makeSetAndScene [scene asset]
 	`(preload
 		(newFlxSet ,asset ,asset)
-		(newSceneFromSet ,asset ,asset Day Exterior (new FlxCamera))))
+		(newSceneFromSet ,scene ,asset Day Exterior (new FlxCamera))))
 
-(var basicSceneKey AssetPaths.grayBackground1280x720__png)
-(makeSetAndScene basicSceneKey)
+(prop &mut basicSceneKey "")
+(preload (set basicSceneKey (assetPath "assets" "grayBackground1280x720.png")))
+(makeSetAndScene basicSceneKey basicSceneKey)
 (prop &mut sk "")
 (prop &mut firstWidth 0.0)
 (prop &mut firstHeight 0.0)
 (defMacro testSetBackground [asset]
 	`(commands
-		(makeSetAndScene ,asset)
+	 	// These happen at preload time
+		(makeSetAndScene ,asset ,asset)
+		(makeSetAndScene (+ "other" ,asset) ,asset)
+		// These happen at runtime:
 		{(set sk ,asset) (cc)}
 		SETSCENE sk
 		(withSceneSet sk set
 			(assert (or (= FlxG.width set.width) (= FlxG.height set.height)))
 			(set firstWidth set.width)
 			(set firstHeight set.height))
+		SETSCENE "other$sk"
+		SETSCENE sk
+		(withSceneSet sk set
+			(assert (and (= firstWidth set.width) (= firstHeight set.height))))
 		SETSCENE basicSceneKey
 		SETSCENE sk
 		(withSceneSet sk set
