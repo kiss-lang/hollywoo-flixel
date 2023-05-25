@@ -235,16 +235,17 @@
 (method :Option<AutoZConfig> autoZConfig [] (Some (object zPerLayer flxMovie.STAGE_BEHIND_DY frontLayer 0)))
 
 (method :Void showCharacter [:Character<ActorFlxSprite> character :Appearance appearance :FlxCamera camera :Continuation cc]
-    // TODO on the first appearance, show name and description (maybe? also probably not for all?)
-    // TODO  also allow for manually defined flipped frames so text on clothing doesn't mirror
+    // Do sizing only on first appearance
+    (whenLet [FirstAppearance appearance]
+        // All actors same width, display centered on x
+        (character.actor.setGraphicSize flxMovie.ACTOR_WIDTH)
+        (character.actor.updateHitbox))
+
     (set character.actor.cameras [camera])
     (set character.actor.flipX ?!(= character.stageFacing character.actor.defaultFacing))
     // For characters whose images are forward-facing portraits, it's wrong to flip them based on facing:
     (when character.actor.portraitFacingForward
         (set character.actor.flipX false))
-    // All actors same width, display centered on x
-    (character.actor.setGraphicSize flxMovie.ACTOR_WIDTH)
-    (character.actor.updateHitbox)
     (set character.actor.x
         (- character.stagePosition.x
             (/ character.actor.width 2)))
