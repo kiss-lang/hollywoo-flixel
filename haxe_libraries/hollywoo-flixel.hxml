@@ -1,7 +1,0 @@
--lib kiss
--lib kiss-flixel
--lib flixel-addons
--lib hollywoo
--cp ${SCOPE_DIR}/./src/
--D hollywoo-flixel=0.0.0
---macro Sys.println("haxe_libraries/hollywoo-flixel.hxml:6: [Warning] Using dev version of library hollywoo-flixel")
