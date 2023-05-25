@@ -1,8 +1,10 @@
+{(indexAssetPaths "assets")(cc)}
+
 // When the sound device is non-functional, the FlxSound finish callback won't be called.
 // Don't let that stop Hollywoo:
 {(prop &mut soundPlayed false)(cc)}
 (preload
-	(newFlxSound "pageFlip" AssetPaths.pageTurn__wav))
+	(newFlxSound "pageFlip" (assetPath "assets" "pageTurn.wav")))
 {(delay 1 ->:Void (assert soundPlayed)) (cc)}
 AWAITPLAYSOUND "pageFlip"
 {(set soundPlayed true) (cc)}
@@ -40,14 +42,14 @@ AWAITPLAYSOUND "pageFlip"
 		(withSceneSet sk set
 			(assert (and (= firstWidth set.width) (= firstHeight set.height))))))
 
-(testSetBackground AssetPaths.grayBackground1280x720__png)
-(testSetBackground AssetPaths.grayBackground1000x720__png)
-(testSetBackground AssetPaths.grayBackground1280x580__png)
+(testSetBackground (assetPath "assets" "grayBackground1280x720.png"))
+(testSetBackground (assetPath "assets" "grayBackground1000x720.png"))
+(testSetBackground (assetPath "assets" "grayBackground1280x580.png"))
 
 // Characters on stage right not appearing for some reason:
 (preload
-	(newActor "white" (new ActorFlxSprite AssetPaths.whiteSquare__png))
-	(newActor "black" (new ActorFlxSprite AssetPaths.blackSquare__png)))
+	(newActor "white" (new ActorFlxSprite (assetPath "assets" "whiteSquare.png")))
+	(newActor "black" (new ActorFlxSprite (assetPath "assets" "blackSquare.png"))))
 
 SETSCENE basicSceneKey
 ADDCHARACTER "white" Left FacingRight
@@ -58,7 +60,7 @@ ADDCHARACTER "black" Right FacingLeft
 
 // Speaker name not being bumped to right side for stage-right actors while intercutting:
 (preload
-	(newFlxSet "intercutSet" AssetPaths.whiteBackground1280x720__png)
+	(newFlxSet "intercutSet" (assetPath "assets" "whiteBackground1280x720.png"))
 	(newSceneFromSet "intercutScene" "intercutSet" Day Exterior (new FlxCamera)))
 
 SETSCENE "intercutScene"
@@ -76,5 +78,7 @@ ONPHONESPEECH "white" "" "Testing line one"
 ONPHONESPEECH "black" "" "Testing line two"
 
 ENDINTERCUT
+
+// TODO test credits
 
 (Sys.exit 0)
