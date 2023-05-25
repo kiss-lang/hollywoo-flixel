@@ -481,13 +481,13 @@
 
 (prop &mut :Bool autoPlaceProps true)
 
-(method :Void showProp [:FlxSprite prop :StagePosition position :Continuation cc]
+(method :Void showProp [:FlxSprite prop :StagePosition position :Appearance appearance :Continuation cc]
     (set prop.cameras [flxMovie.screenCamera])
     (let [width (min (max prop.width PROP_MIN_WIDTH) PROP_MAX_WIDTH)]
-        (when autoPlaceProps
+        (whenLet [FirstAppearance appearance]
             (prop.setGraphicSize width)
-
-            (prop.updateHitbox)
+            (prop.updateHitbox))
+        (when autoPlaceProps
             // if the prop is too tall, shrink it heightwise
             (when (> prop.height flxMovie.DIALOG_Y)
                 (prop.setGraphicSize 0 (Std.int flxMovie.DIALOG_Y))

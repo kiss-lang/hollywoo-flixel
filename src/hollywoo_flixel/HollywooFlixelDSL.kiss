@@ -184,3 +184,12 @@
         (stagePositions.put "ScreenLowerRight" (new StagePosition right lower layer))
         (stagePositions.put "ScreenLowerCenter" (new StagePosition centerX lower layer))
         (stagePositions.put "ScreenUpperCenter" (new StagePosition centerX upper layer))))
+
+(method overlayPropOnCurrentSet [propKey :Void->Void cc]
+    (withProp propKey p
+        (withSceneSetCC sceneKey bg
+            (p.setGraphicSize (Std.int bg.width) (Std.int bg.height))
+            (p.updateHitbox)
+            (set p.x bg.x)
+            (set p.y bg.y)))
+    (cc))
