@@ -146,8 +146,8 @@
     (set STAGE_BEHIND_DY 250.0)
     (set DIALOG_X ACTOR_WIDTH)
     (set DIALOG_Y (- FlxG.height 220.0))
-    (set DIALOG_WIDTH (- FlxG.width ACTOR_WIDTH ACTOR_WIDTH))
-    (set DIALOG_HEIGHT (- FlxG.height DIALOG_Y))
+    (set DIALOG_WIDTH (Std.int (- FlxG.width ACTOR_WIDTH ACTOR_WIDTH)))
+    (set DIALOG_HEIGHT (Std.int (- FlxG.height DIALOG_Y)))
     #{
         stagePositions.put("Left", new StagePosition(
             STAGE_LEFT_X,
