@@ -107,7 +107,7 @@
         (set skySprite.cameras [camera])
         (set skySprite.x setSprite.x)
         (set skySprite.y setSprite.y)
-        (FlxG.state.add skySprite))
+        (.add (first spriteLayers) skySprite))
 
     (FlxG.cameras.remove flxMovie.uiCamera false)
     (FlxG.cameras.remove flxMovie.screenCamera false)
@@ -115,13 +115,13 @@
     (FlxG.cameras.add flxMovie.screenCamera)
     (FlxG.cameras.add flxMovie.uiCamera)
     (set setSprite.cameras [camera])
-    (FlxG.state.add setSprite)
+    (.add (first spriteLayers) setSprite)
     (cc))
 
 (method :Void hideSet [:FlxSprite set :FlxCamera camera :Continuation cc]
     (FlxG.cameras.remove camera false)
-    (FlxG.state.remove skySprite)
-    (FlxG.state.remove set)
+    (.remove (first spriteLayers) skySprite)
+    (.remove (first spriteLayers) set)
     (cc))
 
 (method :FlxSprite drawLight [:FlxLightSource source]
