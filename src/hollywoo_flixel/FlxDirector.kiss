@@ -249,6 +249,9 @@
 (method :Option<AutoZConfig> autoZConfig [] (Some (object zPerLayer flxMovie.STAGE_BEHIND_DY frontLayer 0)))
 
 (method :Void showCharacter [:Character<ActorFlxSprite> character :Appearance appearance :FlxCamera camera :Continuation cc]
+    // Why is this necessary? Who knows
+    // (FlxG.state.remove character.actor true)
+
     // Do sizing only on first appearance
     (whenLet [FirstAppearance appearance]
         // All actors same width, display centered on x
