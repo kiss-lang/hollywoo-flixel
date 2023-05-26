@@ -302,7 +302,10 @@
     (FlxG.state.add titleCard)
     (cc))
 
+(prop &mut :Bool isLoading false)
 (method :Void doLoading [:Array<Void->Void> _load :Continuation cc]
+    (set isLoading true)
+    (set FlxG.autoPause false)
     (set FlxG.mouse.visible false)
     (let [doneFuncs []
             bar (new FlxBar 0 0 LEFT_TO_RIGHT (iThird FlxG.width) SimpleWindow.textSize doneFuncs "length" 0 _load.length true)
@@ -315,6 +318,10 @@
                                 }
                             {
                                 (set FlxG.mouse.visible true)
+                                (set isLoading false)
+                                (unless MovieFlxState.focused
+                                    (pause))
+                                (set FlxG.autoPause true)
                                 (FlxG.state.remove bar)
                                 (cc)
                             }) 1)]

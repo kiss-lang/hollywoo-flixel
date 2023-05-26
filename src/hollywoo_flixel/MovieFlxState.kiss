@@ -4,3 +4,15 @@
     (set destroySubStates false)
     (super.create)
     (set director (new FlxDirector)))
+
+(var &mut focused true)
+
+(method &override :Void onFocusLost []
+    (when FlxG.autoPause
+        (director.pause))
+    (set focused false))
+
+(method &override :Void onFocus []
+    (when (and FlxG.autoPause !director.movie.paused)
+        (director.resume))
+    (set focused true))
