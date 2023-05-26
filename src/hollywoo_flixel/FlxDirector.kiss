@@ -52,6 +52,7 @@
             (sound.resume))))
 
 (method :Void resume []
+    (set FlxG.mouse.visible true)
     (FlxG.inputs.add actionManager)
     (FlxG.state.forEach
         ->:Void child
@@ -302,6 +303,7 @@
     (cc))
 
 (method :Void doLoading [:Array<Void->Void> _load :Continuation cc]
+    (set FlxG.mouse.visible false)
     (let [doneFuncs []
             bar (new FlxBar 0 0 LEFT_TO_RIGHT (iThird FlxG.width) SimpleWindow.textSize doneFuncs "length" 0 _load.length true)
             loop (new flixel.addons.util.FlxAsyncLoop (+ 1 _load.length)
@@ -312,6 +314,7 @@
                                     (doneFuncs.push nextLoad)
                                 }
                             {
+                                (set FlxG.mouse.visible true)
                                 (FlxG.state.remove bar)
                                 (cc)
                             }) 1)]
