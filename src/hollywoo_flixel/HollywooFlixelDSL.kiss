@@ -123,7 +123,7 @@
     (cc))
 
 (method putPresetPosition [key x y z]
-        (let [pos (new StagePosition x y z)]
+        (let [pos (new StagePosition (Std.int x) (Std.int y) (Std.int z))]
             (stagePositions.put key pos)
             (dictSet presetPositions (pos.stringify) true)))
 

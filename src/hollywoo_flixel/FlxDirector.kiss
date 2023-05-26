@@ -17,7 +17,7 @@
     (set actionManager.resetOnStateSwitch NONE)
     
     // TODO characters will be in front of every prop layer -- characters need their own group layer
-    (doFor i (range (+ 1 LAYER_MAX))
+    (doFor i (range (+ 3 LAYER_MAX)) // LMAO
         (let [g (new FlxTypedGroup<FlxSprite>)]
             (spriteLayers.push g)
             (FlxG.state.add g))))
@@ -261,7 +261,7 @@
             (let [layer (- LAYER_MAX (Std.int (/ character.stagePosition.z flxMovie.STAGE_BEHIND_DY)))]
                 (.add (nth spriteLayers layer) character.actor)))
         (true
-            (.add (nth spriteLayers (Std.int character.stagePosition.z)) character.actor)))
+            (.add (nth spriteLayers (min LAYER_MAX (Std.int character.stagePosition.z))) character.actor)))
     
     (cc))
 
@@ -519,7 +519,7 @@
 
         (let [layerNum position.z]
             (assertEquals layerNum (Std.int layerNum))
-            (.add (nth spriteLayers (Std.int layerNum)) prop)))
+            (.add (nth spriteLayers (+ 1 (Std.int layerNum))) prop)))
     (cc))
 
 (method :Void hideProp [:FlxSprite prop cc]
