@@ -258,7 +258,7 @@
                     (-= character.actor.y (- bottom FlxG.height))))
             // Display with y adjusted by z:
             (-= character.actor.y character.stagePosition.z)
-            (let [layer (- LAYER_MAX (% character.stagePosition.z flxMovie.STAGE_BEHIND_DY))]
+            (let [layer (- LAYER_MAX (Std.int (/ character.stagePosition.z flxMovie.STAGE_BEHIND_DY)))]
                 (.add (nth spriteLayers layer) character.actor)))
         (true
             (.add (nth spriteLayers (Std.int character.stagePosition.z)) character.actor)))
