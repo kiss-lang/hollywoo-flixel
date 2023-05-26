@@ -487,14 +487,19 @@
         (whenLet [FirstAppearance appearance]
             (prop.setGraphicSize width)
             (prop.updateHitbox))
-        (when autoPlaceProps
+
+        (set prop.x position.x)
+        (set prop.y position.y)
+
+        // When using preset positions, automatically move everything around
+        (when (flxMovie.presetPositions.exists (position.stringify))
+            (-= prop.x (/ prop.width 2))
+            (-= prop.y (/ prop.height 2))
+
             // if the prop is too tall, shrink it heightwise
             (when (> prop.height flxMovie.DIALOG_Y)
                 (prop.setGraphicSize 0 (Std.int flxMovie.DIALOG_Y))
                 (prop.updateHitbox))
-
-            (set prop.x (- position.x (/ prop.width 2)))
-            (set prop.y (- position.y (/ prop.height 2)))
 
             (let [propBottom (+ prop.y prop.height)]
                 // if a prop would block the dialogue box, bump it up

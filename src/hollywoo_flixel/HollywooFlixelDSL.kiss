@@ -128,6 +128,11 @@
         (set sound.looped true))
     (cc))
 
+(method putPresetPosition [key x y z]
+        (let [pos (new StagePosition x y z)]
+            (stagePositions.put key pos)
+            (dictSet presetPositions (pos.stringify) true)))
+
 (preload
     (unless uiCamera
         (set uiCamera (new flixel.FlxCamera))
@@ -148,28 +153,11 @@
     (set DIALOG_Y (- FlxG.height 220.0))
     (set DIALOG_WIDTH (Std.int (- FlxG.width ACTOR_WIDTH ACTOR_WIDTH)))
     (set DIALOG_HEIGHT (Std.int (- FlxG.height DIALOG_Y)))
-    #{
-        stagePositions.put("Left", new StagePosition(
-            STAGE_LEFT_X,
-            ACTOR_Y,
-            0.0
-        ));
-        stagePositions.put("Right", new StagePosition(
-            STAGE_RIGHT_X,
-            ACTOR_Y,
-            0.0
-        ));
-        stagePositions.put("Left2", new StagePosition(
-            STAGE_LEFT_X,
-            ACTOR_Y,
-            STAGE_BEHIND_DY
-        ));
-        stagePositions.put("Right2", new StagePosition(
-            STAGE_RIGHT_X,
-            ACTOR_Y,
-            STAGE_BEHIND_DY
-        ));
-    }#
+    
+    (putPresetPosition "Left" STAGE_LEFT_X ACTOR_Y 0.0)
+    (putPresetPosition "Right" STAGE_RIGHT_X ACTOR_Y 0.0)
+    (putPresetPosition "Left2" STAGE_LEFT_X ACTOR_Y STAGE_BEHIND_DY)
+    (putPresetPosition "Right2" STAGE_RIGHT_X ACTOR_Y STAGE_BEHIND_DY)
     (let [left (/ FlxG.width 6)
             right (- FlxG.width left)
             upper (/ FlxG.height 6)
@@ -177,19 +165,19 @@
             centerX (/ FlxG.width 2)
             centerY (/ FlxG.height 2)
             layer 5]
-        (stagePositions.put "ScreenCenter" (new StagePosition centerX centerY layer))
-        (stagePositions.put "ScreenUpperLeft" (new StagePosition left upper layer))
-        (stagePositions.put "ScreenUpperRight" (new StagePosition right upper layer))
-        (stagePositions.put "ScreenLowerLeft" (new StagePosition left lower layer))
-        (stagePositions.put "ScreenLowerRight" (new StagePosition right lower layer))
-        (stagePositions.put "ScreenLowerCenter" (new StagePosition centerX lower layer))
-        (stagePositions.put "ScreenUpperCenter" (new StagePosition centerX upper layer))))
+        (putPresetPosition "ScreenCenter" centerX centerY layer)
+        (putPresetPosition "ScreenUpperLeft" left upper layer)
+        (putPresetPosition "ScreenUpperRight" right upper layer)
+        (putPresetPosition "ScreenLowerLeft" left lower layer)
+        (putPresetPosition "ScreenLowerRight" right lower layer)
+        (putPresetPosition "ScreenLowerCenter" centerX lower layer)
+        (putPresetPosition "ScreenUpperCenter" centerX upper layer)))
 
 (method overlayPropOnCurrentSet [propKey :Void->Void cc]
-    (withProp propKey p
-        (withSceneSetCC sceneKey bg
-            (p.setGraphicSize (Std.int bg.width) (Std.int bg.height))
-            (p.updateHitbox)
-            (set p.x bg.x)
-            (set p.y bg.y)))
-    (cc))
+    (let [propKey (kiss.FuzzyMapTools.bestMatch props propKey)]
+        (dictSet shownProps propKey true) // Don't scale when showing
+        (withProp propKey p
+            (withSceneSetCC sceneKey bg
+                (p.setGraphicSize (Std.int bg.width) (Std.int bg.height))
+                (p.updateHitbox)
+                (addProp propKey (new StagePosition bg.x bg.y 1) cc)))))

@@ -36,4 +36,5 @@ class FlxMovie extends Movie<FlxSprite, ActorFlxSprite, FlxSound, String, FlxSpr
     public var DIALOG_Y:Float;
     public var DIALOG_WIDTH:Int;
     public var DIALOG_HEIGHT:Int;
+    public var presetPositions:Map<String,Bool> = [];
 }
