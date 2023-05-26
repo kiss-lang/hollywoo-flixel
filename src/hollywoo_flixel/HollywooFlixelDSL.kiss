@@ -108,7 +108,7 @@
                         plate))]
         (delay delayLength 
             (makeCC
-                (doFor plate plates (FlxG.state.remove plate))
+                (doFor plate plates (FlxG.state.remove plate true))
                 (when delayWhileShown (cc)))))
     (unless delayWhileShown (cc)))
 

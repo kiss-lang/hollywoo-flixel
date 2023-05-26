@@ -16,7 +16,6 @@
     (FlxG.inputs.add actionManager)
     (set actionManager.resetOnStateSwitch NONE)
     
-    // TODO characters will be in front of every prop layer -- characters need their own group layer
     (doFor i (range (+ 3 LAYER_MAX)) // LMAO
         (let [g (new FlxTypedGroup<FlxSprite>)]
             (spriteLayers.push g)
@@ -135,8 +134,8 @@
 
 (method :Void hideSet [:FlxSprite set :FlxCamera camera :Continuation cc]
     (FlxG.cameras.remove camera false)
-    (.remove (first spriteLayers) skySprite)
-    (.remove (first spriteLayers) set)
+    (.remove (first spriteLayers) skySprite true)
+    (.remove (first spriteLayers) set true)
     (cc))
 
 (method :FlxSprite drawLight [:FlxLightSource source]
@@ -187,7 +186,7 @@
         (mm.add screen
             ->screen {
                 (mm.remove screen)
-                (FlxG.state.remove screen)
+                (FlxG.state.remove screen true)
                 (let [pos (FlxG.mouse.getScreenPosition FlxG.camera)]
                     (doFor camera FlxG.cameras.list (set camera.zoom 1))
                     (submit pos))
@@ -242,8 +241,8 @@
     (FlxG.state.add lightSprite))
     
 (method :Void hideLighting []
-    (FlxG.state.remove darkness)
-    (FlxG.state.remove lightSprite))
+    (FlxG.state.remove darkness true)
+    (FlxG.state.remove lightSprite true))
 
 (method :Void cleanup [] 0)
 
@@ -276,14 +275,14 @@
             (let [layer (- LAYER_MAX (Std.int (/ character.stagePosition.z flxMovie.STAGE_BEHIND_DY)))]
                 (.add (nth spriteLayers layer) character.actor)))
         (true
-            (.add (nth spriteLayers (min LAYER_MAX (Std.int character.stagePosition.z))) character.actor)))
+            (.add (nth spriteLayers ~(min LAYER_MAX (Std.int character.stagePosition.z))) character.actor)))
     
     (cc))
 
 (method :Void hideCharacter [:Character<ActorFlxSprite> character :FlxCamera camera :Continuation cc]
-    (FlxG.state.remove character.actor)
+    (FlxG.state.remove character.actor true)
     (doFor layer spriteLayers
-        (layer.remove character.actor))
+        (layer.remove character.actor true))
     (cc))
 
 (prop &mut :Null<Continuation> nextCC)
@@ -336,7 +335,7 @@
                                 (unless MovieFlxState.focused
                                     (pause))
                                 (set FlxG.autoPause true)
-                                (FlxG.state.remove bar)
+                                (FlxG.state.remove bar true)
                                 (cc)
                             }) 1)]
         (haxe.Timer.delay ->:Void (loop.start) 1)
@@ -348,7 +347,7 @@
         (FlxG.state.add loop)))
 
 (method :Void hideTitleCard []
-    (FlxG.state.remove titleCard))
+    (FlxG.state.remove titleCard true))
 
 // TODO these could be customizable to the Actor, wrylies, etc.
 (var DIALOG_BOX_COLOR FlxColor.BLACK)
@@ -369,7 +368,7 @@
     (localVar &mut :Float speakerNameX -1)
     (case type
         (Super
-            (when superText (FlxG.state.remove superText))
+            (when superText (FlxG.state.remove superText true))
             (set superText (SpriteTools.textPlate text DIALOG_SIZE SUPER_MARGIN))
             // If supertext can be done in a single centered line, do so
             (when (<= superText.width FlxG.width)
@@ -436,7 +435,7 @@
     (dialogText?.kill)
     (speakerNameText?.kill)
     (dialogBox?.kill)
-    (when superText (FlxG.state.remove superText)))
+    (when superText (FlxG.state.remove superText true)))
 
 (savedVar :Float soundVolume 1.0)
 
@@ -549,13 +548,13 @@
 
         (let [layerNum position.z]
             (assertEquals layerNum (Std.int layerNum))
-            (.add (nth spriteLayers (+ 1 (Std.int layerNum))) prop)))
+            (.add (nth spriteLayers ~(+ 1 (Std.int layerNum))) prop)))
     (cc))
 
 (method :Void hideProp [:FlxSprite prop cc]
-    (FlxG.state.remove prop)
+    (FlxG.state.remove prop true)
     (doFor layer spriteLayers
-        (layer.remove prop))
+        (layer.remove prop true))
     (cc))
 
 (prop :Array<FlxText> creditsText [])
@@ -571,7 +570,7 @@
     (FlxG.state.add blackBG))
 
 (method :Void hideBlackScreen []
-    (FlxG.state.remove blackBG))
+    (FlxG.state.remove blackBG true))
 
 // TODO currently the bg will cover whatever the final scene was - making after credits scenes impossible
 (method :Void rollCredits [:Array<CreditsLine> credits cc]
