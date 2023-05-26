@@ -7,6 +7,7 @@ import flixel.FlxSprite;
 import flixel.input.actions.FlxAction;
 import flixel.input.actions.FlxActionManager;
 import flixel.input.mouse.FlxMouseButton;
+import flixel.math.FlxRect;
 import flixel.group.FlxGroup;
 import flixel.tweens.FlxTween;
 import hollywoo.Movie;

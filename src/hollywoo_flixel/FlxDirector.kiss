@@ -22,6 +22,7 @@
             (spriteLayers.push g)
             (FlxG.state.add g))))
 
+(prop :Map<SceneTime,FlxSprite> skySprites (new Map))
 (prop &mut :FlxSprite skySprite)
 
 (prop :FlxKeyShortcutHandler<Continuation->Void> sh (new FlxKeyShortcutHandler))
@@ -97,18 +98,31 @@
             (setSprite.updateHitbox)
             (setSprite.screenCenter))
         (otherwise))
-    // TODO draw a sky background depending on time of day, int/ext
-    (let [skyColor (case time
-                        ((or Morning Day) DAY_SKY_COLOR)
-                        (Evening EVENING_SKY_COLOR)
-                        (Night NIGHT_SKY_COLOR)
-                        (never null))]
-        (set skySprite (new FlxSprite))
-        (skySprite.makeGraphic (Std.int setSprite.width) (Std.int setSprite.height) skyColor true)
-        (set skySprite.cameras [camera])
-        (set skySprite.x setSprite.x)
-        (set skySprite.y setSprite.y)
-        (.add (first spriteLayers) skySprite))
+    // draw a sky background depending on time of day, int/ext
+    (ifLet [specialSkySprite (.clone (dictGet skySprites time))]
+            {
+                (set skySprite specialSkySprite)
+                (skySprite.setGraphicSize (Std.int setSprite.width))
+                (skySprite.updateHitbox)
+                (unless (>= skySprite.height setSprite.height)
+                    (skySprite.setGraphicSize 0 (Std.int setSprite.height))
+                    (skySprite.updateHitbox)
+                    (let [hOverflow (- skySprite.width setSprite.width)
+                            unscaledOverflow (/ hOverflow skySprite.scale.x)
+                            half (iHalf unscaledOverflow)]
+                        (set skySprite.clipRect (new FlxRect 0 0 (Std.int (- skySprite.frameWidth unscaledOverflow)) skySprite.frameHeight))))
+            }
+        (let [skyColor (case time
+                            ((or Morning Day) DAY_SKY_COLOR)
+                            (Evening EVENING_SKY_COLOR)
+                            (Night NIGHT_SKY_COLOR)
+                            (never null))]
+            (set skySprite (new FlxSprite))
+            (skySprite.makeGraphic (Std.int setSprite.width) (Std.int setSprite.height) skyColor true)))
+    (set skySprite.x setSprite.x)
+    (set skySprite.y 0)
+    (set skySprite.cameras [camera])
+    (.add (first spriteLayers) skySprite)
 
     (FlxG.cameras.remove flxMovie.uiCamera false)
     (FlxG.cameras.remove flxMovie.screenCamera false)

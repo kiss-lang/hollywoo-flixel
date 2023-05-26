@@ -175,3 +175,7 @@
                 (p.setGraphicSize (Std.int bg.width) (Std.int bg.height))
                 (p.updateHitbox)
                 (addProp propKey (new StagePosition bg.x bg.y 1) cc)))))
+
+(method loadSkySprite [time path &opt :Void->Void cc]
+    (dictSet flxDirector.skySprites time (.loadGraphic (new FlxSprite) path))
+    (when cc (cc)))
