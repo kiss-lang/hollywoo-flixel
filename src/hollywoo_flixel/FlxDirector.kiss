@@ -352,7 +352,7 @@
     // TODO attribute on-screen dialogue to the character's stageposition
 
     // TODO allow sounds for wrylies, like the dispatch click
-    (localVar &mut nameOnRight false)
+    (localVar &mut :Float speakerNameX -1)
     (case type
         (Super
             (set superText (SpriteTools.textPlate text DIALOG_SIZE SUPER_MARGIN))
@@ -363,8 +363,7 @@
             (startWaitForInput cc)
             (return))
         ((OnScreen character)
-            (when (> character.stagePosition.x (/ FlxG.width 2))
-                (set nameOnRight true))
+            (set speakerNameX (+ character.actor.x (fHalf character.actor.width)))
             // When an actor is associated with the line, check for an animation matching the wryly
             (let [actor (the ActorFlxSprite character.actor)]
                 (if wryly
@@ -397,14 +396,18 @@
     (while (< FlxG.height (+ dialogText.y dialogText.height))
         (-= dialogText.size 6))
     // show the speaker name
-    (unless speakerNameText
-        (set speakerNameText (new FlxText flxMovie.DIALOG_X flxMovie.DIALOG_Y 0 "" DIALOG_SIZE)))
+    (set speakerNameText null)
+    (set speakerNameText (new FlxText flxMovie.DIALOG_X flxMovie.DIALOG_Y 0 "" DIALOG_SIZE))
     (set speakerNameText.cameras [flxMovie.uiCamera])
     (FlxG.state.add speakerNameText)
     (if speakerName
             {
                 (set speakerNameText.text "${speakerName}:")
-                (set speakerNameText.x (if nameOnRight (- (+ flxMovie.DIALOG_X flxMovie.DIALOG_WIDTH) speakerNameText.fieldWidth) flxMovie.DIALOG_X))
+                (when (= speakerNameX -1)
+                    (set speakerNameX flxMovie.DIALOG_X))
+                (-= speakerNameX (fHalf speakerNameText.width))
+                (clamp speakerNameX flxMovie.DIALOG_X (- (+ flxMovie.DIALOG_X flxMovie.DIALOG_WIDTH) speakerNameText.width))
+                (set speakerNameText.x speakerNameX)
                 (speakerNameText.revive)
                 (set dialogText.y (+ flxMovie.DIALOG_Y speakerNameText.height))
             }
