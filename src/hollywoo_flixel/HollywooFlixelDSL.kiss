@@ -91,7 +91,7 @@
 
 (prop &mut :FlxSprite _canvas null)
 (method :FlxSprite canvas []
-    (unless _canvas
+    (unless (= _canvas?.width FlxG.width)
         (set _canvas (new FlxSprite 0 0))
         (_canvas.makeGraphic FlxG.width FlxG.height FlxColor.BLACK))
     _canvas)
