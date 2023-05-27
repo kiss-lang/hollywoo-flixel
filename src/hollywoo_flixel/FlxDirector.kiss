@@ -521,8 +521,8 @@
 
 (prop &mut :Bool autoPlaceProps true)
 
-(method :Void showProp [:FlxSprite prop :StagePosition position :Appearance appearance :Continuation cc]
-    (set prop.cameras [flxMovie.screenCamera])
+(method :Void showProp [:FlxSprite prop :StagePosition position :Appearance appearance :FlxCamera camera :Continuation cc]
+    (set prop.cameras [camera])
     (let [width (min (max prop.width PROP_MIN_WIDTH) PROP_MAX_WIDTH)]
         (whenLet [FirstAppearance appearance]
             (prop.setGraphicSize width)
@@ -554,7 +554,7 @@
             (.add (nth spriteLayers ~(+ 1 (Std.int layerNum))) prop)))
     (cc))
 
-(method :Void hideProp [:FlxSprite prop cc]
+(method :Void hideProp [:FlxSprite prop :FlxCamera camera cc]
     (FlxG.state.remove prop true)
     (doFor layer spriteLayers
         (layer.remove prop true))
