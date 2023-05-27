@@ -193,10 +193,15 @@
             })
         (FlxG.state.add screen)))
 
-(method :Void defineStagePosition [:StagePosition->Void submit]
+(method :Void defineStagePosition [:FlxCamera camera :StagePosition->Void submit &opt :StagePosition oldPos]
+    (let [db (new DebugLayer)]
+        (set db.cameras [camera])
+        (db.drawCircle oldPos.x oldPos.y 4 FlxColor.YELLOW 2)
+        (FlxG.state.add db)
     (defineFlxPoint
         ->point
-            (submit (new StagePosition point.x point.y 0.0))))
+            {(FlxG.state.remove db)
+                (submit (new StagePosition point.x point.y 5.0))})))
 
 (method :Void defineLightSource [:FlxLightSource->Void submit]
     (let [points []]
