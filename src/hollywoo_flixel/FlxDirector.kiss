@@ -283,7 +283,7 @@
             (let [layer (- LAYER_MAX (Std.int (/ character.stagePosition.z flxMovie.STAGE_BEHIND_DY)))]
                 (.add (nth spriteLayers layer) character.actor)))
         (true
-            (.add (nth spriteLayers ~(min LAYER_MAX (Std.int character.stagePosition.z))) character.actor)))
+            (.add (nth spriteLayers (min LAYER_MAX (Std.int character.stagePosition.z))) character.actor)))
     
     (cc))
 
@@ -536,31 +536,42 @@
         (set prop.x position.x)
         (set prop.y position.y)
 
-        // When using preset positions, automatically move everything around
-        (when (flxMovie.presetPositions.exists (position.stringify))
-            (-= prop.x (/ prop.width 2))
-            (-= prop.y (/ prop.height 2))
+        // When using preset positions, automatically move everything around and scale it
+        (cond 
+            ((flxMovie.presetPositions.exists (position.stringify))
+                (-= prop.x (/ prop.width 2))
+                (-= prop.y (/ prop.height 2))
 
-            // if the prop is too tall, shrink it heightwise
-            (when (> prop.height flxMovie.DIALOG_Y)
-                (prop.setGraphicSize 0 (Std.int flxMovie.DIALOG_Y))
-                (prop.updateHitbox))
+                // if the prop is too tall, shrink it heightwise
+                (when (> prop.height flxMovie.DIALOG_Y)
+                    (prop.setGraphicSize 0 (Std.int flxMovie.DIALOG_Y))
+                    (prop.updateHitbox))
 
-            (let [propBottom (+ prop.y prop.height)]
-                // if a prop would block the dialogue box, bump it up
-                (when (> propBottom flxMovie.DIALOG_Y)
-                    (-= prop.y (- propBottom flxMovie.DIALOG_Y)))
-                // If a prop goes below the edge, bring it up
-                (when (> propBottom FlxG.height)
-                    (-= prop.y (- propBottom FlxG.height)))))
+                (let [propBottom (+ prop.y prop.height)]
+                    // if a prop would block the dialogue box, bump it up
+                    (when (> propBottom flxMovie.DIALOG_Y)
+                        (-= prop.y (- propBottom flxMovie.DIALOG_Y)))
+                    // If a prop goes below the edge, bring it up
+                    (when (> propBottom FlxG.height)
+                        (-= prop.y (- propBottom FlxG.height)))))
+            // Otherwise, let the director scale props
+            (true
+                (let [propKey prop.graphic.assetsKey
+                        :Float scale .value (flxMovie.propScales.get propKey)]
+                    (unless (flxMovie.propsInScene.exists flxMovie.sceneKey)
+                        (dictSet flxMovie.propsInScene flxMovie.sceneKey []))
+                    (.push (dictGet flxMovie.propsInScene flxMovie.sceneKey) propKey)
+                    (prop.scale.set scale scale))))
 
         (let [layerNum position.z]
             (assertEquals layerNum (Std.int layerNum))
-            (.add (nth spriteLayers ~(+ 1 (Std.int layerNum))) prop)))
+            (.add (nth spriteLayers (+ 1 (Std.int layerNum))) prop)))
     (cc))
 
 (method :Void hideProp [:FlxSprite prop :FlxCamera camera cc]
     (FlxG.state.remove prop true)
+    (let [propKey prop.graphic.assetsKey]
+        (.remove (dictGet flxMovie.propsInScene flxMovie.sceneKey) propKey))
     (doFor layer spriteLayers
         (layer.remove prop true))
     (cc))

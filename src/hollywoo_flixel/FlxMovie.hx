@@ -10,6 +10,8 @@ import hollywoo.Movie;
 import hollywoo_flixel.ActorFlxSprite;
 import kiss_flixel.SpriteTools;
 import kiss_tools.FlxKeyShortcutHandler;
+import kiss_tools.JsonMap;
+import hollywoo.HFloat;
 import openfl.Assets;
 import flixel.tweens.FlxTween;
 
@@ -19,12 +21,17 @@ import flixel.tweens.FlxTween;
 class FlxMovie extends Movie<FlxSprite, ActorFlxSprite, FlxSound, String, FlxSprite, FlxSound, FlxCamera, FlxLightSource> {
     // Think of HollywooFlixelDSL.kiss as the corresponding Kiss file for this class!
 
-    public function new(director:FlxDirector, lightSourceJsonFile:String, positionsJson:String, delayLengthsJson:String, voiceLineMatchesJson:String) {
+    public function new(director:FlxDirector, lightSourceJsonFile:String, positionsJson:String, delayLengthsJson:String, voiceLineMatchesJson:String, propScalesJson:String) {
         super(director, lightSourceJsonFile, new FlxLightSource([], FlxColor.TRANSPARENT), positionsJson, delayLengthsJson, voiceLineMatchesJson);
+
+        propScales = new JsonMap(propScalesJson, new HFloat(1.0));
     }
     public var uiCamera:FlxCamera;
     public var screenCamera:FlxCamera;
     
+    public var propScales:JsonMap<HFloat>;
+    public var propsInScene:Map<String,Array<String>> = [];
+
     public var tweens:Array<FlxTween> = [];
     public var loopingOnCompletes:Map<FlxSound,Void->Void> = [];
     public var STAGE_LEFT_X:Float;

@@ -165,7 +165,20 @@
         (putPresetPosition "ScreenLowerLeft" left lower layer)
         (putPresetPosition "ScreenLowerRight" right lower layer)
         (putPresetPosition "ScreenLowerCenter" centerX lower layer)
-        (putPresetPosition "ScreenUpperCenter" centerX upper layer)))
+        (putPresetPosition "ScreenUpperCenter" centerX upper layer))
+        
+    (let [shortcutHandler (director.shortcutHandler)
+            cc ->(resume)]    
+        (shortcutHandler.registerItem "[d]efine prop [s]cale"
+            ->cc
+                (director.chooseString "Which prop?" (dictGet propsInScene sceneKey)
+                    ->propKey
+                        (let [lastScale .value (propScales.get propKey)]
+                            (director.enterString "Redefine $propKey scale from ${lastScale}?" 
+                                ->scaleStr
+                                    (let [scale (Std.parseFloat scaleStr)]
+                                        (propScales.put propKey (new HFloat scale))
+                                        (cc))))))))
 
 (method overlayPropOnCurrentSet [propKey :Void->Void cc]
     (let [propKey (kiss.FuzzyMapTools.bestMatch props propKey)]
