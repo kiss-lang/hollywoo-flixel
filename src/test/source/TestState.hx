@@ -3,6 +3,7 @@ package;
 import kiss.Prelude;
 import kiss.List;
 import hollywoo.StagePosition;
+import hollywoo.HFloat;
 import hollywoo_flixel.FlxDirector;
 import hollywoo_flixel.FlxMovie;
 import hollywoo_flixel.MovieFlxState;
@@ -18,7 +19,7 @@ import flixel.FlxCamera;
 @:build(kiss.AsyncEmbeddedScript.build("hollywoo-flixel", "src/hollywoo_flixel/HollywooFlixelDSL.kiss", "Test.hollywoo"))
 class Test extends FlxMovie {
     public function new(director:FlxDirector) {
-        super(director, "lightSources.json", "positions.json", "delayLengths.json", "voiceLineMatches.json");
+        super(director, "lightSources.json", "positions.json", "delayLengths.json", "voiceLineMatches.json", "propScales.json");
     }
 }
 

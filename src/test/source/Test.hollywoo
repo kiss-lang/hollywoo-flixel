@@ -4,7 +4,7 @@
 // Don't let that stop Hollywoo:
 {(prop &mut soundPlayed false)(cc)}
 (preload
-	(newFlxSound "pageFlip" (assetPath "assets" "pageTurn.wav")))
+	(newFlxSound "pageFlip" (assetPath "assets" "pageTurn.wav") "page turning"))
 {(delay 1 ->:Void (assert soundPlayed)) (cc)}
 AWAITPLAYSOUND "pageFlip"
 {(set soundPlayed true) (cc)}

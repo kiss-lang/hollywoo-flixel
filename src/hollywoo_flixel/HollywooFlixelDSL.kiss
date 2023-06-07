@@ -62,13 +62,13 @@
         (setSprite.makeGraphic FlxG.width FlxG.height color true) // Load uniquely so we can draw on sets for specific scenes
         (newSet name setSprite)))
 
-(method newFlxSound [name path &opt :Float volume]
+(method newFlxSound [name path description &opt :Float volume]
     (set volume (or volume 1))
     (assert (<= 0 volume 1))
     (let [s (FlxG.sound.load path)]
         (set s.volume volume)
         (set s.persist true)
-        (newSound name s)))
+        (newSound name s description)))
 
 (method newFlxSong [name path]
     (newSong name path))

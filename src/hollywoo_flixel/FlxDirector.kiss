@@ -476,6 +476,30 @@
     (currentSounds.remove sound)
     (sound.stop))
 
+(var CAPTION_Y 50)
+// This group is just for tracking y gaps where a new caption could appear
+(prop &mut :FlxGroup captions null)
+(prop :Map<Int,FlxSprite> captionIds (new Map))
+(method :Void showCaption [:String description :Int id]
+    (unless captions (set captions (new FlxGroup)))
+    (let [firstNull (captions.getFirstNull)
+            row (case firstNull (-1 0) (otherwise firstNull))
+            plate (SpriteTools.textPlate "[${description}]" DIALOG_SIZE SUPER_MARGIN)]
+        (plate.screenCenter)
+        (set plate.y (+ CAPTION_Y (* plate.height row)))
+        (captions.add plate)
+        (dictSet captionIds id plate)
+        (FlxG.state.add plate)))
+
+(method :Void hideCaption [:Int id]
+    (let [plate (dictGet captionIds id)]
+        (captions.remove plate)
+        (FlxG.state.remove plate)
+        (captionIds.remove id)))
+
+(method :Float getSoundLength [:FlxSound sound]
+    sound.length)
+
 (savedVar :Float voiceVolume 1.0)
 
 (prop :Array<FlxSound> currentVoiceTracks [])
