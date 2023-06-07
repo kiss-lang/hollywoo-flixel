@@ -564,7 +564,8 @@
                         :Float scale .value (flxMovie.propScales.get propKey)]
                     (unless (flxMovie.propsInScene.exists flxMovie.sceneKey)
                         (dictSet flxMovie.propsInScene flxMovie.sceneKey []))
-                    (.push (dictGet flxMovie.propsInScene flxMovie.sceneKey) propKey)
+                    (unless !(= -1 (.indexOf (dictGet flxMovie.propsInScene flxMovie.sceneKey) propKey))
+                        (.push (dictGet flxMovie.propsInScene flxMovie.sceneKey) propKey))
                     (prop.scale.set scale scale)
                     (prop.updateHitbox))))
 
