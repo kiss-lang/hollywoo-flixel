@@ -143,6 +143,7 @@
             (dictSet presetPositions (pos.stringify) true)))
 
 (preload
+    (set FlxDirector.anonProps 0)
     (unless uiCamera
         (set uiCamera (new flixel.FlxCamera))
         (set uiCamera.bgColor FlxColor.TRANSPARENT)

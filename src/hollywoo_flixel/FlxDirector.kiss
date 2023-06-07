@@ -574,9 +574,18 @@
             (.add (nth spriteLayers (+ 1 (Std.int layerNum))) prop)))
     (cc))
 
+(var :Map<FlxSprite,String> _propKeys (new Map))
+(var &mut anonProps 0)
+(function _propKey [:FlxSprite prop]
+    (ifLet [key (dictGet _propKeys prop)]
+            key
+        (dictSet _propKeys prop (or prop.graphic.assetsKey "anonProp#${anonProps++}"))))
+
 (method :Void hideProp [:FlxSprite prop :FlxCamera camera cc]
     (FlxG.state.remove prop true)
-    (let [propKey prop.graphic.assetsKey]
+    (unless (flxMovie.propsInScene.exists flxMovie.sceneKey)
+        (dictSet flxMovie.propsInScene flxMovie.sceneKey []))
+    (let [propKey (_propKey prop)]
         (.remove (dictGet flxMovie.propsInScene flxMovie.sceneKey) propKey))
     (doFor layer spriteLayers
         (layer.remove prop true))
