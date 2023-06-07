@@ -176,22 +176,25 @@
 
 (method :Void defineFlxPoint [:FlxPoint->Void submit]
     (unless mm
-        (set mm (new FlxMouseEventManager))
-        (FlxG.state.add mm))
+        (set mm (new FlxMouseEventManager)))
+    (FlxG.state.add mm)
     (let [screen (new FlxSprite)]
         (screen.makeGraphic FlxG.width FlxG.height (FlxColor.fromRGBFloat 0 1 0 0.2))
         (set screen.cameras [flxMovie.uiCamera])
-        (doFor camera FlxG.cameras.list (set camera.zoom 0.5))
-        (set flxMovie.uiCamera.zoom 1)
-        (mm.add screen
-            ->screen {
-                (mm.remove screen)
-                (FlxG.state.remove screen true)
-                (let [pos (FlxG.mouse.getScreenPosition FlxG.camera)]
-                    (doFor camera FlxG.cameras.list (set camera.zoom 1))
-                    (submit pos))
-            })
-        (FlxG.state.add screen)))
+        
+        (flxMovie.nextFrameActions.push ->:Void {
+            (doFor camera FlxG.cameras.list (set camera.zoom 0.5))
+            (set flxMovie.uiCamera.zoom 1)
+            (mm.add screen
+                ->screen {
+                    (mm.remove screen)
+                    (FlxG.state.remove screen true)
+                    (let [pos (FlxG.mouse.getScreenPosition FlxG.camera)]
+                        (doFor camera FlxG.cameras.list (set camera.zoom 1))
+                        (submit pos))
+                })
+            (FlxG.state.add screen)
+        })))
 
 (method :Void defineStagePosition [:FlxCamera camera :StagePosition->Void submit &opt :StagePosition oldPos]
     (let [db (new DebugLayer)]

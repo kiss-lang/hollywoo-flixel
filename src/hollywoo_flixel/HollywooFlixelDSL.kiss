@@ -80,6 +80,9 @@
     (new FlxSprite 0 0 asset))
 
 (method :Void update [:Float elapsed]
+    (doFor action nextFrameActions
+        (action))
+    (set nextFrameActions [])
     (unless paused
         (doFor tween tweens
             (callPrivate tween "update" elapsed)

@@ -29,6 +29,8 @@ class FlxMovie extends Movie<FlxSprite, ActorFlxSprite, FlxSound, String, FlxSpr
     public var uiCamera:FlxCamera;
     public var screenCamera:FlxCamera;
     
+    public var nextFrameActions:Array<Void->Void> = [];
+    
     public var propScales:JsonMap<HFloat>;
     public var propsInScene:Map<String,Array<String>> = [];
 
