@@ -144,6 +144,7 @@
 
 (preload
     (set FlxDirector.anonProps 0)
+    (set FlxG.sound.volume FlxDirector.masterVolume)
     (unless uiCamera
         (set uiCamera (new flixel.FlxCamera))
         (set uiCamera.bgColor FlxColor.TRANSPARENT)

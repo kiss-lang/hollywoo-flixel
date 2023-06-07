@@ -450,6 +450,7 @@
     (when superText (FlxG.state.remove superText true)))
 
 (savedVar :Float soundVolume 1.0)
+(savedVar :Float masterVolume 1.0)
 
 (prop :Array<FlxSound> currentSounds [])
 (prop :Map<FlxSound,Array<Float>> currentSoundVolumes (new Map))
@@ -560,7 +561,7 @@
                         (-= prop.y (- propBottom FlxG.height)))))
             // Otherwise, let the director scale props
             (true
-                (let [propKey prop.graphic.assetsKey
+                (let [propKey (_propKey prop)
                         :Float scale .value (flxMovie.propScales.get propKey)]
                     (unless (flxMovie.propsInScene.exists flxMovie.sceneKey)
                         (dictSet flxMovie.propsInScene flxMovie.sceneKey []))
