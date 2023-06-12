@@ -88,6 +88,37 @@
                 ("Quit to Desktop" (Sys.exit 0))
                 (never otherwise))))
 
+(method :Void showDialogHistory [:Array<HistoryElement<ActorFlxSprite>> history :Continuation resume]
+    // register tab and escape to resume (and register escape to pause and tab to history when resuming lol)
+    (let [_resume
+                ->cc {
+                    (pauseMenu.hide)
+                    (sh.registerItem "{tab} show history" ->cc (showDialogHistory flxMovie.dialogHistory cc) true)
+                    (sh.registerItem "{escape} pause" ->cc (showPauseMenu cc) true)
+                    (resume)
+                }]
+
+        (set pauseMenu (new SimpleWindow "HISTORY" FlxColor.BLACK FlxColor.WHITE 0.6 0.9 true null null null ->:Void (_resume null)))
+        (pauseMenu.enableVerticalScrolling "up" "down")
+        (pauseMenu.makeText "")
+        (doFor element history
+            (case element
+                ((Sound caption)
+                    (pauseMenu.makeText "<${caption}>")
+                    (pauseMenu.makeText ""))
+                ((Dialog speaker _type _wryly text)
+                    (pauseMenu.makeText speaker)
+                    (pauseMenu.makeWrappedText text)
+                    (pauseMenu.makeText ""))
+                ((Super text)
+                    (pauseMenu.makeText text)
+                    (pauseMenu.makeText ""))
+                (never otherwise)))
+        (pauseMenu.scrollToBottom)
+        (sh.registerItem "{tab} resume" _resume true)
+        (sh.registerItem "{escape} resume" _resume true))
+        (pauseMenu.show))
+
 (method :Void showSet [:FlxSprite setSprite :SceneTime time :ScenePerspective perspective :Appearance appearance :FlxCamera camera :Continuation cc]
     (case appearance
         (FirstAppearance
