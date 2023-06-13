@@ -191,6 +191,12 @@
     (putPresetPosition "Right" STAGE_RIGHT_X ACTOR_Y 0.0)
     (putPresetPosition "Left2" STAGE_LEFT_X ACTOR_Y STAGE_BEHIND_DY)
     (putPresetPosition "Right2" STAGE_RIGHT_X ACTOR_Y STAGE_BEHIND_DY)
+
+    (putPresetPosition "OffScreenLeft" (- (fHalf ACTOR_WIDTH)) ACTOR_Y 0.0)
+    (putPresetPosition "OffScreenRight" (+ FlxG.width (fHalf ACTOR_WIDTH)) ACTOR_Y 0.0)
+    (putPresetPosition "OffScreenLeft2" (- (fHalf ACTOR_WIDTH)) ACTOR_Y STAGE_BEHIND_DY)
+    (putPresetPosition "OffScreenRight2" (+ FlxG.width (fHalf ACTOR_WIDTH)) ACTOR_Y STAGE_BEHIND_DY)
+
     (let [left (/ FlxG.width 6)
             right (- FlxG.width left)
             upper (/ FlxG.height 6)
