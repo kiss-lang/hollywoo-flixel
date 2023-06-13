@@ -5,6 +5,8 @@ import flixel.FlxSprite;
 import flixel.system.FlxSound;
 import flixel.FlxCamera;
 import flixel.util.FlxColor;
+import flixel.math.FlxPoint;
+import flixel.FlxCamera;
 import hollywoo.Director;
 import hollywoo.Movie;
 import hollywoo_flixel.ActorFlxSprite;
@@ -33,6 +35,7 @@ class FlxMovie extends Movie<FlxSprite, ActorFlxSprite, FlxSound, String, FlxSpr
     
     public var propScales:JsonMap<HFloat>;
     public var propsInScene:Map<String,Array<String>> = [];
+    public var tweenedPositionsOfSpritesInScenes:Map<String,Map<FlxSprite,FlxPoint>> = [];
 
     public var tweens:Array<FlxTween> = [];
     public var loopingOnCompletes:Map<FlxSound,Void->Void> = [];
