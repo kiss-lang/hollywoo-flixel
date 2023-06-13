@@ -75,7 +75,7 @@
         (sh.registerItem "{escape} pause" ->cc (showPauseMenu cc) true)
         (resume)
     } true)
-    (chooseString "PAUSED" ["Resume" "Options" "Main Menu" "Quit to Desktop"]
+    (chooseString "PAUSED" ["" "Resume" "Options" "Main Menu" "Quit to Desktop"]
         ->choice
             (case choice
                 ("Resume"
