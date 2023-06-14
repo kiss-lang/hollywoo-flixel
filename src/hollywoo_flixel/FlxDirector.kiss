@@ -672,7 +672,7 @@
     (var oneColSize 64)
     (var twoColSize 48)
     (var threeColSize 32)
-    (var creditMargin 10)
+    (var creditMargin 20)
     (var twoColumnGap 50)
     (doFor line credits
         (case line
