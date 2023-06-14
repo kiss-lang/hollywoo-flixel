@@ -691,6 +691,9 @@
                     (set t1.x (- (* FlxG.width 0.3) t1.width (/ twoColumnGap 2)))
                     (set t1.y textY)
                     (set t2.x (+ (* FlxG.width 0.3) (/ twoColumnGap 2)))
+                    (let [clippedRight (- (+ t2.x t2.width) FlxG.width)]
+                        (when (> clippedRight 0)
+                            (-= t2.x clippedRight)))
                     (set t2.y textY))
                 (+= textY twoColSize creditMargin))
             // Left-justified, centered, right-justified three column lines
