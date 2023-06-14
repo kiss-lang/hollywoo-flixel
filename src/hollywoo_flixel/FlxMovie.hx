@@ -35,6 +35,7 @@ class FlxMovie extends Movie<FlxSprite, ActorFlxSprite, FlxSound, String, FlxSpr
     
     public var propScales:JsonMap<HFloat>;
     public var propsInScene:Map<String,Array<String>> = [];
+    public var overlaidPropsInScenes:Map<String,Map<FlxSprite,String>> = [];
     public var tweenedPositionsOfSpritesInScenes:Map<String,Map<FlxSprite,FlxPoint>> = [];
 
     public var tweens:Array<FlxTween> = [];

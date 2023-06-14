@@ -21,6 +21,9 @@
 (method &override :Void _showScene [:Scene<FlxSprite,ActorFlxSprite,FlxSprite,FlxCamera> scene :Appearance appearance :FlxCamera camera :Continuation cc]
     (super._showScene scene appearance camera
         (makeCC
+            (whenLet [overlaidProps (dictGet overlaidPropsInScenes sceneKey)]
+                (doFor =>sprite key overlaidProps
+                    (overlayPropOnCurrentSet key (makeCC null))))
             (whenLet [tweenedPositions (dictGet tweenedPositionsOfSpritesInScenes sceneKey)]
                 (doFor =>sprite point tweenedPositions
                     (set sprite.x point.x)
@@ -31,6 +34,12 @@
     (whenLet [tweenedPositions (dictGet tweenedPositionsOfSpritesInScenes sceneKey)]
         (tweenedPositions.remove (dictGet actors actorName)))
     (super.moveCharacter actorName newPosition newFacing cc))
+
+(method &override removeProp [name :Continuation cc]
+    (let [prop (dictGet props name)]
+        (whenLet [overlaidProps (dictGet overlaidPropsInScenes sceneKey)]
+            (overlaidProps.remove prop)))
+    (super.removeProp name cc))
 
 (method linearMotion [:FlxSprite sprite :Float destX :Float destY :Float speed &opt :Void->Void cc :String soundLoop :Float volumeMod :Array<FlxSprite> connectedSprites]
     (unless (tweenedPositionsOfSpritesInScenes.exists sceneKey)
@@ -229,6 +238,9 @@
     (let [propKey (kiss.FuzzyMapTools.bestMatch props propKey)]
         (dictSet shownProps propKey true) // Don't scale when showing
         (withProp propKey p
+            (unless (overlaidPropsInScenes.exists sceneKey)
+                (dictSet overlaidPropsInScenes sceneKey (new Map)))
+            (dictSet (dictGet overlaidPropsInScenes sceneKey) p propKey)
             (withSceneSetCC sceneKey bg
                 (addProp propKey (new StagePosition bg.x bg.y 1) cc)
                 (p.setGraphicSize (Std.int bg.width) (Std.int bg.height))
