@@ -586,6 +586,17 @@
 
 (prop &mut :Bool autoPlaceProps true)
 
+(method scaleProp [:FlxSprite prop]
+    (let [propKey (_propKey prop)
+            :Float scale .value (flxMovie.propScales.get propKey)]
+        (when (StringTools.contains propKey "anonProp") (return))
+        (unless (flxMovie.propsInScene.exists flxMovie.sceneKey)
+            (dictSet flxMovie.propsInScene flxMovie.sceneKey []))
+        (unless !(= -1 (.indexOf (dictGet flxMovie.propsInScene flxMovie.sceneKey) propKey))
+            (.push (dictGet flxMovie.propsInScene flxMovie.sceneKey) propKey))
+        (prop.scale.set scale scale)
+        (prop.updateHitbox)))
+
 (method :Void showProp [:FlxSprite prop :StagePosition position :Appearance appearance :FlxCamera camera :Continuation cc]
     (set prop.cameras [camera])
     (let [width (min (max prop.width PROP_MIN_WIDTH) PROP_MAX_WIDTH)]
@@ -616,14 +627,7 @@
                         (-= prop.y (- propBottom FlxG.height)))))
             // Otherwise, let the director scale props
             (true
-                (let [propKey (_propKey prop)
-                        :Float scale .value (flxMovie.propScales.get propKey)]
-                    (unless (flxMovie.propsInScene.exists flxMovie.sceneKey)
-                        (dictSet flxMovie.propsInScene flxMovie.sceneKey []))
-                    (unless !(= -1 (.indexOf (dictGet flxMovie.propsInScene flxMovie.sceneKey) propKey))
-                        (.push (dictGet flxMovie.propsInScene flxMovie.sceneKey) propKey))
-                    (prop.scale.set scale scale)
-                    (prop.updateHitbox))))
+                (scaleProp prop)))
 
         (let [layerNum position.z]
             (assertEquals layerNum (Std.int layerNum))
