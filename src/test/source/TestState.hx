@@ -2,19 +2,10 @@ package;
 
 import kiss.Prelude;
 import kiss.List;
-import hollywoo.StagePosition;
-import hollywoo.HFloat;
 import hollywoo_flixel.FlxDirector;
 import hollywoo_flixel.FlxMovie;
 import hollywoo_flixel.MovieFlxState;
-import hollywoo_flixel.ActorFlxSprite;
 import kiss_flixel.SpriteTools;
-import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.FlxSubState;
-import flixel.util.FlxColor;
-import flixel.tweens.FlxTween;
-import flixel.FlxCamera;
 
 @:build(kiss.AsyncEmbeddedScript.build("hollywoo-flixel", "src/hollywoo_flixel/HollywooFlixelDSL.kiss", "Test.hollywoo"))
 class Test extends FlxMovie {

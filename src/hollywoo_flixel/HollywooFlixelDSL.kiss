@@ -18,7 +18,7 @@
                             (when cc (cc))
                         }))
 
-(method &override :Void _showScene [:Scene<FlxSprite,ActorFlxSprite,FlxSprite,FlxCamera> scene :Appearance appearance :FlxCamera camera :Continuation cc]
+(method &override :Void _showScene [:Scene scene :Appearance appearance :FlxCamera camera :Continuation cc]
     (super._showScene scene appearance camera
         (makeCC
             (whenLet [overlaidProps (dictGet overlaidPropsInScenes sceneKey)]
@@ -60,7 +60,6 @@
             (let [xOffset (- cSprite.x sprite.x)
                     yOffset (- cSprite.y sprite.y)]
                 (linearMotion cSprite (+ destX xOffset) (+ destY yOffset) speed)))))
-(defAlias &ident FlxTween.linearMotion CHANGE_TO_MOVIE_LINEARMOTION)
 
 (method linearMotionTo [:FlxSprite sprite :String positionKey :Float speed &opt :Void->Void cc :String soundLoop :Float volumeMod :Array<FlxSprite> connectedSprites]
     (let [position (resolvePosition positionKey)]
