@@ -1,4 +1,5 @@
 (prop :FlxActionDigital continueAction) 
+(prop :FlxActionDigital fastForwardAction) 
 (prop actionManager (new FlxActionManager))
 (prop &mut :Movie<FlxSprite,ActorFlxSprite,FlxSound,String,FlxSprite,FlxSound,FlxCamera,FlxLightSource> movie)
 (defAlias &ident flxMovie (cast movie FlxMovie))
@@ -13,6 +14,13 @@
     (continueAction.addKey SPACE JUST_PRESSED)
     (continueAction.addMouse LEFT JUST_PRESSED)
     (actionManager.addAction continueAction)
+
+    (set fastForwardAction (new FlxActionDigital "Fast Forward"))
+    // TODO allow configuring fast forward keys -- any key, specifically mapped keys, etc.
+    (fastForwardAction.addKey SPACE PRESSED)
+    (fastForwardAction.addMouse LEFT PRESSED)
+    (actionManager.addAction fastForwardAction)
+
     (FlxG.inputs.add actionManager)
     (set actionManager.resetOnStateSwitch NONE)
     

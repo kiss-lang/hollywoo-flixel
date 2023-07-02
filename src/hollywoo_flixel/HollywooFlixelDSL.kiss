@@ -116,18 +116,21 @@
 (function flxSprite [:String asset]
     (new FlxSprite 0 0 asset))
 
+(var FAST_FORWARD_MOD 3)
+
+(defAlias &ident flxDirector (cast director FlxDirector))
+
 (method :Void update [:Float elapsed]
     (doFor action nextFrameActions
         (action))
     (set nextFrameActions [])
     (unless paused
-        (doFor tween tweens
-            (callPrivate tween "update" elapsed)
-            (when tween.finished
-                (callPrivate tween "finish"))))
+        (let [tweenElapsed (* elapsed (if flxDirector.fastForwardAction.triggered FAST_FORWARD_MOD 1))]
+            (doFor tween tweens
+                (callPrivate tween "update" tweenElapsed)
+                (when tween.finished
+                    (callPrivate tween "finish")))))
     (.update (cast (director.shortcutHandler) kiss_tools.FlxKeyShortcutHandler<Dynamic>)))
-
-(defAlias &ident flxDirector (cast director FlxDirector))
 
 (prop &mut :FlxSprite _canvas null)
 (method :FlxSprite canvas []
