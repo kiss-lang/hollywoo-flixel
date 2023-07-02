@@ -233,7 +233,17 @@
                                 ->scaleStr
                                     (let [scale (Std.parseFloat scaleStr)]
                                         (propScales.put propKey (new HFloat scale))
-                                        (cc))))))))
+                                        (cc))))))
+        (shortcutHandler.registerItem "[d]efine [z] of a position"
+            ->cc
+                (director.chooseString "Which position?" (dictGet positionsInScene sceneKey)
+                    ->positionKey
+                        (let [position (stagePositions.get positionKey)]
+                            (director.enterString "Redefine z from ${position.z}?"
+                                ->zStr {
+                                    (stagePositions.put positionKey (new StagePosition position.x position.z (Std.parseFloat zStr)))
+                                    (cc)
+                                }))))))
 
 (method overlayPropOnCurrentSet [propKey :Void->Void cc]
     (let [propKey (kiss.FuzzyMapTools.bestMatch props propKey)]
