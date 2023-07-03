@@ -408,7 +408,16 @@
 (prop &mut :FlxSprite dialogBox)
 (prop &mut :FlxSprite superText)
 (prop &mut :FlxText dialogText)
-(prop &mut :FlxText speakerNameText)
+(prop &mut :FlxText _speakerNameText)
+(prop :FlxText speakerNameText (property get set))
+(method set_speakerNameText [text]
+    (when _speakerNameText
+        (FlxG.state.remove _speakerNameText)
+        (set _speakerNameText null))
+    (set _speakerNameText text))
+(method get_speakerNameText []
+    _speakerNameText)
+
 (var SUPER_MARGIN 10)
 
 (method showDialog [:String speakerName :SpeechType<ActorFlxSprite> type :String wryly :String text :Continuation cc]
