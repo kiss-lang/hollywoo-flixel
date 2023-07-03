@@ -539,6 +539,12 @@
 (method :Float getSoundLength [:FlxSound sound]
     sound.length)
 
+(method :Float getSongLength [:String song]
+    (let [sound (FlxG.sound.play song)
+            length sound.length]
+        (sound.stop)
+        length))
+
 (savedVar :Float voiceVolume 1.0)
 
 (prop :Array<FlxSound> currentVoiceTracks [])

@@ -41,6 +41,8 @@
             (overlaidProps.remove prop)))
     (super.removeProp name cc))
 
+
+@:keep
 (method linearMotion [:FlxSprite sprite :Float destX :Float destY :Float speed &opt :Void->Void cc :String soundLoop :Float volumeMod :Array<FlxSprite> connectedSprites]
     (unless (tweenedPositionsOfSpritesInScenes.exists sceneKey)
         (dictSet tweenedPositionsOfSpritesInScenes sceneKey (new Map)))
