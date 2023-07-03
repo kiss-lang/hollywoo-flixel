@@ -137,9 +137,9 @@
             (setSprite.screenCenter))
         (otherwise))
     // draw a sky background depending on time of day, int/ext
-    (ifLet [specialSkySprite (.clone (dictGet skySprites time))]
+    (ifLet [specialSkySprite (dictGet skySprites time)]
             {
-                (set skySprite specialSkySprite)
+                (set skySprite (specialSkySprite.clone))
                 (skySprite.setGraphicSize (Std.int setSprite.width))
                 (skySprite.updateHitbox)
                 (unless (>= skySprite.height setSprite.height)
