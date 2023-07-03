@@ -727,13 +727,25 @@
                 (+= textY threeColSize creditMargin))
             (otherwise)))
     
-    (doFor text creditsText
-        (FlxG.state.add text)
-        (set text.cameras [flxMovie.uiCamera])
-        (let [:Array<Dynamic> tweenArgs []]
-            (tweenArgs.push text)
-            (tweenArgs.push text.x)
-            (tweenArgs.push (- text.y textY))
-            (tweenArgs.push 200)
-            (tweenArgs.push cc)
-            (Reflect.callMethod flxMovie (Reflect.field flxMovie "linearMotion") tweenArgs))))
+    (let [pixelsToScroll
+                (+ textY .height (last creditsText))
+            idealTimeLimit
+                (/ pixelsToScroll IDEAL_SCROLL_SPEED)
+            timeLimitDifference (- idealTimeLimit timeLimit)
+            scrollSpeed
+                (if timeLimit
+                        (/ pixelsToScroll timeLimit)
+                    IDEAL_SCROLL_SPEED)]
+        (#when debug
+            (when !(= scrollSpeed IDEAL_SCROLL_SPEED)
+                (print "Time given for credit roll (${timeLimit}s) is $(Math.abs timeLimitDifference)sec $(if (> timeLimitDifference 0) "too short" "too long") for ideal speed.")))
+        (doFor text creditsText
+            (FlxG.state.add text)
+            (set text.cameras [flxMovie.uiCamera])
+            (let [:Array<Dynamic> tweenArgs []]
+                (tweenArgs.push text)
+                (tweenArgs.push text.x)
+                (tweenArgs.push (- text.y textY))
+                (tweenArgs.push scrollSpeed)
+                (tweenArgs.push cc)
+                (Reflect.callMethod flxMovie (Reflect.field flxMovie "linearMotion") tweenArgs)))))
