@@ -79,6 +79,32 @@ ONPHONESPEECH "black" "" "Testing line two"
 
 ENDINTERCUT
 
+// Test preset screen positions for props:
+
+SETSCENE basicSceneKey
+CLEARCHARACTERS
+
+(var PRESET_SCREEN_POSITIONS
+	[
+		"ScreenCenter"
+		"ScreenUpperLeft"
+		"ScreenUpperRight" 
+		"ScreenLowerLeft"
+		"ScreenLowerRight" 
+		"ScreenLowerCenter"
+		"ScreenUpperCenter"
+	])
+
+(preload
+	(doFor preset PRESET_SCREEN_POSITIONS
+		(newProp preset (SpriteTools.textPlate preset FlxDirector.DIALOG_SIZE FlxDirector.SUPER_MARGIN))))
+
+{
+	(doFor preset PRESET_SCREEN_POSITIONS
+		(addProp preset preset ->:Void {}))
+	(director.startWaitForInput cc)
+}
+
 // TODO test credits
 
 (Sys.exit 0)
