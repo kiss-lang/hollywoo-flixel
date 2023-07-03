@@ -24,7 +24,7 @@
     (FlxG.inputs.add actionManager)
     (set actionManager.resetOnStateSwitch NONE)
     
-    (doFor i (range LAYER_MAX)
+    (doFor i (range (+ 1 LAYER_MAX))
         (let [g (new FlxTypedGroup<FlxSprite>)]
             (spriteLayers.push g)
             (FlxG.state.add g))))
@@ -639,7 +639,7 @@
 
         (let [layerNum position.z]
             (assertEquals layerNum (Std.int layerNum))
-            (.add (nth spriteLayers (+ 1 (Std.int layerNum))) prop)))
+            (.add (nth spriteLayers (min LAYER_MAX (+ 1 (Std.int layerNum)))) prop)))
     (cc))
 
 (var :Map<FlxSprite,String> _propKeys (new Map))
