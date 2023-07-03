@@ -248,7 +248,7 @@
                         (let [position (stagePositions.get positionKey)]
                             (director.enterString "Redefine z from ${position.z}?"
                                 ->zStr {
-                                    (stagePositions.put positionKey (new StagePosition position.x position.z (Std.parseFloat zStr)))
+                                    (stagePositions.put positionKey (new StagePosition position.x position.y (Std.parseFloat zStr)))
                                     (cc)
                                 }))))))
 
