@@ -1,7 +1,7 @@
 (prop :FlxActionDigital continueAction) 
 (prop :FlxActionDigital fastForwardAction) 
 (prop actionManager (new FlxActionManager))
-(prop &mut :Movie<FlxSprite,ActorFlxSprite,FlxSound,String,FlxSprite,FlxSound,FlxCamera,FlxLightSource> movie)
+(prop &mut :Movie<FlxSprite,ActorFlxSprite,FlxSound,FlxSound,FlxSprite,FlxSound,FlxCamera,FlxLightSource> movie)
 (defAlias &ident flxMovie (cast movie FlxMovie))
 (loadFrom "hollywoo-flixel" "src/hollywoo_flixel/Aliases.kiss")
 
@@ -539,11 +539,8 @@
 (method :Float getSoundLength [:FlxSound sound]
     sound.length)
 
-(method :Float getSongLength [:String song]
-    (let [sound (FlxG.sound.play song)
-            length sound.length]
-        (sound.stop)
-        length))
+(method :Float getSongLength [:FlxSound song]
+    (/ song.length 1000))
 
 (savedVar :Float voiceVolume 1.0)
 
@@ -574,13 +571,13 @@
 (prop MUSIC_FADE_STEPS 10)
 (savedVar :Float musicVolume 1.0)
 
-(method :Void playSong [:String song :Float volumeMod :Bool loop :Bool waitForEnd :Continuation cc]
+(method :Void playSong [:FlxSound song :Float volumeMod :Bool loop :Bool waitForEnd :Continuation cc]
     (let [onFinish ->{
                         (currentSoundVolumes.remove music)
                         (set music null)
                         (when waitForEnd (cc))
                     }]
-        (set music (FlxG.sound.play song 0 loop null true onFinish))
+        (set music (FlxG.sound.play (Reflect.field song "_sound") 0 loop null true onFinish))
         (dictSet currentSoundVolumes music [0 volumeMod])
         (.start (new FlxTimer)
             (/ MUSIC_FADE_SEC MUSIC_FADE_STEPS)
@@ -665,7 +662,7 @@
         (layer.remove prop true))
     (cc))
 
-(prop :Array<FlxText> creditsText [])
+(prop :kiss.List<FlxText> creditsText [])
 (method _ctext [:String text :Int size]
     (let [t (new FlxText 0 0 0 text size)]
         (creditsText.push t)
@@ -680,8 +677,10 @@
 (method :Void hideBlackScreen []
     (FlxG.state.remove blackBG true))
 
+(var IDEAL_SCROLL_SPEED 200)
+
 // TODO currently the bg will cover whatever the final scene was - making after credits scenes impossible
-(method :Void rollCredits [:Array<CreditsLine> credits cc]
+(method :Void rollCredits [:Array<CreditsLine> credits cc &opt :Float timeLimit]
     (localVar bg (new FlxSprite))
     (bg.makeGraphic FlxG.width FlxG.height FlxColor.BLACK true)
     (set bg.cameras [flxMovie.uiCamera])

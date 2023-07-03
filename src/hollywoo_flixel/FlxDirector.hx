@@ -38,7 +38,7 @@ import openfl.geom.Point;
 import flixel.input.mouse.FlxMouseEventManager;
 
 @:build(kiss.Kiss.build())
-class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, String, FlxSprite, FlxSound, FlxCamera, FlxLightSource> {
+class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSound, FlxSprite, FlxSound, FlxCamera, FlxLightSource> {
     public static function blackAlphaMaskFlxSprite(sprite:FlxSprite, mask:FlxSprite, output:FlxSprite):FlxSprite
     {
         sprite.drawFrame();

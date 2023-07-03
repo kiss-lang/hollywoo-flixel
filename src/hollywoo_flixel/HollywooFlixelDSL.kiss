@@ -98,7 +98,9 @@
         (newSound name s description)))
 
 (method newFlxSong [name path]
-    (newSong name path))
+    (let [song (FlxG.sound.load path)]
+        (assert !(= 0 song.length) "song $name from $path has 0 length! avoid mp3s for this reason")
+        (newSong name song)))
 
 (method newFlxVoiceTrack [name wavPath jsonPath]
     (newVoiceTrack name (FlxG.sound.load wavPath) (openfl.utils.Assets.getText jsonPath)))
