@@ -87,6 +87,8 @@ CLEARCHARACTERS
 (var PRESET_SCREEN_POSITIONS
 	[
 		"ScreenCenter"
+		"ScreenCenterLeft"
+		"ScreenCenterRight"
 		"ScreenUpperLeft"
 		"ScreenUpperRight" 
 		"ScreenLowerLeft"

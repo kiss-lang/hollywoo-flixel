@@ -222,6 +222,8 @@
             centerY (/ FlxG.height 2)
             layer 5]
         (putPresetPosition "ScreenCenter" centerX centerY layer)
+        (putPresetPosition "ScreenCenterLeft" left centerY layer)
+        (putPresetPosition "ScreenCenterRight" right centerY layer)
         (putPresetPosition "ScreenUpperLeft" left upper layer)
         (putPresetPosition "ScreenUpperRight" right upper layer)
         (putPresetPosition "ScreenLowerLeft" left lower layer)
