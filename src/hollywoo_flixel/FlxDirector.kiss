@@ -621,18 +621,15 @@
         // When using preset positions, automatically move everything around and scale it
         (cond 
             ((flxMovie.presetPositions.exists (position.stringify))
-                (-= prop.x (/ prop.width 2))
-                (-= prop.y (/ prop.height 2))
-
                 // if the prop is too tall, shrink it heightwise
                 (when (> prop.height flxMovie.DIALOG_Y)
                     (prop.setGraphicSize 0 (Std.int flxMovie.DIALOG_Y))
                     (prop.updateHitbox))
 
+                (-= prop.x (/ prop.width 2))
+                (-= prop.y (/ prop.height 2))
+
                 (let [propBottom (+ prop.y prop.height)]
-                    // if a prop would block the dialogue box, bump it up
-                    (when (> propBottom flxMovie.DIALOG_Y)
-                        (-= prop.y (- propBottom flxMovie.DIALOG_Y)))
                     // If a prop goes below the edge, bring it up
                     (when (> propBottom FlxG.height)
                         (-= prop.y (- propBottom FlxG.height)))))
