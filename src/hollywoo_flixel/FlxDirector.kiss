@@ -6,7 +6,7 @@
 (loadFrom "hollywoo-flixel" "src/hollywoo_flixel/Aliases.kiss")
 
 (prop :Array<FlxTypedGroup<FlxSprite>> spriteLayers [])
-(var LAYER_MAX 5)
+(var LAYER_MAX 8)
 
 (defNew []
     (set continueAction (new FlxActionDigital "Continue" onContinue))
@@ -24,7 +24,7 @@
     (FlxG.inputs.add actionManager)
     (set actionManager.resetOnStateSwitch NONE)
     
-    (doFor i (range (+ 3 LAYER_MAX)) // LMAO
+    (doFor i (range LAYER_MAX)
         (let [g (new FlxTypedGroup<FlxSprite>)]
             (spriteLayers.push g)
             (FlxG.state.add g))))
@@ -323,10 +323,10 @@
                     (-= character.actor.y (- bottom FlxG.height))))
             // Display with y adjusted by z:
             (-= character.actor.y character.stagePosition.z)
-            (let [layer (- LAYER_MAX (Std.int (/ character.stagePosition.z flxMovie.STAGE_BEHIND_DY)))]
+            (let [layer (- LAYER_MAX 1 (Std.int (/ character.stagePosition.z flxMovie.STAGE_BEHIND_DY)))]
                 (.add (nth spriteLayers layer) character.actor)))
         (true
-            (.add (nth spriteLayers (min LAYER_MAX (Std.int character.stagePosition.z))) character.actor)))
+            (.add (nth spriteLayers (min (- LAYER_MAX 1) (Std.int character.stagePosition.z))) character.actor)))
     
     (cc))
 
