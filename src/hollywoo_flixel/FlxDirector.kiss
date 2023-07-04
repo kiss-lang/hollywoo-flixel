@@ -9,17 +9,19 @@
 (var LAYER_MAX 8)
 
 (defNew []
+    // Continue action requires fresh input, Fast Forward action supports continuous holding down
     (set continueAction (new FlxActionDigital "Continue" onContinue))
-    // TODO allow configuring continue keys -- any key, specifically mapped keys, etc.
-    (continueAction.addKey SPACE JUST_PRESSED)
-    (continueAction.addMouse LEFT JUST_PRESSED)
-    (actionManager.addAction continueAction)
-
     (set fastForwardAction (new FlxActionDigital "Fast Forward"))
-    // TODO allow configuring fast forward keys -- any key, specifically mapped keys, etc.
-    (fastForwardAction.addKey SPACE PRESSED)
-    (fastForwardAction.addMouse LEFT PRESSED)
-    (actionManager.addAction fastForwardAction)
+    // TODO allow configuring continue/fast-forward keys -- any key, specifically mapped keys, etc.
+    (doFor [:FlxActionDigital action :FlxInputState trigger] (zipThrow [continueAction fastForwardAction] [JUST_PRESSED PRESSED])
+        (action.addKey SPACE trigger)
+        (action.addKey ENTER trigger)
+        
+        (action.addMouse LEFT trigger)
+
+        (action.addGamepad FlxGamepadInputID.A trigger FlxInputDeviceID.ALL)
+
+        (actionManager.addAction action))
 
     (FlxG.inputs.add actionManager)
     (set actionManager.resetOnStateSwitch NONE)

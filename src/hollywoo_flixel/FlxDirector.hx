@@ -5,7 +5,10 @@ import kiss.List;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.input.actions.FlxAction;
+import flixel.input.FlxInput;
+import flixel.input.actions.FlxActionInput;
 import flixel.input.actions.FlxActionManager;
+import flixel.input.keyboard.FlxKey;
 import flixel.input.mouse.FlxMouseButton;
 import flixel.math.FlxRect;
 import flixel.group.FlxGroup;
@@ -35,7 +38,9 @@ import openfl.display.BitmapData;
 import openfl.display.BitmapDataChannel;
 import openfl.geom.Rectangle;
 import openfl.geom.Point;
+import flixel.input.mouse.FlxMouseButton;
 import flixel.input.mouse.FlxMouseEventManager;
+import flixel.input.gamepad.*;
 
 @:build(kiss.Kiss.build())
 class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSound, FlxSprite, FlxSound, FlxCamera, FlxLightSource> {
