@@ -420,6 +420,13 @@
 
 (var SUPER_MARGIN 10)
 
+(method applyFormat [:FlxText text]
+    (text.applyMarkup
+        text.text
+        [
+            (new FlxTextFormatMarkerPair (new FlxTextFormat FlxColor.CYAN) "*")
+        ]))
+
 (method showDialog [:String speakerName :SpeechType<ActorFlxSprite> type :String wryly :String text :Continuation cc]
     // TODO handle text messages, wrylies, off-screen, from-phone, etc. via (case type)
     // TODO attribute on-screen dialogue to the character's stageposition
@@ -429,7 +436,7 @@
     (case type
         (Super
             (when superText (FlxG.state.remove superText true))
-            (set superText (SpriteTools.textPlate text DIALOG_SIZE SUPER_MARGIN))
+            (set superText (SpriteTools.textPlate text DIALOG_SIZE SUPER_MARGIN null null applyFormat))
             // If supertext can be done in a single centered line, do so
             (when (<= superText.width FlxG.width)
                 (set superText.cameras [flxMovie.uiCamera])
@@ -464,10 +471,11 @@
         (set dialogText (new FlxText flxMovie.DIALOG_X flxMovie.DIALOG_Y flxMovie.DIALOG_WIDTH "" DIALOG_SIZE)))
     (set dialogText.cameras [flxMovie.uiCamera])
     (FlxG.state.add dialogText)
+    
+    // *cyan* for italics
     (set dialogText.text text)
-    // TODO actually page through the dialog instead of sizing it down?
-    // ^ though that doesn't work automatically with VO unless individual word times are kept in the json
-    // (which would be really clunky)
+    (applyFormat dialogText)
+
     (set dialogText.size DIALOG_SIZE)
     (while (< FlxG.height (+ dialogText.y dialogText.height))
         (-= dialogText.size 6))
