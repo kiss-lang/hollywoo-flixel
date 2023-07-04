@@ -575,7 +575,7 @@
         (set track.onComplete ->{
                                     (currentVoiceTracks.remove track)
                                     (restoreOriginalVolume)
-                                    (movie.delay DELAY_BETWEEN_VOICE_TRACKS cc)
+                                    (movie?.delay DELAY_BETWEEN_VOICE_TRACKS cc)
                                 }))
     (currentVoiceTracks.push track)
     (track.play true (* 1000 start) (* 1000 end)))
