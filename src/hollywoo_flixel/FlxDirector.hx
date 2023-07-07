@@ -32,7 +32,7 @@ import kiss_flixel.SimpleWindow;
 import kiss_flixel.DebugLayer;
 import haxe.ds.Option;
 import kiss_tools.KeyShortcutHandler;
-import kiss_tools.FlxKeyShortcutHandler;
+import kiss_flixel.FlxKeyShortcutHandler;
 using flixel.util.FlxSpriteUtil;
 import openfl.display.BitmapData;
 import openfl.display.BitmapDataChannel;

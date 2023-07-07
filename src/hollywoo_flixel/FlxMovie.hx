@@ -11,7 +11,7 @@ import hollywoo.Director;
 import hollywoo.Movie;
 import hollywoo_flixel.ActorFlxSprite;
 import kiss_flixel.SpriteTools;
-import kiss_tools.FlxKeyShortcutHandler;
+import kiss_flixel.FlxKeyShortcutHandler;
 import kiss_tools.JsonMap;
 import hollywoo.HFloat;
 import openfl.Assets;

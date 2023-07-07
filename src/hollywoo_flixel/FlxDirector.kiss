@@ -108,8 +108,9 @@
                     (resume)
                 }]
 
-        (set pauseMenu (new SimpleWindow "HISTORY" FlxColor.BLACK FlxColor.WHITE 0.6 0.9 true null null null ->:Void (_resume null)))
-        (pauseMenu.enableVerticalScrolling "up" "down")
+        (set pauseMenu (new SimpleWindow "HISTORY" FlxColor.BLACK FlxColor.WHITE 0.6 0.9 true null null null "up" "down" ->:Void (_resume null)))
+        (pauseMenu.enableVerticalScrolling)
+        (pauseMenu.enableGamepadInput true)
         (pauseMenu.makeText "")
         (doFor element history
             (case element
@@ -209,7 +210,11 @@
             true
             ""
             "left"
-            "right")))
+            "right"
+            "up"
+            "down"
+            "enter"))
+    (pauseMenu.enableGamepadInput true))
 
 (method :Void enterString [:String prompt :String->Void submit]
     (set pauseMenu

@@ -134,7 +134,7 @@
                 (callPrivate tween "update" tweenElapsed)
                 (when tween.finished
                     (callPrivate tween "finish")))))
-    (.update (cast (director.shortcutHandler) kiss_tools.FlxKeyShortcutHandler<Dynamic>)))
+    (.update (cast (director.shortcutHandler) kiss_flixel.FlxKeyShortcutHandler<Dynamic>)))
 
 (prop &mut :FlxSprite _canvas null)
 (method :FlxSprite canvas []
@@ -182,6 +182,9 @@
             (dictSet presetPositions (pos.stringify) true)))
 
 (preload
+    (.enableGamepadInput
+        (cast (director.shortcutHandler) kiss_flixel.FlxKeyShortcutHandler<Dynamic>)
+        [=>flixel.input.gamepad.FlxGamepadInputID.START "escape"])
     (set FlxDirector.anonProps 0)
     (set FlxG.sound.volume FlxDirector.masterVolume)
     (unless uiCamera
