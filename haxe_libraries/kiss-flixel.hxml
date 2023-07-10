@@ -1,4 +1,4 @@
-# @install: lix --silent download "gh://github.com/kiss-lang/kiss-flixel#a7276ea17465d8055ce44c00958b0a74f498a40e" into kiss-flixel/0.0.0/github/a7276ea17465d8055ce44c00958b0a74f498a40e
+# @install: lix --silent download "gh://github.com/kiss-lang/kiss-flixel#387994565983013e2eaaee2dde268a5b4b7d8ebf" into kiss-flixel/0.0.0/github/387994565983013e2eaaee2dde268a5b4b7d8ebf
 -lib flixel
 -lib flixel-addons
 -lib flixel-ui
@@ -6,5 +6,5 @@
 -lib kiss-tools
 -lib lime
 -lib openfl
--cp ${HAXE_LIBCACHE}/kiss-flixel/0.0.0/github/a7276ea17465d8055ce44c00958b0a74f498a40e/src/
+-cp ${HAXE_LIBCACHE}/kiss-flixel/0.0.0/github/387994565983013e2eaaee2dde268a5b4b7d8ebf/src/
 -D kiss-flixel=0.0.0
