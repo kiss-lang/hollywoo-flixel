@@ -184,7 +184,10 @@
 (preload
     (.enableGamepadInput
         (cast (director.shortcutHandler) kiss_flixel.FlxKeyShortcutHandler<Dynamic>)
-        [=>flixel.input.gamepad.FlxGamepadInputID.START "escape"])
+        [
+            =>flixel.input.gamepad.FlxGamepadInputID.START "escape"
+            =>flixel.input.gamepad.FlxGamepadInputID.X "tab"
+        ])
     (set FlxDirector.anonProps 0)
     (set FlxG.sound.volume FlxDirector.masterVolume)
     (unless uiCamera
