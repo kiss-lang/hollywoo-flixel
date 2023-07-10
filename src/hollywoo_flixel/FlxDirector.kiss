@@ -591,29 +591,42 @@
     ((dictGet restoreOriginalVolumes track)))
 
 (prop &mut :FlxSound music)
+(prop &mut :FlxTimer musicFadeTimer)
 (prop MUSIC_FADE_SEC 1)
 (prop MUSIC_FADE_STEPS 10)
 (savedVar :Float musicVolume 1.0)
 
+// You should normally never call this yourself
+(method :Void updateMusicVolume []
+    (when music
+        (let [originalVolumeSet (dictGet currentSoundVolumes music)]
+            (when (> 1.0 (first originalVolumeSet))
+                (+= (first originalVolumeSet) (/ 1.0 MUSIC_FADE_STEPS)))
+            (set music.volume (* (first originalVolumeSet) (second originalVolumeSet) musicVolume)))))
+
 (method :Void playSong [:FlxSound song :Float volumeMod :Bool loop :Bool waitForEnd :Continuation cc]
+    (when music (stopSong))
     (let [onFinish ->{
                         (currentSoundVolumes.remove music)
                         (set music null)
                         (when waitForEnd (cc))
                     }]
         (set music (FlxG.sound.play (Reflect.field song "_sound") 0 loop null true onFinish))
+        
+        // Because music needs to fade in, an array stores its current fade percentage AND its eventual volumeMod target.
+        // All of this is modulated to the musicVolume property which represent's the player's music volume setting
         (dictSet currentSoundVolumes music [0 volumeMod])
-        (.start (new FlxTimer)
-            (/ MUSIC_FADE_SEC MUSIC_FADE_STEPS)
-            ->:Void _ (let [originalVolumeSet (dictGet currentSoundVolumes music)]
-                            (+= (first originalVolumeSet) (/ 1.0 MUSIC_FADE_STEPS))
-                            (set music.volume (* (first originalVolumeSet) volumeMod musicVolume)))
-            MUSIC_FADE_STEPS)
+        (set musicFadeTimer
+            (.start (new FlxTimer)
+                (/ MUSIC_FADE_SEC MUSIC_FADE_STEPS)
+                ->:Void _ (updateMusicVolume)
+                MUSIC_FADE_STEPS))
         (set music.persist true)
         (unless waitForEnd (cc))))
 
 (method :Void stopSong []
     (when music (music.stop))
+    (when musicFadeTimer (musicFadeTimer.cancel))
     (set music null))
 
 (var PROP_MIN_WIDTH 200)
