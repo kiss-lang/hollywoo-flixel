@@ -85,18 +85,26 @@
         (sh.registerItem "{escape} pause" ->cc (showPauseMenu cc) true)
         (resume)
     } true)
-    (chooseString "PAUSED" ["" "Resume" "Options" "Main Menu" "Quit to Desktop"]
-        ->choice
-            (case choice
-                ("Resume"
-                    (sh.registerItem "{escape} pause" ->cc (showPauseMenu cc) true)
-                    (resume))
-                ("Options"
-                    (sh.registerItem "{escape} nil" ->cc {} true)
-                    (MenuState.optionsMenu ->(showPauseMenu resume)))
-                ("Main Menu" (FlxG.switchState (new MenuState)))
-                ("Quit to Desktop" (Sys.exit 0))
-                (never otherwise))))
+    (let [choices ["" "Resume" "Options" "Main Menu" "Quit to Desktop"]
+            optsIdx (choices.indexOf "Options")]
+        // chooseString automatically sets pauseMenu
+        (chooseString "PAUSED" choices
+            ->choice
+                (case choice
+                    ("Resume"
+                        (sh.registerItem "{escape} pause" ->cc (showPauseMenu cc) true)
+                        (resume))
+                    ("Options"
+                        (sh.cancel)
+                        (MenuState.optionsMenu
+                            ->{
+                                (sh.start)
+                                (showPauseMenu resume)
+                                (set pauseMenu.selectedIndex optsIdx)
+                            }))
+                    ("Main Menu" (FlxG.switchState (new MenuState)))
+                    ("Quit to Desktop" (Sys.exit 0))
+                    (never otherwise)))))
 
 (method :Void showDialogHistory [:Array<HistoryElement<ActorFlxSprite>> history :Continuation resume]
     // register tab and escape to resume (and register escape to pause and tab to history when resuming lol)
@@ -214,7 +222,7 @@
             "up"
             "down"
             "enter"))
-    (pauseMenu.enableGamepadInput true))
+    (pauseMenu.enableGamepadInput true [=>START ""]))
 
 (method :Void enterString [:String prompt :String->Void submit]
     (set pauseMenu
