@@ -110,6 +110,15 @@
         (doFor [wavPath jsonPath] (groups wavJsonPaths 2 Throw)
             (newFlxVoiceTrack name wavPath jsonPath))))
 
+(#when sys
+    (method newFlxVoiceTracksByPrefix [:Array<String> names :String voFolder :String voFilePrefix]
+        (let [possibleFiles (sys.FileSystem.readDirectory voFolder)
+                matchingWavFiles (filter possibleFiles ->[:String path] (and (StringTools.startsWith path voFilePrefix) (StringTools.endsWith path ".wav")))]
+            (doFor name names
+                (doFor wavPath matchingWavFiles
+                    (let [wavPath (joinPath voFolder wavPath)]
+                        (newFlxVoiceTrack name wavPath (StringTools.replace wavPath ".wav" ".json"))))))))
+
 (method newFlxProp [name path &opt :FlxSprite->Void prepareSprite]
     (let [propSprite (new FlxSprite 0 0)]
         (propSprite.loadGraphic path false 0 0 true) // Load props uniquely because they can be drawn on
