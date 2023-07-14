@@ -248,6 +248,7 @@
                                 ->scaleStr
                                     (let [scale (Std.parseFloat scaleStr)]
                                         (propScales.put propKey (new HFloat scale))
+                                        (flxDirector.scaleProp (dictGet props propKey))
                                         (cc))))))
         (shortcutHandler.registerItem "[d]efine [z] of a position"
             ->cc
