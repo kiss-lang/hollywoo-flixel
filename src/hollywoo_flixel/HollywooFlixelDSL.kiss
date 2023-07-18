@@ -246,6 +246,26 @@
         (putPresetPosition "ScreenLowerCenter" centerX lower layer)
         (putPresetPosition "ScreenUpperCenter" centerX upper layer))
         
+    // Prepare the interpreter for this movie's cached instructions
+	(let [v interpVariables]
+		(dictSet v "SpriteTools" kiss_flixel.SpriteTools)
+        (let [colors FlxColor.colorLookup
+                colorObject (object)
+                utilObject (object)
+                flixelObject (object)]
+            (doFor =>key color colors
+                (Reflect.setField colorObject key color))
+            // All of these Reflect.setFields are to work around kiss bug #196
+            (Reflect.setField utilObject "FlxColor" colorObject)
+            (Reflect.setField flixelObject "util" utilObject)
+            (Reflect.setField flixelObject "FlxG" FlxG)
+            (dictSet v "flixel" flixelObject))
+        
+        (dictSet v "FlxG" FlxG)
+        (dictSet v "Pixels" kiss_flixel.RelativeCoordinate.Pixels)
+        (dictSet v "Percent" kiss_flixel.RelativeCoordinate.Percent)
+        )
+        
     (let [shortcutHandler (director.shortcutHandler)
             cc ->(resume)]    
         (shortcutHandler.registerItem "[d]efine prop [s]cale"
