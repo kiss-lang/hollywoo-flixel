@@ -63,6 +63,7 @@
                     yOffset (- cSprite.y sprite.y)]
                 (linearMotion cSprite (+ destX xOffset) (+ destY yOffset) speed)))))
 
+@:keep
 (method linearMotionTo [:FlxSprite sprite :String positionKey :Float speed &opt :Void->Void cc :String soundLoop :Float volumeMod :Array<FlxSprite> connectedSprites]
     (let [position (resolvePosition positionKey)]
         (linearMotion sprite position.x position.y speed cc soundLoop volumeMod connectedSprites)))
