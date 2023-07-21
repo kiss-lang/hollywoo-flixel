@@ -104,7 +104,10 @@
         (newSong name song)))
 
 (method newFlxVoiceTrack [name wavPath jsonPath]
-    (newVoiceTrack name (FlxG.sound.load wavPath) (openfl.utils.Assets.getText jsonPath)))
+    (try
+        (let [text (openfl.utils.Assets.getText jsonPath)]
+            (newVoiceTrack name (FlxG.sound.load wavPath) text))
+        (catch [e] (print "WARNING! no-op newFlxVoiceTrack with $jsonPath"))))
 
 (method newFlxVoiceTracks [:Array<String> names :Array<String> wavJsonPaths]
     (doFor name names
