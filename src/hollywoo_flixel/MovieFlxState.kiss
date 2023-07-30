@@ -15,4 +15,5 @@
 (method &override :Void onFocus []
     (when (and FlxG.autoPause !director.movie.paused)
         (director.resume))
+    (kiss_flixel.DebugTools.f1ToRecord)
     (set focused true))
