@@ -68,6 +68,40 @@
     (let [position (resolvePosition positionKey)]
         (linearMotion sprite position.x position.y speed cc soundLoop volumeMod connectedSprites)))
 
+// Reusable effect: Scan a slightly transparent line side-to-side across a FlxSprite like a scanner
+@:keep
+(method scanLineEffect [:FlxSprite sprite :FlxColor lineColor :Int lineThickness :Float alpha :Bool vertical :Float speed &opt :Bool repeat :Void->Void cc :String soundLoop :Float volumeMod]
+    (unless repeat (set repeat true))
+    (let [lineSprite (new FlxSprite)
+            width (if vertical lineThickness (Std.int sprite.width))
+            height (if vertical (Std.int sprite.height) lineThickness)
+            lineStartX sprite.x
+            lineStartY sprite.y
+            lineEndX (if vertical
+                            (+ sprite.x sprite.width (- lineThickness))
+                        sprite.x)
+            lineEndY (if vertical
+                            sprite.y
+                        (+ sprite.y sprite.height (- lineThickness)))
+            finish ->:Void {
+                        (FlxG.state.remove lineSprite)
+                        (cc)
+            }]
+        (lineSprite.makeGraphic width height lineColor)
+        (set lineSprite.cameras sprite.cameras)
+        (set lineSprite.alpha alpha)
+        
+        (set lineSprite.x lineStartX)
+        (set lineSprite.y lineStartY)
+        (FlxG.state.add lineSprite)
+        (linearMotion lineSprite lineEndX lineEndY speed
+            ->:Void {
+                (if repeat
+                        (linearMotion lineSprite lineStartX lineStartY speed finish soundLoop volumeMod) 
+                    (finish))
+            }
+            soundLoop volumeMod)))
+
 (method rotateTo [:FlxSprite sprite :Float angle :Float duration &opt :Void->Void cc :String soundLoop :Float volumeMod]
     (when soundLoop
         (let [oldCC cc]
