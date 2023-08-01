@@ -50,4 +50,10 @@ class FlxMovie extends Movie<FlxSprite, ActorFlxSprite, FlxSound, FlxSound, FlxS
     public var DIALOG_WIDTH:Int;
     public var DIALOG_HEIGHT:Int;
     public var presetPositions:Map<String,Bool> = [];
+
+    // HollywooFlixelDSL overrides this in subclasses
+    public function update(elapsed:Float):Void {}
+
+    // Such a hack:
+    private var skipMovie:FlxMovie = null;
 }

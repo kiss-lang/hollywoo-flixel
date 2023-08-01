@@ -43,34 +43,40 @@
 
 
 @:keep
-(method linearMotion [:FlxSprite sprite :Float destX :Float destY :Float speed &opt :Void->Void cc :String soundLoop :Float volumeMod :Array<FlxSprite> connectedSprites]
+(method linearMotion [:Bool skipping :FlxSprite sprite :Float destX :Float destY :Float speed &opt :Void->Void cc :String soundLoop :Float volumeMod :Array<FlxSprite> connectedSprites]
     (unless (tweenedPositionsOfSpritesInScenes.exists sceneKey)
         (dictSet tweenedPositionsOfSpritesInScenes sceneKey (new Map)))
     (dictSet (dictGet tweenedPositionsOfSpritesInScenes sceneKey) sprite (new FlxPoint destX destY))
+    (when skipping
+        (cc)
+        (return))
     (when soundLoop
         (let [oldCC cc]
             (set cc
                 (makeCC
-                    (stopSound soundLoop (makeCC null))
+                    (stopSound skipping soundLoop (makeCC null))
                     (when oldCC
                         (oldCC)))))
-        (loopSound soundLoop (makeCC null) volumeMod))
+        (loopSound skipping soundLoop (makeCC null) volumeMod))
     (tween
         (FlxTween.linearMotion sprite sprite.x sprite.y destX destY speed false (tweenOpts cc)))
     (when connectedSprites
         (doFor cSprite connectedSprites
             (let [xOffset (- cSprite.x sprite.x)
                     yOffset (- cSprite.y sprite.y)]
-                (linearMotion cSprite (+ destX xOffset) (+ destY yOffset) speed)))))
+                (linearMotion skipping cSprite (+ destX xOffset) (+ destY yOffset) speed)))))
 
 @:keep
-(method linearMotionTo [:FlxSprite sprite :String positionKey :Float speed &opt :Void->Void cc :String soundLoop :Float volumeMod :Array<FlxSprite> connectedSprites]
+(method linearMotionTo [:Bool skipping :FlxSprite sprite :String positionKey :Float speed &opt :Void->Void cc :String soundLoop :Float volumeMod :Array<FlxSprite> connectedSprites]
     (let [position (resolvePosition positionKey)]
-        (linearMotion sprite position.x position.y speed cc soundLoop volumeMod connectedSprites)))
+        (linearMotion skipping sprite position.x position.y speed cc soundLoop volumeMod connectedSprites)))
 
 // Reusable effect: Scan a slightly transparent line side-to-side across a FlxSprite like a scanner
 @:keep
-(method scanLineEffect [:FlxSprite sprite :FlxColor lineColor :Int lineThickness :Float alpha :Bool vertical :Float speed &opt :Bool repeat :Void->Void cc :String soundLoop :Float volumeMod]
+(method :Void scanLineEffect [:Bool skipping :FlxSprite sprite :FlxColor lineColor :Int lineThickness :Float alpha :Bool vertical :Float speed &opt :Bool repeat :Void->Void cc :String soundLoop :Float volumeMod]
+    (when skipping
+        (cc)
+        (return))
     (unless repeat (set repeat true))
     (let [lineSprite (new FlxSprite)
             width (if vertical lineThickness (Std.int sprite.width))
@@ -94,23 +100,26 @@
         (set lineSprite.x lineStartX)
         (set lineSprite.y lineStartY)
         (FlxG.state.add lineSprite)
-        (linearMotion lineSprite lineEndX lineEndY speed
+        (linearMotion skipping lineSprite lineEndX lineEndY speed
             ->:Void {
                 (if repeat
-                        (linearMotion lineSprite lineStartX lineStartY speed finish soundLoop volumeMod) 
+                        (linearMotion skipping lineSprite lineStartX lineStartY speed finish soundLoop volumeMod) 
                     (finish))
             }
             soundLoop volumeMod)))
 
-(method rotateTo [:FlxSprite sprite :Float angle :Float duration &opt :Void->Void cc :String soundLoop :Float volumeMod]
+(method :Void rotateTo [:Bool skipping :FlxSprite sprite :Float angle :Float duration &opt :Void->Void cc :String soundLoop :Float volumeMod]
+    (when skipping
+        (cc)
+        (return))
     (when soundLoop
         (let [oldCC cc]
             (set cc
                 (makeCC
-                    (stopSound soundLoop (makeCC null))
+                    (stopSound skipping soundLoop (makeCC null))
                     (when oldCC
                         (oldCC)))))
-        (loopSound soundLoop (makeCC null) volumeMod))
+        (loopSound skipping soundLoop (makeCC null) volumeMod))
     (tween
         (FlxTween.angle sprite sprite.angle angle duration (tweenOpts cc))))
 
@@ -171,7 +180,11 @@
 
 (defAlias &ident flxDirector (cast director FlxDirector))
 
-(method :Void update [:Float elapsed]
+(method &override :Void update [:Float elapsed]
+    (when skipMovie
+        (skipMovie.update elapsed)
+        (return))
+
     (doFor action nextFrameActions
         (action))
     (set nextFrameActions [])
@@ -202,7 +215,10 @@
     (let [[x y] (SpriteTools.positionOn s (canvas) rpos true)]
         (new StagePosition x y layer)))
 
-(method namePlates [:Array<String> names :Dynamic delayLength :Bool delayWhileShown :Void->Void cc]
+(method namePlates [:Bool skipping :Array<String> names :Dynamic delayLength :Bool delayWhileShown :Void->Void cc]
+    (when skipping
+        (cc)
+        (return))
     (let [plates
                 (for name names
                     (let [plate (SpriteTools.textPlate name FlxDirector.DIALOG_SIZE FlxDirector.SUPER_MARGIN)
@@ -212,14 +228,14 @@
                         (set plate.y (+ actor.y actor.height))
                         (FlxG.state.add plate)
                         plate))]
-        (delay delayLength 
+        (delay skipping delayLength 
             (makeCC
                 (doFor plate plates (FlxG.state.remove plate true))
                 (when delayWhileShown (cc)))))
     (unless delayWhileShown (cc)))
 
-(method loopSound [name :Void->Void cc &opt :Float volumeMod]
-    (playSound name (makeCC null) volumeMod false)
+(method loopSound [:Bool skipping name :Void->Void cc &opt :Float volumeMod]
+    (playSound skipping name (makeCC null) volumeMod false)
     (let [cs flxDirector.currentSounds
             sound (nth cs (- cs.length 1))
             onComplete sound.onComplete]
@@ -229,9 +245,9 @@
     (cc))
 
 (method putPresetPosition [key x y z]
-        (let [pos (new StagePosition (Std.int x) (Std.int y) (Std.int z))]
-            (stagePositions.put key pos)
-            (dictSet presetPositions (pos.stringify) true)))
+    (let [pos (new StagePosition (Std.int x) (Std.int y) (Std.int z))]
+        (stagePositions.put key pos)
+        (dictSet presetPositions (pos.stringify) true)))
 
 (preload
     (.enableGamepadInput
@@ -356,8 +372,11 @@
 (prop &mut :FlxCamera inCamera)
 (prop &mut :FlxSprite outCameraPos)
 (prop &mut :FlxCamera outCamera)
-(method tweenScene [name :Float speed :Continuation cc &opt :Bool fromLeft :String soundLoop :Float volumeMod]
-   (let [name (kiss.FuzzyMapTools.bestMatch scenes name)
+(method :Void tweenScene [:Bool skipping name :Float speed :Continuation cc &opt :Bool fromLeft :String soundLoop :Float volumeMod]
+    (when skipping
+        (setScene name cc)
+        (return))
+    (let [name (kiss.FuzzyMapTools.bestMatch scenes name)
             lastSceneKey sceneKey
             lastScene (dictGet scenes sceneKey)
             scene (dictGet scenes name)
@@ -394,4 +413,32 @@
             (hollywoo.Movie.appearanceFlag shownScenes name)
             camera
             (makeCC
-                (linearMotion inCameraPos 0 0 speed finish soundLoop volumeMod [outCameraPos])))))
+                (linearMotion skipping inCameraPos 0 0 speed finish soundLoop volumeMod [outCameraPos])))))
+
+(defMacro addSkips [flxMovieClass]
+    `(#when debug
+        (method prepareForSkip []
+            (kiss_tools.TimerWithPause.stopAll)
+            (flxDirector.pause)
+            (.clear (director.shortcutHandler))
+            (doCleanup)
+            (set skipMovie (new Ep102 flxDirector)))
+
+        (preload
+            (.registerItem (director.shortcutHandler) "[n]ext label"
+                            ->cc {
+                                (prepareForSkip)
+                                (runFromNextLabel skipMovie)
+                            })       
+
+
+            (.registerItem (director.shortcutHandler) "skip to [l]abel"
+                            ->cc
+                                (let [runners (labelRunners)]
+                                    (director.chooseString
+                                        "Skip to scene?"
+                                        (sort (collect (runners.keys)))
+                                        ->label {
+                                            (prepareForSkip)
+                                            ((dictGet runners label) skipMovie)
+                                        }))))))
