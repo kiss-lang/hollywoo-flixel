@@ -48,7 +48,7 @@
         (dictSet tweenedPositionsOfSpritesInScenes sceneKey (new Map)))
     (dictSet (dictGet tweenedPositionsOfSpritesInScenes sceneKey) sprite (new FlxPoint destX destY))
     (when skipping
-        (cc)
+        (when cc (cc))
         (return))
     (when soundLoop
         (let [oldCC cc]
