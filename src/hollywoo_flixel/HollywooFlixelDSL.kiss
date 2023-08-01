@@ -422,7 +422,7 @@
             (flxDirector.pause)
             (.clear (director.shortcutHandler))
             (doCleanup)
-            (set skipMovie (new Ep102 flxDirector)))
+            (set skipMovie (new ,flxMovieClass flxDirector)))
 
         (preload
             (.registerItem (director.shortcutHandler) "[n]ext label"
