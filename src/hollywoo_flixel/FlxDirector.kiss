@@ -8,6 +8,8 @@
 (prop :Array<FlxTypedGroup<FlxSprite>> spriteLayers [])
 (var LAYER_MAX 8)
 
+(savedVar :String lastSceneLabel "")
+
 (defNew []
     // Continue action requires fresh input, Fast Forward action supports continuous holding down
     (set continueAction (new FlxActionDigital "Continue" onContinue))
@@ -80,16 +82,18 @@
 (prop &mut :SimpleWindow pauseMenu null)
 
 (method :Void sceneSelection [:Continuation cancel]
-    // TODO map escape: back to pause menu and highlight sceneSelectionIndex
-    (let [runners (movie.labelRunners)]
+    (let [runners (movie.labelRunners)
+            labels (sort (collect (runners.keys)))
+            lastLabelIndex (labels.indexOf movie.lastLabel)]
         (_chooseString
             "Skip to scene?"
-            (sort (collect (runners.keys)))
+            labels
             ->label {
                 (let [m flxMovie]
                     (m.prepareForSkip)
                     ((dictGet runners label) m.skipMovie))
             } true)
+        (set pauseMenu.selectedIndex lastLabelIndex)
         (set pauseMenu.onClose cancel)))
 
 (method :Void showPauseMenu [:Continuation resume]

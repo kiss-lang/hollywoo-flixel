@@ -424,6 +424,11 @@
             (doCleanup)
             (set skipMovie (new ,flxMovieClass flxDirector)))
 
+        (preload
+            (set onLabel ->:Void label (set FlxDirector.lastSceneLabel label)))
+        (cleanup
+            (set FlxDirector.lastSceneLabel ""))
+
         (#when debug
             (preload
                 (.registerItem (director.shortcutHandler) "[n]ext label"
