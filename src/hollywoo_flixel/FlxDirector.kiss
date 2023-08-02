@@ -24,6 +24,7 @@
         (actionManager.addAction action))
 
     (FlxG.inputs.add actionManager)
+    (#when debug (kiss_flixel.DebugTools.f1ToRecord actionManager))
     (set actionManager.resetOnStateSwitch NONE)
     
     (doFor i (range (+ 1 LAYER_MAX))
