@@ -79,6 +79,18 @@
 
 (prop &mut :SimpleWindow pauseMenu null)
 
+(method :Void sceneSelection []
+    // TODO map escape: back to pause menu and highlight sceneSelectionIndex
+    (let [runners (movie.labelRunners)]
+        (chooseString
+            "Skip to scene?"
+            (sort (collect (runners.keys)))
+            ->label {
+                (let [m flxMovie]
+                    (m.prepareForSkip)
+                    ((dictGet runners label) m.skipMovie))
+            })))
+
 (method :Void showPauseMenu [:Continuation resume]
     // register escape to resume (and register escape to pause when resuming lol)
     (sh.registerItem "{escape} resume" ->cc {
@@ -86,7 +98,8 @@
         (sh.registerItem "{escape} pause" ->cc (showPauseMenu cc) true)
         (resume)
     } true)
-    (let [choices ["" "Resume" "Options" "Main Menu" "Quit to Desktop"]
+    (let [choices ["" "Resume" "Scene Selection" "Options" "Main Menu" "Quit to Desktop"]
+            sceneSelectionIndex (choices.indexOf "Scene Selection")
             optsIdx (choices.indexOf "Options")]
         // chooseString automatically sets pauseMenu
         (chooseString "PAUSED" choices
@@ -95,6 +108,9 @@
                     ("Resume"
                         (sh.registerItem "{escape} pause" ->cc (showPauseMenu cc) true)
                         (resume))
+                    ("Scene Selection"
+                        (sh.cancel)
+                        (sceneSelection))
                     ("Options"
                         (sh.cancel)
                         (MenuState.optionsMenu

@@ -416,29 +416,24 @@
                 (linearMotion skipping inCameraPos 0 0 speed finish soundLoop volumeMod [outCameraPos])))))
 
 (defMacro addSkips [flxMovieClass]
-    `(#when debug
-        (method prepareForSkip []
+    `{
+        (method &override :Void prepareForSkip []
             (kiss_tools.TimerWithPause.stopAll)
             (flxDirector.pause)
             (.clear (director.shortcutHandler))
             (doCleanup)
             (set skipMovie (new ,flxMovieClass flxDirector)))
 
-        (preload
-            (.registerItem (director.shortcutHandler) "[n]ext label"
-                            ->cc {
-                                (prepareForSkip)
-                                (runFromNextLabel skipMovie)
-                            })       
+        (#when debug
+            (preload
+                (.registerItem (director.shortcutHandler) "[n]ext label"
+                                ->cc {
+                                    (prepareForSkip)
+                                    (runFromNextLabel skipMovie)
+                                })       
 
 
-            (.registerItem (director.shortcutHandler) "skip to [l]abel"
-                            ->cc
-                                (let [runners (labelRunners)]
-                                    (director.chooseString
-                                        "Skip to scene?"
-                                        (sort (collect (runners.keys)))
-                                        ->label {
-                                            (prepareForSkip)
-                                            ((dictGet runners label) skipMovie)
-                                        }))))))
+                (.registerItem (director.shortcutHandler) "skip to [l]abel"
+                                ->cc
+                                    (flxDirector.sceneSelection))))
+    })
