@@ -79,17 +79,18 @@
 
 (prop &mut :SimpleWindow pauseMenu null)
 
-(method :Void sceneSelection []
+(method :Void sceneSelection [:Continuation cancel]
     // TODO map escape: back to pause menu and highlight sceneSelectionIndex
     (let [runners (movie.labelRunners)]
-        (chooseString
+        (_chooseString
             "Skip to scene?"
             (sort (collect (runners.keys)))
             ->label {
                 (let [m flxMovie]
                     (m.prepareForSkip)
                     ((dictGet runners label) m.skipMovie))
-            })))
+            } true)
+        (set pauseMenu.onClose cancel)))
 
 (method :Void showPauseMenu [:Continuation resume]
     // register escape to resume (and register escape to pause when resuming lol)
@@ -109,8 +110,16 @@
                         (sh.registerItem "{escape} pause" ->cc (showPauseMenu cc) true)
                         (resume))
                     ("Scene Selection"
-                        (sh.cancel)
-                        (sceneSelection))
+                        (localFunction backToPause []
+                            (set pauseMenu.onClose null)
+                            (pauseMenu.hide)
+                            (showPauseMenu resume)
+                            (set pauseMenu.selectedIndex sceneSelectionIndex))
+                        (sh.registerItem "{escape} pause" ->cc (backToPause) true)
+                        (sceneSelection
+                            ->:Void {
+                                (backToPause)
+                            }))
                     ("Options"
                         (sh.cancel)
                         (MenuState.optionsMenu
@@ -223,6 +232,9 @@
 (var &mut :FlxMouseEventManager mm null)
 
 (method :Void chooseString [:String prompt :Array<String> choices :String->Void submit]
+    (_chooseString prompt choices submit))
+
+(method :Void _chooseString [:String prompt :Array<String> choices :String->Void submit &opt :Bool xButton :String xKey]
     (set pauseMenu
         (kiss_flixel.SimpleWindow.promptForChoice
             prompt
@@ -232,8 +244,8 @@
             FlxColor.WHITE
             0.8
             0.8
-            true
-            ""
+            ?xButton
+            (or xKey "")
             "left"
             "right"
             "up"
