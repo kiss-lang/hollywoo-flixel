@@ -57,4 +57,6 @@ class FlxMovie extends Movie<FlxSprite, ActorFlxSprite, FlxSound, FlxSound, FlxS
     // Such a hack:
     public var skipMovie:FlxMovie = null;
     public function prepareForSkip():Void {}
+
+    public function createCameras():Void {}
 }
