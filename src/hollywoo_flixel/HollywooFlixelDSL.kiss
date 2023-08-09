@@ -340,7 +340,9 @@
                                 ->scaleStr
                                     (let [scale (Std.parseFloat scaleStr)]
                                         (propScales.put propKey (new HFloat scale))
-                                        (flxDirector.scaleProp (dictGet props propKey))
+                                        // Re-scale props immediately
+                                        (doFor prop .props (dictGet scenes sceneKey)
+                                            (flxDirector.scaleProp prop.prop))
                                         (cc))))))
         (shortcutHandler.registerItem "[d]efine [z] of a position"
             ->cc
