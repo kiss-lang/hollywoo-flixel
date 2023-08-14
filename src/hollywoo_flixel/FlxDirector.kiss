@@ -112,12 +112,13 @@
         (sh.registerItem "{escape} pause" ->cc (showPauseMenu cc) true)
         (resume)
     } true)
-    (let [choices ["" "Resume" "Scene Selection" "Options" "Main Menu" "Quit to Desktop"]
+    (let [choices ["" "Resume" "Scene Selection" "Options" "Send Feedback" "Main Menu" "Quit to Desktop"]
             sceneSelectionIndex (choices.indexOf "Scene Selection")
-            optsIdx (choices.indexOf "Options")]
+            optsIdx (choices.indexOf "Options")
+            feedbackIdx (choices.indexOf "Send Feedback")]
         // chooseString automatically sets pauseMenu
         (chooseString "PAUSED" choices
-            ->choice
+            ->:Void choice
                 (case choice
                     ("Resume"
                         (sh.registerItem "{escape} pause" ->cc (showPauseMenu cc) true)
@@ -141,6 +142,19 @@
                                 (showPauseMenu resume)
                                 (set pauseMenu.selectedIndex optsIdx)
                             }))
+                    ("Send Feedback"
+                        (sh.cancel)
+                        (.enableGamepadInput
+                            (kiss_flixel.FeedbackWindow.collectFeedback
+                                ->:Void {
+                                    (sh.start)
+                                    (showPauseMenu resume)
+                                    (set pauseMenu.selectedIndex feedbackIdx)
+                                }
+                                null
+                                null
+                                true
+                                "escape") true))
                     ("Main Menu" (FlxG.switchState (new MenuState)))
                     ("Quit to Desktop" (Sys.exit 0))
                     (never otherwise)))))
@@ -455,7 +469,8 @@
         (FlxG.state.add loop)))
 
 (method :Void hideTitleCard []
-    (FlxG.state.remove titleCard true))
+    (FlxG.state.remove titleCard true)
+    (set titleCard null))
 
 // TODO these could be customizable to the Actor, wrylies, etc.
 (var DIALOG_BOX_COLOR FlxColor.BLACK)
