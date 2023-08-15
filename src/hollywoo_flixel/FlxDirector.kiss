@@ -862,3 +862,15 @@
                 (tweenArgs.push scrollSpeed)
                 (tweenArgs.push cc)
                 (Reflect.callMethod flxMovie (Reflect.field flxMovie "linearMotion") tweenArgs)))))
+
+(prop &mut :FlxSprite inputIcon)
+
+(method :Void showInputIcon []
+    (set inputIcon (SpriteTools.textPlate "[...]" DIALOG_SIZE SUPER_MARGIN null null applyFormat))
+    (set inputIcon.cameras [flxMovie.uiCamera])
+    (inputIcon.screenCenter)
+    (set inputIcon.y (- flxMovie.DIALOG_Y inputIcon.height))
+    (FlxG.state.add inputIcon))
+
+(method :Void hideInputIcon []
+    (FlxG.state.remove inputIcon true))
