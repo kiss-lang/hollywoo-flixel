@@ -141,7 +141,10 @@
                                 (sh.start)
                                 (showPauseMenu resume)
                                 (set pauseMenu.selectedIndex optsIdx)
-                            }))
+                            }
+                            null
+                            null
+                            this))
                     ("Send Feedback"
                         (sh.cancel)
                         (.enableGamepadInput
