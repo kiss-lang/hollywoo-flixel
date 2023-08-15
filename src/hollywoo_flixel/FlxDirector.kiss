@@ -637,7 +637,6 @@
 (savedVar :Float voiceVolume 1.0)
 
 (prop :Array<FlxSound> currentVoiceTracks [])
-(var DELAY_BETWEEN_VOICE_TRACKS 0.1)
 (prop :Map<FlxSound,Function> restoreOriginalVolumes (new Map))
 (method :Void playVoiceTrack [:FlxSound track :Float volumeMod :Float start :Float end :Continuation cc]
     (let [originalVolume track.volume
@@ -648,7 +647,7 @@
         (set track.onComplete ->{
                                     (currentVoiceTracks.remove track)
                                     (restoreOriginalVolume)
-                                    (movie?.delay false DELAY_BETWEEN_VOICE_TRACKS cc)
+                                    (cc)
                                 }))
     (currentVoiceTracks.push track)
     (track.play true (* 1000 start) (* 1000 end)))
