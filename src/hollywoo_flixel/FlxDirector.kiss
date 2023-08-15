@@ -277,7 +277,10 @@
             "right"
             "up"
             "down"
-            "enter"))
+            "enter"
+            null
+            false
+            true))
     (pauseMenu.enableGamepadInput true [=>START ""]))
 
 (method :Void enterString [:String prompt :String->Void submit]
