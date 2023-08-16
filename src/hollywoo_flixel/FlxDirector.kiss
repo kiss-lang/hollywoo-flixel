@@ -14,16 +14,17 @@
 (method :Void promptForResume [:FlxMovie movie]
     (movie.createCameras)
     (if (and FlxDirector.lastSceneLabel (.exists (movie.labelRunners) FlxDirector.lastSceneLabel))
-            (chooseString "Resume from '${FlxDirector.lastSceneLabel}'?" ["" "Resume" "Scene Selection" "Start From Beginning"]
-                ->choice (case choice
-                            ("Resume" (movie.runFromLabel FlxDirector.lastSceneLabel))
-                            ("Scene Selection"
-                                (sceneSelection
-                                    ->:Void {
-                                        (FlxG.switchState (new MenuState))
-                                    }))
-                            ("Start From Beginning" (movie.run))
-                            (never otherwise)))
+            {(_chooseString "Resume from '${FlxDirector.lastSceneLabel}'?" ["" "Resume" "Scene Selection" "Start From Beginning"]
+                        ->choice (case choice
+                                    ("Resume" (movie.runFromLabel FlxDirector.lastSceneLabel))
+                                    ("Scene Selection"
+                                        (sceneSelection
+                                            ->:Void {
+                                                (FlxG.switchState (new MenuState))
+                                            }))
+                                    ("Start From Beginning" (movie.run))
+                                    (never otherwise)) true "escape")
+                (set pauseMenu.onClose ->:Void (FlxG.switchState (new MenuState)))}
 		(movie.run)))
 
 (defNew []
@@ -108,7 +109,7 @@
                 (let [m flxMovie]
                     (m.prepareForSkip)
                     ((dictGet runners label) m.skipMovie))
-            } true)
+            } true "escape")
         (set pauseMenu.selectedIndex lastLabelIndex)
         (set pauseMenu.onClose cancel)))
 
