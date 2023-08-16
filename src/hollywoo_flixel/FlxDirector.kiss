@@ -10,13 +10,20 @@
 
 (savedVar :String lastSceneLabel "")
 
+// TODO this should be part of Hollywoo's logic
 (method :Void promptForResume [:FlxMovie movie]
     (movie.createCameras)
     (if (and FlxDirector.lastSceneLabel (.exists (movie.labelRunners) FlxDirector.lastSceneLabel))
-            (chooseString "Resume from '${FlxDirector.lastSceneLabel}'?" ["" "Resume" "Start From Beginning"]
+            (chooseString "Resume from '${FlxDirector.lastSceneLabel}'?" ["" "Resume" "Scene Selection" "Start From Beginning"]
                 ->choice (case choice
                             ("Resume" (movie.runFromLabel FlxDirector.lastSceneLabel))
-                            (otherwise (movie.run))))
+                            ("Scene Selection"
+                                (sceneSelection
+                                    ->:Void {
+                                        (FlxG.switchState (new MenuState))
+                                    }))
+                            ("Start From Beginning" (movie.run))
+                            (never otherwise)))
 		(movie.run)))
 
 (defNew []
