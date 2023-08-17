@@ -7,6 +7,10 @@
 (method :Dynamic callPrivate [:Dynamic obj :String method &rest :Array<Dynamic> args]
     (Reflect.callMethod obj (Reflect.field obj method) args))
 
+(method newFlxTextProp [:String key :String text :Int size :FlxColor color &opt :String font]
+    (assert isLoading)
+    (newProp key (SpriteTools.textPlate text size 0 color FlxColor.TRANSPARENT null font)))
+
 (method tween [:FlxTween tween]
     (callPrivate FlxTween.globalManager "remove" tween false)
     (tweens.push tween))
