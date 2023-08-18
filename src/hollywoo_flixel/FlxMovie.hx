@@ -39,7 +39,6 @@ class FlxMovie extends Movie<FlxSprite, ActorFlxSprite, FlxSound, FlxSound, FlxS
     public var tweenedPositionsOfSpritesInScenes:Map<String,Map<FlxSprite,FlxPoint>> = [];
 
     public var tweens:Array<FlxTween> = [];
-    public var loopingOnCompletes:Map<FlxSound,Void->Void> = [];
     public var STAGE_LEFT_X:Float;
     public var STAGE_RIGHT_X:Float;
     public var ACTOR_WIDTH:Int;

@@ -58,7 +58,7 @@
         (let [oldCC cc]
             (set cc
                 (makeCC
-                    (stopSound skipping soundLoop (makeCC null))
+                    (stopLoopingSound skipping (makeCC null))
                     (when oldCC
                         (oldCC)))))
         (loopSound skipping soundLoop (makeCC null) volumeMod))
@@ -237,16 +237,6 @@
                 (doFor plate plates (FlxG.state.remove plate true))
                 (when delayWhileShown (cc)))))
     (unless delayWhileShown (cc)))
-
-(method loopSound [:Bool skipping name :Void->Void cc &opt :Float volumeMod]
-    (playSound skipping name (makeCC null) volumeMod false)
-    (let [cs flxDirector.currentSounds
-            sound (nth cs (- cs.length 1))
-            onComplete sound.onComplete]
-        (dictSet loopingOnCompletes sound onComplete)
-        (set sound.onComplete null)
-        (set sound.looped true))
-    (cc))
 
 (method putPresetPosition [key x y z]
     (let [pos (new StagePosition (Std.int x) (Std.int y) (Std.int z))]
