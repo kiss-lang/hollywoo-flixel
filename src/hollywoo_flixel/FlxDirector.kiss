@@ -596,20 +596,19 @@
 
 (prop :Array<FlxSound> currentSounds [])
 (prop :Map<FlxSound,Array<Float>> currentSoundVolumes (new Map))
-(method :Void playSound [:FlxSound sound :Float volumeMod :Bool waitForEnd :Continuation cc]
+(method :Void playSound [:FlxSound sound :Float volumeMod &opt :Continuation cc]
     (let [originalVolume sound.volume
             onComplete ->{
                             (currentSounds.remove sound)
                             (currentSoundVolumes.remove sound)
                             (set sound.volume originalVolume)
-                            (when waitForEnd (cc))
+                            (when cc (cc))
                         }]
         (dictSet currentSoundVolumes sound [originalVolume volumeMod])
         (*= sound.volume volumeMod soundVolume)
         (set sound.onComplete onComplete))
     (currentSounds.push sound)
-    (sound.play)
-    (unless waitForEnd (cc)))
+    (sound.play))
 
 (method :Void stopSound [:FlxSound sound]
     (when (flxMovie.loopingOnCompletes.exists sound)
