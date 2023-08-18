@@ -170,6 +170,21 @@
                     ("Quit to Desktop" (Sys.exit 0))
                     (never otherwise)))))
 
+(function specialHistoryChars [:String text]
+    (text.replace "✓" "<check mark>"))
+
+(function specialTypesSpeakerName [:String name :SpeechType<ActorFlxSprite> type]
+    (case type
+        ((VoiceOver _)
+            "${name} (voiceover)")
+        ((TextMessage _)
+            "${name} (text message)")
+        ((FromPhone _)
+            "${name} (from phone)")
+        ((Custom type _ _)
+            "${name} (${type})")
+        (otherwise name)))
+
 (method :Void showDialogHistory [:Array<HistoryElement<ActorFlxSprite>> history :Continuation resume]
     // register tab and escape to resume (and register escape to pause and tab to history when resuming lol)
     (let [_resume
@@ -189,9 +204,9 @@
                 ((Sound caption)
                     (pauseMenu.makeText "<${caption}>")
                     (pauseMenu.makeText ""))
-                ((Dialog speaker _type _wryly text)
-                    (pauseMenu.makeText speaker)
-                    (pauseMenu.makeWrappedText text)
+                ((Dialog speaker type _wryly text)
+                    (pauseMenu.makeText (specialTypesSpeakerName speaker type))
+                    (pauseMenu.makeWrappedText (specialHistoryChars text))
                     (pauseMenu.makeText ""))
                 ((Super text)
                     (pauseMenu.makeText text)

@@ -1,5 +1,7 @@
 package hollywoo_flixel;
 
+using StringTools;
+
 import kiss.Prelude;
 import kiss.List;
 import flixel.FlxG;
