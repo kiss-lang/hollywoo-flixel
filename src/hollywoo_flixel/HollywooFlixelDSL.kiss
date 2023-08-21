@@ -75,6 +75,33 @@
     (let [position (resolvePosition positionKey)]
         (linearMotion skipping sprite position.x position.y speed cc soundLoop volumeMod connectedSprites)))
 
+(defMacro _linearMotionTo [withMacro await objectKey positionKey speed soundLoop volumeMod]
+    `(,withMacro ,objectKey o
+        (linearMotionTo
+            skipping
+            o
+            ,positionKey
+            ,speed
+            ,(if (eval await) `cc `null)
+            ,soundLoop
+            ,volumeMod)
+        ,(if (eval await) `null `(cc))))
+
+(defMacroFunction tryRead [stream]
+    (try (read stream)
+        (catch [e] `null)))
+
+(defMacroFunction awaitLMReaderMacro [stream withMacro]
+    (let [nextLineStream (stream.expect "hollywoo macro line" ->(stream.takeLineAsStream))
+            exps [(read nextLineStream) (read nextLineStream) (read nextLineStream) (tryRead nextLineStream) (tryRead nextLineStream)]]
+        (printExp `(_linearMotionTo ,withMacro true ,@exps))))
+
+(defReaderMacro "AWAITLINEARMOTIONACTORTO" [stream &builder b]
+    (awaitLMReaderMacro stream `withActorCC)) 
+
+(defReaderMacro "AWAITLINEARMOTIONPROPTO" [stream &builder b]
+    (awaitLMReaderMacro stream `withPropCC)) 
+
 // Reusable effect: Scan a slightly transparent line side-to-side across a FlxSprite like a scanner
 @:keep
 (method :Void scanLineEffect [:Bool skipping :FlxSprite sprite :FlxColor lineColor :Int lineThickness :Float alpha :Bool vertical :Float speed &opt :Bool repeat :Void->Void cc :String soundLoop :Float volumeMod]
