@@ -487,6 +487,7 @@
                                     (pause))
                                 (set FlxG.autoPause true)
                                 (FlxG.state.remove bar true)
+                                (print (/ (/ flash.system.System.totalMemory 1024) 1000) "Memory in use: ")
                                 (cc)
                             }) 1)]
         (haxe.Timer.delay ->:Void (loop.start) 1)
