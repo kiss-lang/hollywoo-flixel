@@ -114,61 +114,71 @@
         (set pauseMenu.onClose cancel)))
 
 (method :Void showPauseMenu [:Continuation resume]
-    // register escape to resume (and register escape to pause when resuming lol)
-    (sh.registerItem "{escape} resume" ->cc {
-        (pauseMenu.hide)
-        (sh.registerItem "{escape} pause" ->cc (showPauseMenu cc) true)
-        (resume)
-    } true)
-    (let [choices ["" "Resume" "Scene Selection" "Options" "Send Feedback" "Main Menu" "Quit to Desktop"]
-            sceneSelectionIndex (choices.indexOf "Scene Selection")
-            optsIdx (choices.indexOf "Options")
-            feedbackIdx (choices.indexOf "Send Feedback")]
-        // chooseString automatically sets pauseMenu
-        (chooseString "PAUSED" choices
-            ->:Void choice
-                (case choice
-                    ("Resume"
-                        (sh.registerItem "{escape} pause" ->cc (showPauseMenu cc) true)
-                        (resume))
-                    ("Scene Selection"
-                        (localFunction backToPause []
-                            (set pauseMenu.onClose null)
-                            (pauseMenu.hide)
-                            (showPauseMenu resume)
-                            (set pauseMenu.selectedIndex sceneSelectionIndex))
-                        (sh.registerItem "{escape} pause" ->cc (backToPause) true)
-                        (sceneSelection
-                            ->:Void {
-                                (backToPause)
-                            }))
-                    ("Options"
-                        (sh.cancel)
-                        (MenuState.optionsMenu
-                            ->{
-                                (sh.start)
+    // if fullscreen changes while paused, the movie needs to re-load when resuming
+    (let [oldResume resume
+            previousFullscreen MenuState.fullscreen
+            resume ->:Void 
+                (if (= previousFullscreen MenuState.fullscreen)
+                        (oldResume)
+                    (let [m flxMovie
+                            instructionPointer (Reflect.field m "lastInstructionPointer")]
+                        (m.prepareForSkip)
+                        (m.skipMovie.runFromInstruction instructionPointer)))]
+        // register escape to resume (and register escape to pause when resuming lol)
+        (sh.registerItem "{escape} resume" ->cc {
+            (pauseMenu.hide)
+            (sh.registerItem "{escape} pause" ->cc (showPauseMenu cc) true)
+            (resume)
+        } true)
+        (let [choices ["" "Resume" "Scene Selection" "Options" "Send Feedback" "Main Menu" "Quit to Desktop"]
+                sceneSelectionIndex (choices.indexOf "Scene Selection")
+                optsIdx (choices.indexOf "Options")
+                feedbackIdx (choices.indexOf "Send Feedback")]
+            // chooseString automatically sets pauseMenu
+            (chooseString "PAUSED" choices
+                ->:Void choice
+                    (case choice
+                        ("Resume"
+                            (sh.registerItem "{escape} pause" ->cc (showPauseMenu cc) true)
+                            (resume))
+                        ("Scene Selection"
+                            (localFunction backToPause []
+                                (set pauseMenu.onClose null)
+                                (pauseMenu.hide)
                                 (showPauseMenu resume)
-                                (set pauseMenu.selectedIndex optsIdx)
-                            }
-                            null
-                            null
-                            this))
-                    ("Send Feedback"
-                        (sh.cancel)
-                        (.enableGamepadInput
-                            (kiss_flixel.FeedbackWindow.collectFeedback
+                                (set pauseMenu.selectedIndex sceneSelectionIndex))
+                            (sh.registerItem "{escape} pause" ->cc (backToPause) true)
+                            (sceneSelection
                                 ->:Void {
+                                    (backToPause)
+                                }))
+                        ("Options"
+                            (sh.cancel)
+                            (MenuState.optionsMenu
+                                ->{
                                     (sh.start)
                                     (showPauseMenu resume)
-                                    (set pauseMenu.selectedIndex feedbackIdx)
+                                    (set pauseMenu.selectedIndex optsIdx)
                                 }
                                 null
                                 null
-                                true
-                                "escape") true))
-                    ("Main Menu" (FlxG.switchState (new MenuState)))
-                    ("Quit to Desktop" (Sys.exit 0))
-                    (never otherwise)))))
+                                this))
+                        ("Send Feedback"
+                            (sh.cancel)
+                            (.enableGamepadInput
+                                (kiss_flixel.FeedbackWindow.collectFeedback
+                                    ->:Void {
+                                        (sh.start)
+                                        (showPauseMenu resume)
+                                        (set pauseMenu.selectedIndex feedbackIdx)
+                                    }
+                                    null
+                                    null
+                                    true
+                                    "escape") true))
+                        ("Main Menu" (FlxG.switchState (new MenuState)))
+                        ("Quit to Desktop" (Sys.exit 0))
+                        (never otherwise))))))
 
 (function specialHistoryChars [:String text]
     (text.replace "✓" "<check mark>"))
