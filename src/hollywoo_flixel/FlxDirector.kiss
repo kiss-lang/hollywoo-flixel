@@ -110,7 +110,7 @@
                     (m.prepareForSkip)
                     ((dictGet runners label) m.skipMovie))
             } true "escape")
-        (set pauseMenu.selectedIndex lastLabelIndex)
+        (unless (= -1 lastLabelIndex) (set pauseMenu.selectedIndex (+ 1 lastLabelIndex)))
         (set pauseMenu.onClose cancel)))
 
 (method :Void showPauseMenu [:Continuation resume]
