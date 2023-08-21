@@ -724,6 +724,10 @@
         (set music.persist true)
         (unless waitForEnd (cc))))
 
+(method :Void changeSongVolume [:Float volumeMod :Continuation cc]
+    (set music.volume (* volumeMod musicVolume))
+    (cc))
+
 (method :Void stopSong []
     (when music (music.stop))
     (when musicFadeTimer (musicFadeTimer.cancel))
