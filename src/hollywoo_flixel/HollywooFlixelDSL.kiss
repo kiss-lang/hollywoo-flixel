@@ -91,15 +91,40 @@
     (try (read stream)
         (catch [e] `null)))
 
-(defMacroFunction awaitLMReaderMacro [stream withMacro]
+(defMacroFunction awaitLMTReaderMacro [stream withMacro]
     (let [nextLineStream (stream.expect "hollywoo macro line" ->(stream.takeLineAsStream))
             exps [(read nextLineStream) (read nextLineStream) (read nextLineStream) (tryRead nextLineStream) (tryRead nextLineStream)]]
-        (printExp `(_linearMotionTo ,withMacro true ,@exps))))
+        `(_linearMotionTo ,withMacro true ,@exps)))
 
 (defReaderMacro "AWAITLINEARMOTIONACTORTO" [stream &builder b]
-    (awaitLMReaderMacro stream `withActorCC)) 
+    (awaitLMTReaderMacro stream `withActorCC)) 
 
 (defReaderMacro "AWAITLINEARMOTIONPROPTO" [stream &builder b]
+    (awaitLMTReaderMacro stream `withPropCC)) 
+
+(defMacro _linearMotion [withMacro await objectKey _x _y speed soundLoop volumeMod]
+    `(,withMacro ,objectKey o
+        (let [x o.x y o.y]
+            (linearMotion
+                skipping
+                o
+                ,_x
+                ,_y
+                ,speed
+                ,(if (eval await) `cc `null)
+                ,soundLoop
+                ,volumeMod))
+        ,(if (eval await) `null `(cc))))
+
+(defMacroFunction awaitLMReaderMacro [stream withMacro]
+    (let [nextLineStream (stream.expect "hollywoo macro line" ->(stream.takeLineAsStream))
+            exps [(read nextLineStream) (read nextLineStream) (read nextLineStream) (read nextLineStream) (tryRead nextLineStream) (tryRead nextLineStream)]]
+        `(_linearMotion ,withMacro true ,@exps)))
+
+(defReaderMacro "AWAITLINEARMOTIONACTOR" [stream &builder b]
+    (awaitLMReaderMacro stream `withActorCC)) 
+
+(defReaderMacro "AWAITLINEARMOTIONPROP" [stream &builder b]
     (awaitLMReaderMacro stream `withPropCC)) 
 
 // Reusable effect: Scan a slightly transparent line side-to-side across a FlxSprite like a scanner
