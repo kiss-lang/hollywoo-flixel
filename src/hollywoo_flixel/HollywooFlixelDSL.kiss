@@ -11,6 +11,13 @@
     (assert isLoading)
     (newProp key (SpriteTools.textPlate text size 0 color FlxColor.TRANSPARENT null font)))
 
+// TODO this should work, but I think when unquotes are used, or the macro has args, this doesn't macroexpand
+// to get handled as a (commands ...) block for some reason in AsyncEmbeddedScript2
+**(defMacro addFlxTextProp [text size color &opt font]
+    `(commands
+        (preload (newFlxTextProp (+ "FlxText: " ,text) ,text ,size ,color ,(or font `null)))
+        (addProp (+ "FlxText: " ,text) (+ "FlxText: " ,text " position") cc)))
+
 (method tween [:FlxTween tween]
     (callPrivate FlxTween.globalManager "remove" tween false)
     (tweens.push tween))
