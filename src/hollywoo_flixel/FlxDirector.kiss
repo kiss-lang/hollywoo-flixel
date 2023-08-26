@@ -107,6 +107,7 @@
             labels
             ->label {
                 (let [m flxMovie]
+                    // This calls cleanup:
                     (m.prepareForSkip)
                     ((dictGet runners label) m.skipMovie))
             } true "escape")
@@ -399,11 +400,23 @@
     (FlxG.state.add lightSprite))
     
 (method :Void hideLighting []
-    (FlxG.state.remove darkness true)
-    (FlxG.state.remove lightSprite true))
+    (when darkness
+        (FlxG.state.remove darkness true)
+        (set darkness null))
+    (when lightSprite
+        (FlxG.state.remove lightSprite true)
+        (set lightSprite null)))
 
 (method :Void cleanup [] 
+    (hideTitleCard)
+    (hideBlackScreen)
+    (hideDialog)
+    (hideLighting)
+
+    // Don't remove the sprite layers, which are added in new()
+
     // TODO does this need to clear out currentSounds, etc? Probably
+    
     )
 
 (method :Option<AutoZConfig> autoZConfig [] (Some (object zPerLayer flxMovie.STAGE_BEHIND_DY frontLayer 0)))
@@ -511,8 +524,9 @@
         (FlxG.state.add loop)))
 
 (method :Void hideTitleCard []
-    (FlxG.state.remove titleCard true)
-    (set titleCard null))
+    (when titleCard
+        (FlxG.state.remove titleCard true)
+        (set titleCard null)))
 
 // TODO these could be customizable to the Actor, wrylies, etc.
 (var DIALOG_BOX_COLOR FlxColor.BLACK)
@@ -823,7 +837,9 @@
     (FlxG.state.add blackBG))
 
 (method :Void hideBlackScreen []
-    (FlxG.state.remove blackBG true))
+    (when blackBG
+        (FlxG.state.remove blackBG true)
+        (set blackBG null)))
 
 (var IDEAL_SCROLL_SPEED 200)
 
