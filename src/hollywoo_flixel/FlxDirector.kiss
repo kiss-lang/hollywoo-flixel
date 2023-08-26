@@ -402,7 +402,9 @@
     (FlxG.state.remove darkness true)
     (FlxG.state.remove lightSprite true))
 
-(method :Void cleanup [] 0)
+(method :Void cleanup [] 
+    // TODO does this need to clear out currentSounds, etc? Probably
+    )
 
 (method :Option<AutoZConfig> autoZConfig [] (Some (object zPerLayer flxMovie.STAGE_BEHIND_DY frontLayer 0)))
 

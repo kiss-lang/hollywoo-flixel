@@ -504,6 +504,10 @@
 
             (set onLabel ->:Void label (set FlxDirector.lastSceneLabel label)))
 
+        (cleanup
+            (when skipMovie
+                (callPrivate skipMovie "doCleanup")))
+
         (#when debug
             (preload
                 (.registerItem (director.shortcutHandler) "[n]ext label"
