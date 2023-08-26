@@ -354,7 +354,7 @@
         (FlxG.state.add db)
         (defineFlxPoint
             ->point
-                {(FlxG.state.remove db)
+                {(FlxG.state.remove db true)
                     (submit (new StagePosition point.x point.y (or oldPos?.z 5.0)))})))
 
 (method :Void defineLightSource [:FlxLightSource->Void submit]
@@ -540,7 +540,7 @@
 (prop :FlxText speakerNameText (property get set))
 (method set_speakerNameText [text]
     (when _speakerNameText
-        (FlxG.state.remove _speakerNameText)
+        (FlxG.state.remove _speakerNameText true)
         (set _speakerNameText null))
     (set _speakerNameText text))
 (method get_speakerNameText []
@@ -674,7 +674,7 @@
 (method :Void hideCaption [:Int id]
     (let [plate (dictGet captionIds id)]
         (captions.remove plate)
-        (FlxG.state.remove plate)
+        (FlxG.state.remove plate true)
         (captionIds.remove id)))
 
 (method :Float getSoundLength [:FlxSound sound]

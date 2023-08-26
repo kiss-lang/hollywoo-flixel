@@ -166,7 +166,7 @@
                             sprite.y
                         (+ sprite.y sprite.height (- lineThickness)))
             finish ->:Void {
-                        (FlxG.state.remove lineSprite)
+                        (FlxG.state.remove lineSprite true)
                         (cc)
             }]
         (lineSprite.makeGraphic width height lineColor)
