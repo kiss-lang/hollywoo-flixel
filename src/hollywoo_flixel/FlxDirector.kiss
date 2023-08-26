@@ -495,7 +495,7 @@
                             {
                                 (set FlxG.mouse.visible true)
                                 (set isLoading false)
-                                (unless MovieFlxState.focused
+                                (unless (Reflect.field FlxG.state "focused")
                                     (pause))
                                 (set FlxG.autoPause true)
                                 (FlxG.state.remove bar true)

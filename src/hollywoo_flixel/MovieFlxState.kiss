@@ -1,11 +1,29 @@
 (prop &mut :FlxDirector director)
 
+(method :Dynamic callPrivate [:Dynamic obj :String method &rest :Array<Dynamic> args]
+    (Reflect.callMethod obj (Reflect.field obj method) args))
+
+(prop &mut :MovieClass movie)
+(method :MovieClass currentMovie []
+	#{
+        var c = movie;
+		while (c.skipMovie != null)
+			c = cast c.skipMovie;
+		return c;
+    }#)
+
 (method &override :Void create []
     (set destroySubStates false)
     (super.create)
-    (set director (new FlxDirector)))
+    (set director (new FlxDirector))
+    (set movie (new MovieClass director))
+	(director.promptForResume movie))
 
-(var &mut focused true)
+(method &override :Void destroy []
+	(callPrivate (currentMovie) "doCleanup")
+	(super.destroy))
+
+(prop &mut focused true)
 
 (method &override :Void onFocusLost []
     (when FlxG.autoPause
@@ -17,3 +35,13 @@
         (director.resume))
     (kiss_flixel.DebugTools.f1ToRecord director.actionManager)
     (set focused true))
+
+(method &override :Void update [:Float elapsed]
+	#{
+    	super.update(elapsed);
+		var c = currentMovie();
+		if (c.running)
+		{
+			c.update(elapsed);
+		}
+    }#)
