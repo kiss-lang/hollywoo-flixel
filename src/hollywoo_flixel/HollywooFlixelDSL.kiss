@@ -499,6 +499,9 @@
             (set skipMovie (new ,flxMovieClass flxDirector)))
 
         (preload
+            (unless (FlxG.inputs.list.contains flxDirector.actionManager)
+                (FlxG.inputs.add flxDirector.actionManager))
+
             (set onLabel ->:Void label (set FlxDirector.lastSceneLabel label)))
 
         (#when debug
