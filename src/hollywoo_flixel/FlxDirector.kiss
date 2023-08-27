@@ -37,29 +37,31 @@
                 (set pauseMenu.onClose ->:Void (FlxG.switchState (new MenuState)))}
 		(movie.run)))
 
-(defNew []
-    // Continue action requires fresh input, Fast Forward action supports continuous holding down
-    (set continueAction (new FlxActionDigital "Continue" onContinue))
-    (set fastForwardAction (new FlxActionDigital "Fast Forward"))
-    // TODO allow configuring continue/fast-forward keys -- any key, specifically mapped keys, etc.
-    (doFor [:FlxActionDigital action :FlxInputState trigger] (zipThrow [continueAction fastForwardAction] [JUST_PRESSED PRESSED])
-        (action.addKey SPACE trigger)
-        (action.addKey ENTER trigger)
+// MenuState uses a director instance to demo the volume. This shouldn't affect flixel globals i.e. by adding an actionManager or sprite layers
+(defNew [&opt :Bool demoDirector]
+    (unless demoDirector
+        // Continue action requires fresh input, Fast Forward action supports continuous holding down
+        (set continueAction (new FlxActionDigital "Continue" onContinue))
+        (set fastForwardAction (new FlxActionDigital "Fast Forward"))
+        // TODO allow configuring continue/fast-forward keys -- any key, specifically mapped keys, etc.
+        (doFor [:FlxActionDigital action :FlxInputState trigger] (zipThrow [continueAction fastForwardAction] [JUST_PRESSED PRESSED])
+            (action.addKey SPACE trigger)
+            (action.addKey ENTER trigger)
+            
+            (action.addMouse LEFT trigger)
+
+            (action.addGamepad FlxGamepadInputID.A trigger FlxInputDeviceID.ALL)
+
+            (actionManager.addAction action))
+
+        (FlxG.inputs.add actionManager)
+        (#when debug (kiss_flixel.DebugTools.f1ToRecord actionManager))
+        (set actionManager.resetOnStateSwitch NONE)
         
-        (action.addMouse LEFT trigger)
-
-        (action.addGamepad FlxGamepadInputID.A trigger FlxInputDeviceID.ALL)
-
-        (actionManager.addAction action))
-
-    (FlxG.inputs.add actionManager)
-    (#when debug (kiss_flixel.DebugTools.f1ToRecord actionManager))
-    (set actionManager.resetOnStateSwitch NONE)
-    
-    (doFor i (range (+ 1 LAYER_MAX))
-        (let [g (new FlxTypedGroup<FlxSprite>)]
-            (spriteLayers.push g)
-            (FlxG.state.add g))))
+        (doFor i (range (+ 1 LAYER_MAX))
+            (let [g (new FlxTypedGroup<FlxSprite>)]
+                (spriteLayers.push g)
+                (FlxG.state.add g)))))
 
 (prop :Map<SceneTime,FlxSprite> skySprites (new Map))
 (prop &mut :FlxSprite skySprite)
