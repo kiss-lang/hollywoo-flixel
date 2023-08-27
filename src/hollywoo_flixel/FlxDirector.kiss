@@ -8,15 +8,25 @@
 (prop :Array<FlxTypedGroup<FlxSprite>> spriteLayers [])
 (var LAYER_MAX 8)
 
-(savedVar :String lastSceneLabel "")
+(savedVar :Map<String,String> lastSceneLabels (new Map))
+
+(function lastSceneForMovie [:FlxMovie m &opt :String setValue]
+    (let [clazz (Type.getClass m)
+            className (Type.getClassName clazz)
+            currentValue (dictGet lastSceneLabels className)]
+        (if setValue
+                (withMutProperties [lastSceneLabels]
+                    (dictSet lastSceneLabels className setValue)
+                    setValue)
+            currentValue)))
 
 // TODO this should be part of Hollywoo's logic
 (method :Void promptForResume [:FlxMovie movie]
     (movie.createCameras)
-    (if (and FlxDirector.lastSceneLabel (.exists (movie.labelRunners) FlxDirector.lastSceneLabel))
-            {(_chooseString "Resume from '${FlxDirector.lastSceneLabel}'?" ["" "Resume" "Scene Selection" "Start From Beginning"]
+    (if (.exists (movie.labelRunners) (lastSceneForMovie movie))
+            {(_chooseString "Resume from '$(lastSceneForMovie movie)'?" ["" "Resume" "Scene Selection" "Start From Beginning"]
                         ->choice (case choice
-                                    ("Resume" (movie.runFromLabel FlxDirector.lastSceneLabel))
+                                    ("Resume" (movie.runFromLabel (lastSceneForMovie movie)))
                                     ("Scene Selection"
                                         (sceneSelection
                                             ->:Void {

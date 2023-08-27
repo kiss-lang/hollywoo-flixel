@@ -502,7 +502,7 @@
             (unless (FlxG.inputs.list.contains flxDirector.actionManager)
                 (FlxG.inputs.add flxDirector.actionManager))
 
-            (set onLabel ->:Void label (set FlxDirector.lastSceneLabel label)))
+            (set onLabel ->:Void label (FlxDirector.lastSceneForMovie this label)))
 
         (cleanup
             (when skipMovie
