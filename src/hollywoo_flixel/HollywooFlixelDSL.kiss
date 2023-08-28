@@ -65,7 +65,7 @@
         (let [oldCC cc]
             (set cc
                 (makeCC
-                    (stopLoopingSound skipping (makeCC null))
+                    (stopSound skipping soundLoop (makeCC null))
                     (when oldCC
                         (oldCC)))))
         (loopSound skipping soundLoop (makeCC null) volumeMod))
@@ -516,7 +516,8 @@
 
         (cleanup
             (set tweens [])
-
+            (set flxDirector.nextCC null)
+            (loopingSoundPlays.clear)
             (destroyAndClear actors)
             (destroyAndClear props)
             (destroyAndClear sets)
