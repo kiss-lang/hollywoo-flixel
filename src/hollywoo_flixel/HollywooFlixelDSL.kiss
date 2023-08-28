@@ -147,6 +147,12 @@
 (defReaderMacro "LINEARMOTIONPROP" [stream &builder b]
     (awaitLMReaderMacro stream `withPropCC false)) 
 
+(defReaderMacro "ACTORPLAYANIMATION" [stream &builder b]
+    (let [actor (read stream)
+            anim (read stream)]
+        `(withActor ,actor a (a.playAnimation ,anim))))
+
+
 // Reusable effect: Scan a slightly transparent line side-to-side across a FlxSprite like a scanner
 @:keep
 (method :Void scanLineEffect [:Bool skipping :FlxSprite sprite :FlxColor lineColor :Int lineThickness :Float alpha :Bool vertical :Float speed &opt :Bool repeat :Void->Void cc :String soundLoop :Float volumeMod]
