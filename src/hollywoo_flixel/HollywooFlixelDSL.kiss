@@ -489,6 +489,12 @@
             (makeCC
                 (linearMotion skipping inCameraPos 0 0 speed finish soundLoop volumeMod [outCameraPos])))))
 
+
+(function destroyAndClear [:kiss.FuzzyMap<Dynamic> m]
+    (doFor =>key thing m
+        (thing.destroy))
+    (m.clear))
+
 (defMacro addSkips [flxMovieClass]
     `{
         (method &override :Void prepareForSkip []
@@ -507,6 +513,19 @@
         (cleanup
             (when skipMovie
                 (callPrivate skipMovie "doCleanup")))
+
+        (cleanup
+            (set tweens [])
+
+            (destroyAndClear actors)
+            (destroyAndClear props)
+            (destroyAndClear sets)
+            (destroyAndClear sounds)
+            (destroyAndClear voiceTracks)
+            (destroyAndClear songs)
+
+            // I hope this disposes of references to actors, props, sets, etc.:
+            (scenes.clear))
 
         (#when debug
             (preload
