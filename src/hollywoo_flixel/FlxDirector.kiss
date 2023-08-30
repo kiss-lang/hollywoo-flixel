@@ -240,6 +240,14 @@
         (pauseMenu.show)
         (pauseMenu.scrollToBottom)))
 
+(method loadSet [path]
+    (let [setSprite (new FlxSprite 0 0)]
+        // Load uniquely so we can draw on sets for specific scenes
+        (setSprite.loadGraphic path false 0 0 true)))
+
+(method cloneSet [set]
+    (set.clone))
+
 (method :Void showSet [:FlxSprite setSprite :SceneTime time :ScenePerspective perspective :Appearance appearance :FlxCamera camera :Continuation cc]
     (case appearance
         (FirstAppearance
@@ -432,6 +440,10 @@
     )
 
 (method :Option<AutoZConfig> autoZConfig [] (Some (object zPerLayer flxMovie.STAGE_BEHIND_DY frontLayer 0)))
+
+(method loadActor [path]
+    // TODO obviously this is wrong:
+    null)
 
 (method :Void showCharacter [:Character<ActorFlxSprite> character :Appearance appearance :FlxCamera camera :Continuation cc]
     // Why is this necessary? Who knows
@@ -650,6 +662,12 @@
 
 (prop :Array<FlxSound> currentSounds [])
 (prop :Map<FlxSound,Array<Float>> currentSoundVolumes (new Map))
+
+(method loadSound [path]
+    (let [s (FlxG.sound.load path)]
+        (set s.persist true)
+        s))
+
 (method :Void playSound [:FlxSound sound :Float volumeMod &opt :Continuation cc]
     (let [originalVolume sound.volume
             onComplete ->{
@@ -692,6 +710,11 @@
 (method :Float getSoundLength [:FlxSound sound]
     sound.length)
 
+(method loadSong [path]
+    (let [song (FlxG.sound.load path)]
+        (assert !(= 0 song.length) "song from $path has 0 length! avoid mp3s for this reason")
+        song))
+
 (method :Float getSongLength [:FlxSound song]
     (/ song.length 1000))
 
@@ -699,6 +722,10 @@
 
 (prop :Array<FlxSound> currentVoiceTracks [])
 (prop :Map<FlxSound,Function> restoreOriginalVolumes (new Map))
+
+(method loadVoiceTrack [wavPath]
+    (FlxG.sound.load wavPath))
+
 (method :Void playVoiceTrack [:FlxSound track :Float volumeMod :Float start :Float end :Continuation cc]
     (let [originalVolume track.volume
             restoreOriginalVolume ->{(set track.volume originalVolume)(currentSoundVolumes.remove track)}]
@@ -784,6 +811,11 @@
                 (.push (dictGet flxMovie.propsInScene flxMovie.sceneKey) propKey))
             (prop.scale.set scale scale)
             (prop.updateHitbox))))
+
+(method loadProp [path]
+    (let [propSprite (new FlxSprite 0 0)]
+        // Load props uniquely because they can be drawn on
+        (propSprite.loadGraphic path false 0 0 true)))
 
 (method :Void showProp [:FlxSprite prop :StagePosition position :Appearance appearance :FlxCamera camera :Continuation cc]
     (set prop.cameras [camera])

@@ -8,8 +8,7 @@
     (Reflect.callMethod obj (Reflect.field obj method) args))
 
 (method newFlxTextProp [:String key :String text :Int size :FlxColor color &opt :String font]
-    (assert isLoading)
-    (newProp key (SpriteTools.textPlate text size 0 color FlxColor.TRANSPARENT null font)))
+    (_addProp key (SpriteTools.textPlate text size 0 color FlxColor.TRANSPARENT null font)))
 
 // TODO this should work, but I think when unquotes are used, or the macro has args, this doesn't macroexpand
 // to get handled as a (commands ...) block for some reason in AsyncEmbeddedScript2
@@ -205,34 +204,24 @@
     (tween
         (FlxTween.angle sprite sprite.angle angle duration (tweenOpts cc))))
 
-(method newFlxSet [name assetPath]
-    (let [setSprite (new FlxSprite 0 0)]
-        (setSprite.loadGraphic assetPath false 0 0 true) // Load uniquely so we can draw on sets for specific scenes
-        (newSet name setSprite)))
+(defMacro newFlxSet [name assetPath]
+    `(loadSet ,name ,assetPath))
 
-(method newBlankFlxSet [name :FlxColor color]
-    (let [setSprite (new FlxSprite 0 0)]
-        (setSprite.makeGraphic FlxG.width FlxG.height color true) // Load uniquely so we can draw on sets for specific scenes
-        (newSet name setSprite)))
+(defMacro newBlankFlxSet [name color]
+    `(let [setSprite (new FlxSprite 0 0)]
+        // make graphic uniquely so we can draw on sets for specific scenes
+        (setSprite.makeGraphic FlxG.width FlxG.height ,color true)
+        (addSet ,name setSprite)))
 
-(method newFlxSound [name path description &opt :Float volume]
-    (set volume (or volume 1))
-    (assert (<= 0 volume 1))
-    (let [s (FlxG.sound.load path)]
-        (set s.volume volume)
-        (set s.persist true)
-        (newSound name s description)))
+(defMacro newFlxSound [name path description]
+    `(loadSound ,name ,path ,description))
 
-(method newFlxSong [name path]
-    (let [song (FlxG.sound.load path)]
-        (assert !(= 0 song.length) "song $name from $path has 0 length! avoid mp3s for this reason")
-        (newSong name song)))
 
-(method newFlxVoiceTrack [name wavPath jsonPath]
-    (try
-        (let [text (openfl.utils.Assets.getText jsonPath)]
-            (newVoiceTrack name (FlxG.sound.load wavPath) text))
-        (catch [e] (print "WARNING! no-op newFlxVoiceTrack with $jsonPath"))))
+(defMacro newFlxSong [name path]
+    `(loadSong ,name ,path))
+
+(defMacro newFlxVoiceTrack [name wavPath jsonPath]
+    `(_loadVoiceTrack ,name ,wavPath (openfl.utils.Assets.getText ,jsonPath)))
 
 (method newFlxVoiceTracks [:Array<String> names :Array<String> wavJsonPaths]
     (doFor name names
@@ -248,12 +237,15 @@
                     (let [wavPath (joinPath voFolder wavPath)]
                         (newFlxVoiceTrack name wavPath (StringTools.replace wavPath ".wav" ".json"))))))))
 
-(method newFlxProp [name path &opt :FlxSprite->Void prepareSprite]
+(defMacro newFlxProp [name path]
+    `(loadProp ,name ,path))
+
+(method prepNewFlxProp [name path &opt :FlxSprite->Void prepareSprite]
     (let [propSprite (new FlxSprite 0 0)]
         (propSprite.loadGraphic path false 0 0 true) // Load props uniquely because they can be drawn on
         (when prepareSprite
             (prepareSprite propSprite))
-        (newProp name propSprite)))
+        (_addProp name propSprite)))
 
 (function flxSprite [:String asset]
     (new FlxSprite 0 0 asset))
