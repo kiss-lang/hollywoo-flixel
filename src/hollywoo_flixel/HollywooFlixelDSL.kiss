@@ -509,7 +509,7 @@
             (set onLabel ->:Void label (FlxDirector.lastSceneForMovie this label)))
 
         (cleanup
-            (when skipMovie
+            (when skipMovie?.running
                 (callPrivate skipMovie "doCleanup")))
 
         (cleanup
