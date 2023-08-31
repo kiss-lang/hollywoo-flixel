@@ -13,6 +13,8 @@
     }#)
 
 (method &override :Void create []
+    (openfl.utils.Assets.cache.clear)
+    (set openfl.utils.Assets.cache.enabled false)
     (set destroySubStates false)
     (super.create)
     (set director (new FlxDirector))

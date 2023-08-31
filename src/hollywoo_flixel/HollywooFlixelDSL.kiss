@@ -496,11 +496,13 @@
 (defMacro addSkips [flxMovieClass]
     `{
         (method &override :Void prepareForSkip []
+            // TODO these things could/should all be in HollywooDSL:
             (kiss_tools.TimerWithPause.stopAll)
             (flxDirector.pause)
             (.clear (director.shortcutHandler))
-            (doCleanup)
-            (set skipMovie (new ,flxMovieClass flxDirector)))
+            (set skipMovie (new ,flxMovieClass flxDirector))
+            (skipMovie.scavengeObjects this)
+            (doCleanup))
 
         (preload
             (unless (FlxG.inputs.list.contains flxDirector.actionManager)
@@ -524,7 +526,9 @@
             (destroyAndClear songs)
 
             // I hope this disposes of references to actors, props, sets, etc.:
-            (scenes.clear))
+            (scenes.clear)
+            (#when cpp
+                (cpp.vm.Gc.run true)))
 
         (#when debug
             (preload
