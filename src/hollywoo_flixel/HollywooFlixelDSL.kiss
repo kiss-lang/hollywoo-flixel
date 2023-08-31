@@ -500,6 +500,7 @@
             (kiss_tools.TimerWithPause.stopAll)
             (flxDirector.pause)
             (.clear (director.shortcutHandler))
+            (flxDirector.cleanup)
             (set skipMovie (new ,flxMovieClass flxDirector))
             (skipMovie.scavengeObjects this)
             (doCleanup))
