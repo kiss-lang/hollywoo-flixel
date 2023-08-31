@@ -8,7 +8,7 @@
     (case (data.split "|")
         ([::colorStr ...coordStrs]
             (let [points (groups coordStrs 2)]
-                (new FlxLightSource (for [x y] points (new FlxPoint (Std.parseFloat x) (Std.parseFloat y))) (Std.parseInt colorStr))))
+                (new FlxLightSource (for [x y] points (FlxPoint.get (Std.parseFloat x) (Std.parseFloat y))) (Std.parseInt colorStr))))
         (never otherwise)))
 
 (method destroy []

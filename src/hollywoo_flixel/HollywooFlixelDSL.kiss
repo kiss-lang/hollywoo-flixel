@@ -56,7 +56,7 @@
 (method linearMotion [:Bool skipping :FlxSprite sprite :Float destX :Float destY :Float speed &opt :Void->Void cc :String soundLoop :Float volumeMod :Array<FlxSprite> connectedSprites]
     (unless (tweenedPositionsOfSpritesInScenes.exists sceneKey)
         (dictSet tweenedPositionsOfSpritesInScenes sceneKey (new Map)))
-    (dictSet (dictGet tweenedPositionsOfSpritesInScenes sceneKey) sprite (new FlxPoint destX destY))
+    (dictSet (dictGet tweenedPositionsOfSpritesInScenes sceneKey) sprite (FlxPoint.get destX destY))
     (when skipping
         (when cc (cc))
         (return))
