@@ -527,8 +527,10 @@
 
             // I hope this disposes of references to actors, props, sets, etc.:
             (scenes.clear)
+
             (#when cpp
-                (cpp.vm.Gc.run true)))
+                (cpp.vm.Gc.run true)
+                (cpp.vm.Gc.compact)))
 
         (#when debug
             (preload
