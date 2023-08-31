@@ -444,9 +444,11 @@
     // Don't remove the sprite layers, which are added in new()
 
     // clear out currentSounds and currentVoiceTracks
-    (set currentSounds [])
+    (whileLet [sound (currentSounds.pop)]
+        (stopSound sound))
     (currentSoundVolumes.clear)
-    (set currentVoiceTracks [])
+    (whileLet [vt (currentVoiceTracks.pop)]
+        (stopVoiceTrack vt))
     (restoreOriginalVolumes.clear)
     
     )
@@ -672,7 +674,7 @@
 (savedVar :Float soundVolume 1.0)
 (savedVar :Float masterVolume 1.0)
 
-(prop &mut :Array<FlxSound> currentSounds [])
+(prop :Array<FlxSound> currentSounds [])
 (prop :Map<FlxSound,Array<Float>> currentSoundVolumes (new Map))
 
 (method loadSound [path]
@@ -732,7 +734,7 @@
 
 (savedVar :Float voiceVolume 1.0)
 
-(prop &mut :Array<FlxSound> currentVoiceTracks [])
+(prop :Array<FlxSound> currentVoiceTracks [])
 (prop :Map<FlxSound,Function> restoreOriginalVolumes (new Map))
 
 (method loadVoiceTrack [wavPath]
