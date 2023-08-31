@@ -10,3 +10,7 @@
             (let [points (groups coordStrs 2)]
                 (new FlxLightSource (for [x y] points (new FlxPoint (Std.parseFloat x) (Std.parseFloat y))) (Std.parseInt colorStr))))
         (never otherwise)))
+
+(method destroy []
+    (whileLet [point (points.pop)]
+        (point.put)))

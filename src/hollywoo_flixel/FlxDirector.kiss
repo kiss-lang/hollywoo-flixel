@@ -433,9 +433,21 @@
     (hideDialog)
     (hideLighting)
 
+    (when flxMovie.sceneKey
+        (let [scene (dictGet flxMovie.scenes flxMovie.sceneKey)]
+            (hideSet scene.set scene.camera ->:Void {})
+            (doFor prop scene.props
+                (hideProp prop.prop scene.camera ->:Void {}))
+            (doFor character scene.characters
+                (hideCharacter character scene.camera ->:Void {}))))
+
     // Don't remove the sprite layers, which are added in new()
 
-    // TODO does this need to clear out currentSounds, etc? Probably
+    // clear out currentSounds and currentVoiceTracks
+    (set currentSounds [])
+    (currentSoundVolumes.clear)
+    (set currentVoiceTracks [])
+    (restoreOriginalVolumes.clear)
     
     )
 
@@ -660,7 +672,7 @@
 (savedVar :Float soundVolume 1.0)
 (savedVar :Float masterVolume 1.0)
 
-(prop :Array<FlxSound> currentSounds [])
+(prop &mut :Array<FlxSound> currentSounds [])
 (prop :Map<FlxSound,Array<Float>> currentSoundVolumes (new Map))
 
 (method loadSound [path]
@@ -720,7 +732,7 @@
 
 (savedVar :Float voiceVolume 1.0)
 
-(prop :Array<FlxSound> currentVoiceTracks [])
+(prop &mut :Array<FlxSound> currentVoiceTracks [])
 (prop :Map<FlxSound,Function> restoreOriginalVolumes (new Map))
 
 (method loadVoiceTrack [wavPath]
