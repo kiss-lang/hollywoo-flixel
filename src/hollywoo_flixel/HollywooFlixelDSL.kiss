@@ -444,9 +444,9 @@
 (prop &mut :FlxCamera inCamera)
 (prop &mut :FlxSprite outCameraPos)
 (prop &mut :FlxCamera outCamera)
-(method :Void tweenScene [:Bool skipping name :Float speed :Continuation cc &opt :Bool fromLeft :String soundLoop :Float volumeMod]
+(method :Void tweenScene [:Bool skipping :String name :Float speed :Continuation cc &opt :Bool fromLeft :String soundLoop :Float volumeMod]
     (when skipping
-        (setScene name cc)
+        (setScene skipping name cc)
         (return))
     (let [name (kiss.FuzzyMapTools.bestMatch scenes name)
             lastSceneKey sceneKey

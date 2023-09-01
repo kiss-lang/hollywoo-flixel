@@ -10,7 +10,7 @@
 
 (savedVar :Map<String,String> lastSceneLabels (new Map))
 
-(function lastSceneForMovie [:FlxMovie m &opt :String setValue]
+(function :String lastSceneForMovie [:FlxMovie m &opt :String setValue]
     (let [clazz (Type.getClass m)
             className (Type.getClassName clazz)
             currentValue (dictGet lastSceneLabels className)]
