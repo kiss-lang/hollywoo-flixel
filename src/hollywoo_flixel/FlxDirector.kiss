@@ -814,12 +814,13 @@
 (method scaleProp [:FlxSprite prop]
     (let [propKey (_propKey prop)]
         (unless (flxMovie.propScales.exists propKey)
-            // Set the initial scale so the thing fits on the screen, at least
-            (prop.setGraphicSize FlxG.width)
-            (prop.updateHitbox)
-            (when (> prop.height FlxG.height)
-                (prop.setGraphicSize 0 FlxG.height))
-            (flxMovie.propScales.put propKey (new HFloat prop.scale.x)))
+            (unless (Std.isOfType prop FlxText)
+                // Set the initial scale so the thing fits on the screen, at least
+                (prop.setGraphicSize FlxG.width)
+                (prop.updateHitbox)
+                (when (> prop.height FlxG.height)
+                    (prop.setGraphicSize 0 FlxG.height))
+                (flxMovie.propScales.put propKey (new HFloat prop.scale.x))))
         
         (let [:Float scale .value (flxMovie.propScales.get propKey)]
             (when (StringTools.contains propKey "anonProp") (return))
