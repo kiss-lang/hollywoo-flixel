@@ -532,7 +532,9 @@
     (cc))
 
 (prop &mut :Bool isLoading false)
-(method :Void doLoading [:Array<Void->Void> _load :Continuation cc]
+(var LOAD_CALLS_PER_FRAME 2)
+(var LOAD_CALLS_PER_FRAME_SCAVENGE 20)
+(method :Void doLoading [:Array<Void->Void> _load :Bool scavenged :Continuation cc]
     (set isLoading true)
     (set FlxG.autoPause false)
     (set FlxG.mouse.visible false)
@@ -554,7 +556,7 @@
                                 (FlxG.state.remove bar true)
                                 (print (/ (/ flash.system.System.totalMemory 1024) 1000) "Memory in use: ")
                                 (cc)
-                            }) 1)]
+                            }) (if scavenged LOAD_CALLS_PER_FRAME_SCAVENGE LOAD_CALLS_PER_FRAME))]
         (haxe.Timer.delay ->:Void (loop.start) 1)
         // (set bar.cameras [flxMovie.uiCamera])
         (bar.createColoredEmptyBar FlxColor.BLACK true FlxColor.WHITE)
