@@ -529,8 +529,10 @@
             (destroyAndClear sounds)
             (destroyAndClear voiceTracks)
             (destroyAndClear songs)
-            (flixel.FlxG.cameras.remove uiCamera true)
-            (flixel.FlxG.cameras.remove screenCamera true)
+            (when (flixel.FlxG.cameras.list.contains uiCamera)
+                (flixel.FlxG.cameras.remove uiCamera true))
+            (when (flixel.FlxG.cameras.list.contains screenCamera)
+                (flixel.FlxG.cameras.remove screenCamera true))
 
             // I hope this disposes of references to actors, props, sets, etc.:
             (scenes.clear)
