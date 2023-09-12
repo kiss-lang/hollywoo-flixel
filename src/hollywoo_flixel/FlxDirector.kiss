@@ -295,7 +295,9 @@
     (cc))
 
 (method :Void hideSet [:FlxSprite set :FlxCamera camera :Continuation cc]
-    (FlxG.cameras.remove camera false)
+    (when (FlxG.cameras.list.contains camera)
+        (FlxG.cameras.remove camera false))
+
     (.remove (first spriteLayers) skySprite true)
     (.remove (first spriteLayers) set true)
     (cc))
