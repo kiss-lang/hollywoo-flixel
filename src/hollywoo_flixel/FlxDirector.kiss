@@ -539,9 +539,10 @@
     (set isLoading true)
     (set FlxG.autoPause false)
     (set FlxG.mouse.visible false)
+    (localVar &mut :flixel.addons.util.FlxAsyncLoop loop null)
     (let [doneFuncs []
-            bar (new FlxBar 0 0 LEFT_TO_RIGHT (iThird FlxG.width) SimpleWindow.textSize doneFuncs "length" 0 _load.length true)
-            loop (new flixel.addons.util.FlxAsyncLoop (+ 1 _load.length)
+            bar (new FlxBar 0 0 LEFT_TO_RIGHT (iThird FlxG.width) SimpleWindow.textSize doneFuncs "length" 0 _load.length true)]
+        (set loop (new flixel.addons.util.FlxAsyncLoop (+ 1 _load.length)
                     ->:Void 
                         (ifLet [nextLoad (_load.shift)]
                                 {
@@ -555,9 +556,10 @@
                                     (pause))
                                 (set FlxG.autoPause true)
                                 (FlxG.state.remove bar true)
+                                (FlxG.state.remove loop true)
                                 (print (/ (/ flash.system.System.totalMemory 1024) 1000) "Memory in use: ")
                                 (cc)
-                            }) (if scavenged LOAD_CALLS_PER_FRAME_SCAVENGE LOAD_CALLS_PER_FRAME))]
+                            }) (if scavenged LOAD_CALLS_PER_FRAME_SCAVENGE LOAD_CALLS_PER_FRAME)))
         (haxe.Timer.delay ->:Void (loop.start) 1)
         // (set bar.cameras [flxMovie.uiCamera])
         (bar.createColoredEmptyBar FlxColor.BLACK true FlxColor.WHITE)
