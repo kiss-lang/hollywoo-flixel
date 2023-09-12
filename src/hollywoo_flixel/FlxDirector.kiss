@@ -448,13 +448,12 @@
     // Don't remove the sprite layers, which are added in new()
 
     // clear out currentSounds and currentVoiceTracks
+    (restoreOriginalVolumes.clear)
     (whileLet [sound (currentSounds.pop)]
         (stopSound sound))
     (currentSoundVolumes.clear)
     (whileLet [vt (currentVoiceTracks.pop)]
         (stopVoiceTrack vt))
-    (restoreOriginalVolumes.clear)
-    
     )
 
 (method :Option<AutoZConfig> autoZConfig [] (Some (object zPerLayer flxMovie.STAGE_BEHIND_DY frontLayer 0)))
@@ -763,7 +762,8 @@
 (method :Void stopVoiceTrack [:FlxSound track]
     (currentVoiceTracks.remove track)
     (track.stop)
-    ((dictGet restoreOriginalVolumes track)))
+    (when (restoreOriginalVolumes.exists track)
+        (dictGet restoreOriginalVolumes track)))
 
 (prop &mut :FlxSound music)
 (prop &mut :FlxTimer musicFadeTimer)
