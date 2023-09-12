@@ -251,6 +251,8 @@
     (set.clone))
 
 (method :Void showSet [:FlxSprite setSprite :SceneTime time :ScenePerspective perspective :Appearance appearance :FlxCamera camera :Continuation cc]
+    (doFor layer spriteLayers
+        (set layer.cameras [camera]))
     (case appearance
         (FirstAppearance
             (setSprite.setGraphicSize FlxG.width)
@@ -446,6 +448,9 @@
                 (hideCharacter character scene.camera ->:Void {}))))
 
     // Don't remove the sprite layers, which are added in new()
+    // But DO remove everything in them
+    (doFor layer spriteLayers
+        (layer.clear))
 
     // clear out currentSounds and currentVoiceTracks
     (restoreOriginalVolumes.clear)
