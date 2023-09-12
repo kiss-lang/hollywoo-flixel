@@ -263,6 +263,9 @@
         (skipMovie.update elapsed)
         (return))
 
+    (when ccToCall
+        (ccToCall))
+
     (doFor action nextFrameActions
         (action))
     (set nextFrameActions [])
@@ -329,6 +332,7 @@
         (FlxG.cameras.add screenCamera)))
 
 (preload
+    (set unwindWithTimerDelay false)
     (.enableGamepadInput
         (cast (director.shortcutHandler) kiss_flixel.FlxKeyShortcutHandler<Dynamic>)
         [
