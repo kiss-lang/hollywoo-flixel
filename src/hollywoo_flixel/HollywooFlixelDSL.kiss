@@ -151,6 +151,10 @@
             anim (read stream)]
         `(withActor ,actor a (a.playAnimation ,anim))))
 
+(defReaderMacro "ASSERTLOGSPRITES" [stream &builder b]
+    `(#when debug 
+        (kiss_flixel.SpriteTools.assertLogSprites ,(read stream))
+        (cc))) 
 
 // Reusable effect: Scan a slightly transparent line side-to-side across a FlxSprite like a scanner
 @:keep
