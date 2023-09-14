@@ -96,7 +96,8 @@
             (sound.resume))))
 
 (method :Void resume []
-    (set FlxG.mouse.visible true)
+    (unless movie.promptedRecording
+        (set FlxG.mouse.visible true))
     (FlxG.inputs.add actionManager)
     (FlxG.state.forEach
         ->:Void child
@@ -823,7 +824,7 @@
 (method scaleProp [:FlxSprite prop]
     (let [propKey (_propKey prop)]
         (unless (flxMovie.propScales.exists propKey)
-            (unless (Std.isOfType prop FlxText)
+            (unless (StringTools.contains propKey "anonProp")
                 // Set the initial scale so the thing fits on the screen, at least
                 (prop.setGraphicSize FlxG.width)
                 (prop.updateHitbox)
@@ -998,3 +999,6 @@
 
 (method :Void hideInputIcon []
     (FlxG.state.remove inputIcon true))
+
+(method :Void prepareForRecording []
+    (set FlxG.mouse.visible false))
