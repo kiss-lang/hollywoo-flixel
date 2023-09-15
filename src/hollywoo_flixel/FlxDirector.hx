@@ -43,6 +43,7 @@ import openfl.geom.Point;
 import flixel.input.mouse.FlxMouseButton;
 import flixel.input.mouse.FlxMouseEventManager;
 import flixel.input.gamepad.*;
+import hollywoo_flixel.HFlxSound;
 
 @:build(kiss.Kiss.build())
 class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSound, FlxSprite, FlxSound, FlxCamera, FlxLightSource> {

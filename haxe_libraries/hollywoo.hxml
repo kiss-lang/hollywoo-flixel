@@ -1,6 +1,6 @@
-# @install: lix --silent download "gh://github.com/kiss-lang/hollywoo#847f2aea739488f5686e33394e649c6e44e44d8b" into hollywoo/0.0.0/github/847f2aea739488f5686e33394e649c6e44e44d8b
-# @run: haxelib run-dir hollywoo "${HAXE_LIBCACHE}/hollywoo/0.0.0/github/847f2aea739488f5686e33394e649c6e44e44d8b"
+# @install: lix --silent download "gh://github.com/kiss-lang/hollywoo#9efdacd6d9a1985ba764a2a9477bbefe8b701d2b" into hollywoo/0.0.0/github/9efdacd6d9a1985ba764a2a9477bbefe8b701d2b
+# @run: haxelib run-dir hollywoo "${HAXE_LIBCACHE}/hollywoo/0.0.0/github/9efdacd6d9a1985ba764a2a9477bbefe8b701d2b"
 -lib kiss
 -lib kiss-tools
--cp ${HAXE_LIBCACHE}/hollywoo/0.0.0/github/847f2aea739488f5686e33394e649c6e44e44d8b/src/
+-cp ${HAXE_LIBCACHE}/hollywoo/0.0.0/github/9efdacd6d9a1985ba764a2a9477bbefe8b701d2b/src/
 -D hollywoo=0.0.0
