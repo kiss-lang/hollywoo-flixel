@@ -814,7 +814,9 @@
         (unless waitForEnd (cc))))
 
 (method :Void changeSongVolume [:Float volumeMod :Continuation cc]
-    (set music.volume (* volumeMod musicVolume))
+    (let [[fade oldMod] (dictGet currentSoundVolumes music)]
+        (set music.volume (* fade volumeMod musicVolume))
+        (dictSet currentSoundVolumes music [fade volumeMod]))
     (cc))
 
 (method :Void stopSong []
