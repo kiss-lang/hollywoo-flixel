@@ -874,8 +874,9 @@
     (set prop.cameras [camera])
     (let [width (min (max prop.width PROP_MIN_WIDTH) PROP_MAX_WIDTH)]
         (whenLet [FirstAppearance appearance]
-            (prop.setGraphicSize width)
-            (prop.updateHitbox))
+            (when (= 1 prop.scale.x prop.scale.y)
+                (prop.setGraphicSize width)
+                (prop.updateHitbox)))
 
         (set prop.x position.x)
         (set prop.y position.y)
@@ -902,6 +903,8 @@
         (let [layerNum position.z]
             (assertEquals layerNum (Std.int layerNum))
             (.add (nth spriteLayers (min LAYER_MAX (+ 1 (Std.int layerNum)))) prop)))
+    (set prop.x (Math.round prop.x))
+    (set prop.y (Math.round prop.y))
     (cc))
 
 (var :Map<FlxSprite,String> _propKeys (new Map))
