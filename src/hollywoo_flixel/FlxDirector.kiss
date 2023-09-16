@@ -644,7 +644,6 @@
     
     (set dialogBox.cameras [flxMovie.uiCamera])
     (FlxG.state.add dialogBox)
-    (dialogBox.revive)
     // show the dialog
     (unless dialogText
         (set dialogText (new FlxText flxMovie.DIALOG_X flxMovie.DIALOG_Y flxMovie.DIALOG_WIDTH "" DIALOG_SIZE)))
@@ -671,18 +670,24 @@
                 (-= speakerNameX (fHalf speakerNameText.width))
                 (clamp speakerNameX flxMovie.DIALOG_X (- (+ flxMovie.DIALOG_X flxMovie.DIALOG_WIDTH) speakerNameText.width))
                 (set speakerNameText.x speakerNameX)
-                (speakerNameText.revive)
                 (set dialogText.y (+ flxMovie.DIALOG_Y speakerNameText.height))
             }
         (set dialogText.y flxMovie.DIALOG_Y))
-    (dialogText.revive)
     (startWaitForInput cc))
 
 (method :Void hideDialog []
-    (dialogText?.kill)
-    (speakerNameText?.kill)
-    (dialogBox?.kill)
-    (when superText (FlxG.state.remove superText true)))
+    (when dialogText
+        (FlxG.state.remove dialogText)
+        (set dialogText null))
+    (when speakerNameText
+        (FlxG.state.remove speakerNameText)
+        (set speakerNameText null))
+    (when dialogBox
+        (FlxG.state.remove dialogBox)
+        (set dialogBox null))
+    (when superText 
+        (FlxG.state.remove superText true)
+        (set superText null)))
 
 (savedVar :Float soundVolume 1.0)
 (savedVar :Float masterVolume 1.0)
