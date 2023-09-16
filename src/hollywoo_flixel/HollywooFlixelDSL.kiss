@@ -157,6 +157,9 @@
     `(#when debug 
         (kiss_flixel.SpriteTools.assertLogSprites ,(read stream))
         (cc))) 
+(defReaderMacro "ASSERTLOGSPRITESCC" [stream &builder b]
+    `(#when debug 
+        (kiss_flixel.SpriteTools.assertLogSprites ,(read stream)))) 
 
 // Reusable effect: Scan a slightly transparent line side-to-side across a FlxSprite like a scanner
 @:keep
