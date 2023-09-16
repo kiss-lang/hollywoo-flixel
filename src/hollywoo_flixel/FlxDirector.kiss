@@ -349,7 +349,23 @@
 
 (method :Void enterString [:String prompt :String->Void submit]
     (set pauseMenu
-        (SimpleWindow.promptForString prompt submit)))
+        (SimpleWindow.promptForString
+            prompt
+            submit
+            null
+            null
+            null
+            null
+            null
+            false
+            null
+            null
+            null
+            null
+            null
+            null
+            null
+            true)))
 
 (method :Void defineFlxPoint [:FlxPoint->Void submit]
     (unless mm
