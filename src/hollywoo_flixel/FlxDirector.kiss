@@ -606,6 +606,12 @@
             (new FlxTextFormatMarkerPair (new FlxTextFormat FlxColor.CYAN) "*")
         ]))
 
+(method showExpression [:ActorFlxSprite actor :String wryly]
+    // When an actor is associated with the line, check for an animation matching the wryly
+    (if wryly
+            (actor.playAnimation wryly)
+        (actor.playAnimation "neutral")))
+
 (method showDialog [:String speakerName :SpeechType<ActorFlxSprite> type :String wryly :String text :Continuation cc]
     // TODO handle text messages, wrylies, off-screen, from-phone, etc. via (case type)
     // TODO attribute on-screen dialogue to the character's stageposition
@@ -625,16 +631,9 @@
                 (startWaitForInput cc)
                 (return)))
         ((OnScreen character)
-            (set speakerNameX (+ character.actor.x (fHalf character.actor.width)))
-            // When an actor is associated with the line, check for an animation matching the wryly
-            (let [actor (the ActorFlxSprite character.actor)]
-                (if wryly
-                        (actor.playAnimation wryly)
-                    (actor.playAnimation "neutral"))))
+            (set speakerNameX (+ character.actor.x (fHalf character.actor.width))))
         ((or (OffScreen actor) (VoiceOver actor) (TextMessage actor) (FromPhone actor))
-            (if wryly
-                        (actor.playAnimation wryly)
-                    (actor.playAnimation "neutral")))
+            null)
         (otherwise))
 
     // Make a dialog box
