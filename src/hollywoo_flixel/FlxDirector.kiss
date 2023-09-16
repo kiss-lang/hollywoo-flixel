@@ -653,9 +653,6 @@
     (set dialogText.text text)
     (applyFormat dialogText)
 
-    (set dialogText.size DIALOG_SIZE)
-    (while (< FlxG.height (+ dialogText.y dialogText.height))
-        (-= dialogText.size 6))
     // show the speaker name
     (set speakerNameText null)
     (set speakerNameText (new FlxText flxMovie.DIALOG_X flxMovie.DIALOG_Y 0 "" DIALOG_SIZE))
@@ -672,6 +669,9 @@
                 (set dialogText.y (+ flxMovie.DIALOG_Y speakerNameText.height))
             }
         (set dialogText.y flxMovie.DIALOG_Y))
+    (set dialogText.size DIALOG_SIZE)
+    (while (< FlxG.height (+ dialogText.y dialogText.height))
+        (-= dialogText.size 6))
     (startWaitForInput cc))
 
 (method :Void hideDialog []
