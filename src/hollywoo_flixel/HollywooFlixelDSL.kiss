@@ -57,18 +57,31 @@
     (unless (tweenedPositionsOfSpritesInScenes.exists sceneKey)
         (dictSet tweenedPositionsOfSpritesInScenes sceneKey (new Map)))
     (dictSet (dictGet tweenedPositionsOfSpritesInScenes sceneKey) sprite (FlxPoint.get destX destY))
-    (when skipping
+    
+    (localFunction finalPositions []
+        (when connectedSprites
+            (doFor cSprite connectedSprites
+                (let [xOffset (- cSprite.x sprite.x)
+                        yOffset (- cSprite.y sprite.y)]
+                    (set cSprite.x (+ destX xOffset))
+                    (set cSprite.y (+ destY yOffset)))))
+
         (set sprite.x destX)
-        (set sprite.y destY)
+        (set sprite.y destY))
+    
+    // Move the sprite and its connected sprites immediately when skipping:
+    (when skipping
+        (finalPositions)
         (when cc (cc))
         (return))
+    (let [oldCC cc]
+        (set cc
+            (makeCC
+                (finalPositions)
+                (when soundLoop
+                    (stopSound skipping soundLoop (makeCC null)))
+                (when oldCC (oldCC)))))
     (when soundLoop
-        (let [oldCC cc]
-            (set cc
-                (makeCC
-                    (stopSound skipping soundLoop (makeCC null))
-                    (when oldCC
-                        (oldCC)))))
         (loopSound skipping soundLoop (makeCC null) volumeMod))
     (tween
         (FlxTween.linearMotion sprite sprite.x sprite.y destX destY speed false (tweenOpts cc)))
