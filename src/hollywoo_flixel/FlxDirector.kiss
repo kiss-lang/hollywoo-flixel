@@ -691,8 +691,10 @@
 (prop :Map<FlxSound,Array<Float>> currentSoundVolumes (new Map))
 
 (method loadSound [path]
-    (let [s (FlxG.sound.load path)]
+    (let [s (new HFlxSound)]
+        (s.loadEmbedded path)
         (set s.persist true)
+        (set s.autoDestroy false)
         s))
 
 (method :Void playSound [:FlxSound sound :Float volumeMod &opt :Continuation cc]
