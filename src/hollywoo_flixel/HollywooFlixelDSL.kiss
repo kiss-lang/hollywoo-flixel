@@ -222,6 +222,7 @@
 
 (method :Void rotateTo [:Bool skipping :FlxSprite sprite :Float angle :Float duration &opt :Void->Void cc :String soundLoop :Float volumeMod]
     (when skipping
+        (set sprite.angle angle)
         (cc)
         (return))
     (when soundLoop
