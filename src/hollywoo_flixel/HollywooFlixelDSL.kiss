@@ -324,24 +324,31 @@
     (let [[x y] (SpriteTools.positionOn s (canvas) rpos true)]
         (new StagePosition x y layer)))
 
+(prop &mut :Array<FlxSprite> plates)
 (method namePlates [:Bool skipping :Array<String> names :Dynamic delayLength :Bool delayWhileShown :Void->Void cc]
     (when skipping
         (cc)
         (return))
-    (let [plates
-                (for name names
-                    (let [plate (SpriteTools.textPlate name FlxDirector.DIALOG_SIZE FlxDirector.SUPER_MARGIN)
-                            actor .actor (dictGet .characters (_currentScene) name)]
-                        (set plate.x (- (+ actor.x (/ actor.width 2))
-                                        (/ plate.width 2)))
-                        (set plate.y (+ actor.y actor.height))
-                        (FlxG.state.add plate)
-                        plate))]
-        (delay skipping delayLength 
-            (makeCC
-                (doFor plate plates (FlxG.state.remove plate true))
-                (when delayWhileShown (cc)))))
+    (set plates
+        (for name names
+            (let [plate (SpriteTools.textPlate name FlxDirector.DIALOG_SIZE FlxDirector.SUPER_MARGIN)
+                    actor .actor (dictGet .characters (_currentScene) name)]
+                (set plate.x (- (+ actor.x (/ actor.width 2))
+                                (/ plate.width 2)))
+                (set plate.y (+ actor.y actor.height))
+                (FlxG.state.add plate)
+                plate)))
+    (delay skipping delayLength 
+        (makeCC
+            (doFor plate plates (FlxG.state.remove plate true))
+            (set plates null)
+            (when delayWhileShown (cc))))
     (unless delayWhileShown (cc)))
+
+(cleanup
+    (when plates
+        (doFor plate plates (FlxG.state.remove plate true))
+        (set plates null)))
 
 (method putPresetPosition [key x y z]
     (let [pos (new StagePosition (Std.int x) (Std.int y) (Std.int z))]
