@@ -545,6 +545,8 @@
 (prop &mut :FlxSprite titleCard null)
 (method :Void showTitleCard [:Array<String> text :Continuation cc]
     (set titleCard (new FlxSprite))
+    (when flxMovie.isLoading
+        (dictSet kiss_flixel.SpriteTools.ignoreObjects titleCard true))
     (titleCard.makeGraphic FlxG.width FlxG.height FlxColor.BLACK true)
     (SpriteTools.writeOnSprite (text.shift) TITLE_SIZE titleCard (object x (Percent 0.5) y (Pixels TITLE_Y)))
     (localVar &mut subtitleY (+ TITLE_Y TITLE_SIZE TITLE_MARGIN))
@@ -557,38 +559,59 @@
 (prop &mut :Bool isLoading false)
 (var LOAD_CALLS_PER_FRAME 2)
 (var LOAD_CALLS_PER_FRAME_SCAVENGE 20)
-(method :Void doLoading [:Array<Void->Void> _load :Bool scavenged :Continuation cc]
+
+(prop &mut :Void->Void doneLoadingCC)
+(method :Void doneLoading []
+    (set FlxG.mouse.visible true)
+    (set isLoading false)
+    (unless (Reflect.field FlxG.state "focused")
+        (pause))
+    (set FlxG.autoPause true)
+    (FlxG.state.remove bar true)
+    (FlxG.state.remove loop true)
+    (print (/ (/ flash.system.System.totalMemory 1024) 1000) "Memory in use: ")
+    (doneLoadingCC))
+
+(prop &mut :Int lastIp 0)
+(method :Void update []
+    (when movie.skipTarget
+        (+= barProgress (- movie.lastInstructionPointer lastIp))
+        (set lastIp movie.lastInstructionPointer)
+        (when (= barProgress barMax)
+            (doneLoading))))
+
+(prop &mut :FlxBar bar)
+(prop &mut :flixel.addons.util.FlxAsyncLoop loop null)
+(prop &mut :Int barProgress 0)
+(prop &mut :Int barMax 0)
+(method :Void doLoading [:Array<Void->Void> _load :Bool scavenged :Continuation cc :Continuation done]
     (set isLoading true)
     (set FlxG.autoPause false)
     (set FlxG.mouse.visible false)
-    (localVar &mut :flixel.addons.util.FlxAsyncLoop loop null)
-    (let [doneFuncs []
-            bar (new FlxBar 0 0 LEFT_TO_RIGHT (iThird FlxG.width) SimpleWindow.textSize doneFuncs "length" 0 _load.length true)]
-        (set loop (new flixel.addons.util.FlxAsyncLoop (+ 1 _load.length)
-                    ->:Void 
-                        (ifLet [nextLoad (_load.shift)]
-                                {
-                                    (nextLoad)
-                                    (doneFuncs.push nextLoad)
-                                }
+    (set barProgress 0)
+    (set barMax (+ _load.length (or movie.skipTarget 1) -1))
+    (set bar (new FlxBar 0 0 LEFT_TO_RIGHT (iThird FlxG.width) SimpleWindow.textSize this "barProgress" 0 barMax true))
+    (set doneLoadingCC done)
+    (set loop (new flixel.addons.util.FlxAsyncLoop (+ 1 _load.length)
+                ->:Void 
+                    (ifLet [nextLoad (_load.shift)]
                             {
-                                (set FlxG.mouse.visible true)
-                                (set isLoading false)
-                                (unless (Reflect.field FlxG.state "focused")
-                                    (pause))
-                                (set FlxG.autoPause true)
-                                (FlxG.state.remove bar true)
-                                (FlxG.state.remove loop true)
-                                (print (/ (/ flash.system.System.totalMemory 1024) 1000) "Memory in use: ")
-                                (cc)
-                            }) (if scavenged LOAD_CALLS_PER_FRAME_SCAVENGE LOAD_CALLS_PER_FRAME)))
-        (haxe.Timer.delay ->:Void (loop.start) 1)
-        // (set bar.cameras [flxMovie.uiCamera])
-        (bar.createColoredEmptyBar FlxColor.BLACK true FlxColor.WHITE)
-        (bar.createColoredFilledBar FlxColor.WHITE false)
-        (bar.screenCenter)
-        (FlxG.state.add bar)
-        (FlxG.state.add loop)))
+                                (nextLoad)
+                                (+= barProgress 1)
+                            }
+                        {
+                            (unless movie.skipTarget (doneLoading))
+                            (cc)
+                        }) (if scavenged LOAD_CALLS_PER_FRAME_SCAVENGE LOAD_CALLS_PER_FRAME)))
+    (haxe.Timer.delay ->:Void (loop.start) 1)
+    // (set bar.cameras [flxMovie.uiCamera])
+    (bar.createColoredEmptyBar FlxColor.BLACK true FlxColor.WHITE)
+    (bar.createColoredFilledBar FlxColor.WHITE false)
+    (bar.screenCenter)
+    (FlxG.state.add bar)
+    (FlxG.state.add loop)
+    (dictSet kiss_flixel.SpriteTools.ignoreObjects bar true)
+    (dictSet kiss_flixel.SpriteTools.ignoreObjects loop true))
 
 (method :Void hideTitleCard []
     (when titleCard

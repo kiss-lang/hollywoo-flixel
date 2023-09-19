@@ -182,6 +182,13 @@
 (defReaderMacro "ASSERTLOGSPRITESCC" [stream &builder b]
     `(#when debug 
         (kiss_flixel.SpriteTools.assertLogSprites ,(read stream)))) 
+(defReaderMacro "WARNLOGSPRITES" [stream &builder b]
+    `(#when debug 
+        (kiss_flixel.SpriteTools.warnLogSprites ,(read stream))
+        (cc))) 
+(defReaderMacro "WARNLOGSPRITESCC" [stream &builder b]
+    `(#when debug 
+        (kiss_flixel.SpriteTools.warnLogSprites ,(read stream)))) 
 
 // Reusable effect: Scan a slightly transparent line side-to-side across a FlxSprite like a scanner
 @:keep
@@ -297,6 +304,7 @@
     (doFor action nextFrameActions
         (action))
     (set nextFrameActions [])
+    (flxDirector.update)
     (unless paused
         (let [tweenElapsed (* elapsed (if flxDirector.fastForwardAction.triggered FAST_FORWARD_MOD 1))]
             (doFor tween tweens
@@ -368,6 +376,7 @@
 
 (preload
     (set unwindWithTimerDelay false)
+    (set skipAsync true)
     (.enableGamepadInput
         (cast (director.shortcutHandler) kiss_flixel.FlxKeyShortcutHandler<Dynamic>)
         [
