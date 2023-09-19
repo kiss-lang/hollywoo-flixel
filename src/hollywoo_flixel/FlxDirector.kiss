@@ -547,6 +547,8 @@
     (set titleCard (new FlxSprite))
     (when flxMovie.isLoading
         (dictSet kiss_flixel.SpriteTools.ignoreObjects titleCard true))
+    (unless flxMovie.isLoading
+        (set titleCard.cameras [flxMovie.screenCamera]))
     (titleCard.makeGraphic FlxG.width FlxG.height FlxColor.BLACK true)
     (SpriteTools.writeOnSprite (text.shift) TITLE_SIZE titleCard (object x (Percent 0.5) y (Pixels TITLE_Y)))
     (localVar &mut subtitleY (+ TITLE_Y TITLE_SIZE TITLE_MARGIN))
@@ -956,6 +958,7 @@
 (prop &mut :FlxSprite blackBG null)
 (method :Void showBlackScreen []
     (set blackBG (new FlxSprite))
+    (set blackBG.cameras [flxMovie.screenCamera])
     (blackBG.makeGraphic FlxG.width FlxG.height FlxColor.BLACK true)
     (FlxG.state.add blackBG))
 
