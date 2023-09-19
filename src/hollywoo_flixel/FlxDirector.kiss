@@ -771,6 +771,7 @@
             plate (SpriteTools.textPlate "[${description}]" DIALOG_SIZE SUPER_MARGIN)]
         (plate.screenCenter)
         (set plate.y (+ CAPTION_Y (* plate.height row)))
+        (set plate.cameras [flxMovie.uiCamera])
         (captions.add plate)
         (dictSet captionIds id plate)
         (FlxG.state.add plate)))
