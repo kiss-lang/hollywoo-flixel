@@ -40,13 +40,33 @@
                     (set sprite.y point.y)))
             (cc))))
 
+// All of these functions modify the positions of actors and props in the scene.
+// If the actor was previously in this scene at a tweened position, it will
+// need to be cleared so the sprite doesn't snap back there when the scene changes.
+(method &override addCharacter [actorName :Dynamic position :StageFacing facing :Continuation cc]
+    (whenLet [tweenedPositions (dictGet tweenedPositionsOfSpritesInScenes sceneKey)]
+        (tweenedPositions.remove (dictGet actors actorName)))
+    (super.addCharacter actorName position facing cc))
+
 (method &override moveCharacter [actorName :Dynamic newPosition :StageFacing newFacing :Continuation cc]
     (whenLet [tweenedPositions (dictGet tweenedPositionsOfSpritesInScenes sceneKey)]
         (tweenedPositions.remove (dictGet actors actorName)))
     (super.moveCharacter actorName newPosition newFacing cc))
 
+(method &override removeCharacter [actorName :Continuation cc]
+    (whenLet [tweenedPositions (dictGet tweenedPositionsOfSpritesInScenes sceneKey)]
+        (tweenedPositions.remove (dictGet actors actorName)))
+    (super.removeCharacter actorName cc))
+
+(method &override addProp [name :Dynamic position :Continuation cc]
+    (whenLet [tweenedPositions (dictGet tweenedPositionsOfSpritesInScenes sceneKey)]
+        (tweenedPositions.remove (dictGet props name)))
+    (super.addProp name position cc))
+
 (method &override removeProp [name :Continuation cc]
     (let [prop (dictGet props name)]
+        (whenLet [tweenedPositions (dictGet tweenedPositionsOfSpritesInScenes sceneKey)]
+            (tweenedPositions.remove prop))
         (whenLet [overlaidProps (dictGet overlaidPropsInScenes sceneKey)]
             (overlaidProps.remove prop)))
     (super.removeProp name cc))
@@ -304,6 +324,7 @@
     (doFor action nextFrameActions
         (action))
     (set nextFrameActions [])
+
     (flxDirector.update)
     (unless paused
         (let [tweenElapsed (* elapsed (if flxDirector.fastForwardAction.triggered FAST_FORWARD_MOD 1))]
