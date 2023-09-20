@@ -561,7 +561,9 @@
             (unless (FlxG.inputs.list.contains flxDirector.actionManager)
                 (FlxG.inputs.add flxDirector.actionManager))
 
-            (set onLabel ->:Void label (FlxDirector.lastSceneForMovie this label)))
+            (set onCommitLabel ->:Void label {
+                (FlxDirector.lastSceneForMovie this label)
+            }))
 
         (cleanup
             (when skipMovie?.running
