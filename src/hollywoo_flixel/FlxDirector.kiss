@@ -591,6 +591,7 @@
     (set FlxG.autoPause false)
     (set FlxG.mouse.visible false)
     (set barProgress 0)
+    (set lastIp 0)
     (set barMax (+ _load.length (or movie.skipTarget 1) -1))
     (set bar (new FlxBar 0 0 LEFT_TO_RIGHT (iThird FlxG.width) SimpleWindow.textSize this "barProgress" 0 barMax true))
     (set doneLoadingCC done)
