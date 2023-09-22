@@ -396,6 +396,12 @@
         (FlxG.cameras.add screenCamera)))
 
 (preload
+    // I think it's safe to leave a cleaned-up movie as this reference,
+    // because runWithErrorChecking() doesn't access anything in it. It
+    // just does try-catch.
+    // So for now, I'm not un-setting this in cleanup() or anything like that.
+    (set hollywoo_flixel.HFlxGame.currentMovie this)
+
     (set unwindWithTimerDelay false)
     (set skipAsync true)
     (.enableGamepadInput
