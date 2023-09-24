@@ -123,8 +123,12 @@
             ->label {
                 (let [m flxMovie]
                     // This calls cleanup:
-                    (m.prepareForSkip)
-                    ((dictGet runners label) m.skipMovie))
+                    (cond
+                        (m.didLoading
+                            (m.prepareForSkip)
+                            ((dictGet runners label) m.skipMovie))
+                        (true
+                            ((dictGet runners label) m))))
             } true "escape")
         (unless (= -1 lastLabelIndex) (set pauseMenu.selectedIndex (+ 1 lastLabelIndex)))
         (set pauseMenu.onClose cancel)))
