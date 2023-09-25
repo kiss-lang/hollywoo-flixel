@@ -23,6 +23,7 @@ import hollywoo.HFloat;
 import hollywoo_flixel.FlxMovie;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;
+import flixel.addons.text.FlxTypeText;
 import flixel.system.FlxSound;
 import flixel.FlxCamera;
 import flixel.util.FlxTimer;

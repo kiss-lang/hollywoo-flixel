@@ -78,6 +78,12 @@
     (FlxG.state.forEach
         ->:Void child
             (typeCase [child]
+                ([:FlxTypeText typeText]
+                    (when typeText.sounds
+                        (doFor sound typeText.sounds
+                            (when sound.playing
+                                (sound.pause))))
+                    (set typeText.paused true))
                 ([:FlxSprite sprite]
                     (sprite.animation?.pause))
                 (otherwise))
@@ -102,6 +108,11 @@
     (FlxG.state.forEach
         ->:Void child
             (typeCase [child]
+                ([:FlxTypeText typeText]
+                    (when typeText.sounds
+                        (doFor sound typeText.sounds
+                            (when sound.playing (sound.resume))))
+                    (set typeText.paused false))
                 ([:FlxSprite sprite]
                     (sprite.animation?.resume))
                 (otherwise))
