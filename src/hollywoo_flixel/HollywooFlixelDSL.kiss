@@ -379,10 +379,10 @@
         (doFor plate plates (FlxG.state.remove plate true))
         (set plates null)))
 
-(method putPresetPosition [key x y z]
+(method putPresetPosition [key x y z &opt :Bool notSpecial]
     (let [pos (new StagePosition (Std.int x) (Std.int y) (Std.int z))]
         (stagePositions.put key pos)
-        (dictSet presetPositions (pos.stringify) true)))
+        (unless notSpecial (dictSet presetPositions (pos.stringify) true))))
 
 (method &override :Void createCameras []
     (unless uiCamera
