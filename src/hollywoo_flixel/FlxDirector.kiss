@@ -466,12 +466,14 @@
         (set lightSprite null)))
 
 (method :Void cleanup [] 
+    (when music (stopSong))
+
     (hideTitleCard)
     (hideBlackScreen)
     (hideDialog)
     (hideLighting)
 
-    (when flxMovie.sceneKey
+    (when (and flxMovie.sceneKey (< 0 (Lambda.count flxMovie.scenes)))
         (let [scene (dictGet flxMovie.scenes flxMovie.sceneKey)]
             (hideSet scene.set scene.camera ->:Void {})
             (doFor prop scene.props
@@ -804,6 +806,8 @@
 (method loadSong [path]
     (let [song (FlxG.sound.load path)]
         (assert !(= 0 song.length) "song from $path has 0 length! avoid mp3s for this reason")
+        (set song.persist true)
+        (set song.autoDestroy false)
         song))
 
 (method :Float getSongLength [:FlxSound song]
@@ -815,7 +819,10 @@
 (prop :Map<FlxSound,Function> restoreOriginalVolumes (new Map))
 
 (method loadVoiceTrack [wavPath]
-    (FlxG.sound.load wavPath))
+    (let [vt (FlxG.sound.load wavPath)]
+        (set vt.persist true)
+        (set vt.autoDestroy false)
+        vt))
 
 (method :Void playVoiceTrack [:FlxSound track :Float volumeMod :Float start :Float end :Continuation cc]
     (let [originalVolume track.volume

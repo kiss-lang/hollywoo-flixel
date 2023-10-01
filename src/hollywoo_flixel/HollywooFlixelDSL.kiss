@@ -4,7 +4,7 @@
 (loadFrom "hollywoo" "src/hollywoo/Movie.kiss")
 (loadFrom "hollywoo-flixel" "src/hollywoo_flixel/Aliases.kiss")
 
-(method :Dynamic callPrivate [:Dynamic obj :String method &rest :Array<Dynamic> args]
+(function :Dynamic callPrivate [:Dynamic obj :String method &rest :Array<Dynamic> args]
     (Reflect.callMethod obj (Reflect.field obj method) args))
 
 (method newFlxTextProp [:String key :String text :Int size :FlxColor color &opt :String font]
@@ -569,7 +569,11 @@
 
 (function destroyAndClear [:kiss.FuzzyMap<Dynamic> m]
     (doFor =>key thing m
-        (thing.destroy))
+        (typeCase [thing]
+            ([:FlxSound sound]
+                (callPrivate FlxG.sound "destroySound" sound))
+            (otherwise 
+                (thing.destroy))))
     (m.clear))
 
 (defMacro addSkips [flxMovieClass]
