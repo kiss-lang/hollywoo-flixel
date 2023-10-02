@@ -1068,7 +1068,9 @@
 (prop &mut :FlxSprite inputIcon)
 
 (method :Void showInputIcon []
-    (set inputIcon (SpriteTools.textPlate "[...]" DIALOG_SIZE SUPER_MARGIN null null applyFormat))
+    (unless inputIcon
+        (set inputIcon (SpriteTools.textPlate "[...]" DIALOG_SIZE SUPER_MARGIN null null applyFormat))
+        (flixel.util.FlxSpriteUtil.drawRect inputIcon 0 0 inputIcon.width inputIcon.height FlxColor.TRANSPARENT (object thickness 1 color FlxColor.WHITE)))
     (set inputIcon.cameras [flxMovie.uiCamera])
     (inputIcon.screenCenter)
     (set inputIcon.y (- flxMovie.DIALOG_Y inputIcon.height))
