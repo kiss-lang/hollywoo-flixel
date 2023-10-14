@@ -255,6 +255,8 @@
                 (never otherwise)))
         (sh.registerItem "{tab} resume" _resume true)
         (sh.registerItem "{escape} resume" _resume true)
+        (pauseMenu.setUIControlColor buttonColor)
+
         (pauseMenu.show)
         (pauseMenu.scrollToBottom)))
 
@@ -340,6 +342,15 @@
 (method :Void chooseString [:String prompt :Array<String> choices :String->Void submit]
     (_chooseString prompt choices submit))
 
+(savedVar :Int _buttonColor (FlxColor.GRAY.getLightened 0.4))
+(var :FlxColor buttonColor (property get null))
+(function get_buttonColor []
+    (FlxColor.fromInt _buttonColor))
+(savedVar :Int _disabledButtonColor FlxColor.GRAY)
+(var :FlxColor disabledButtonColor (property get null))
+(function get_disabledButtonColor []
+    (FlxColor.fromInt _disabledButtonColor))
+
 (method :Void _chooseString [:String prompt :Array<String> choices :String->Void submit &opt :Bool xButton :String xKey]
     (set pauseMenu
         (kiss_flixel.SimpleWindow.promptForChoice
@@ -348,6 +359,7 @@
             submit
             FlxColor.BLACK
             FlxColor.WHITE
+            buttonColor
             0.8
             0.8
             ?xButton
@@ -360,6 +372,7 @@
             null
             false
             true))
+    (pauseMenu.setUIControlColor buttonColor)
     (pauseMenu.enableGamepadInput true [=>START ""]))
 
 (method :Void enterString [:String prompt :String->Void submit]
