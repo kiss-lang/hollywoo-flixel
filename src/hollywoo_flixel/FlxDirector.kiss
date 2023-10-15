@@ -634,7 +634,7 @@
                             }
                         {
                             (unless movie.skipTarget (doneLoading))
-                            (cc)
+                            (flxMovie.nextFrameActions.push cc)
                         }) (if scavenged LOAD_CALLS_PER_FRAME_SCAVENGE LOAD_CALLS_PER_FRAME)))
     (haxe.Timer.delay ->:Void (loop.start) 1)
     // (set bar.cameras [flxMovie.uiCamera])
