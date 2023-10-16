@@ -53,9 +53,16 @@
         (tweenedPositions.remove (dictGet actors actorName)))
     (super.moveCharacter actorName newPosition newFacing cc))
 
+(method removeTweensOf [:FlxSprite actorOrProp]
+    (doFor tween (reverse tweens)
+        (when (callPrivate tween "isTweenOf" actorOrProp)
+            (tweens.remove tween))))
+
 (method &override removeCharacter [actorName :Continuation cc]
-    (whenLet [tweenedPositions (dictGet tweenedPositionsOfSpritesInScenes sceneKey)]
-        (tweenedPositions.remove (dictGet actors actorName)))
+    (let [actor (dictGet actors actorName)]
+        (removeTweensOf actor)
+        (whenLet [tweenedPositions (dictGet tweenedPositionsOfSpritesInScenes sceneKey)]
+            (tweenedPositions.remove actor)))
     (super.removeCharacter actorName cc))
 
 (method &override addProp [name :Dynamic position :Continuation cc]
@@ -65,6 +72,7 @@
 
 (method &override removeProp [name :Continuation cc]
     (let [prop (dictGet props name)]
+        (removeTweensOf prop)
         (whenLet [tweenedPositions (dictGet tweenedPositionsOfSpritesInScenes sceneKey)]
             (tweenedPositions.remove prop))
         (whenLet [overlaidProps (dictGet overlaidPropsInScenes sceneKey)]
