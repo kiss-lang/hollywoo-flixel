@@ -612,6 +612,7 @@
             (destroyAndClear songs)
             (when (flixel.FlxG.cameras.list.contains uiCamera)
                 (flixel.FlxG.cameras.remove uiCamera true))
+            (set kiss_flixel.SimpleWindow.defaultCamera FlxG.camera)
             (when (flixel.FlxG.cameras.list.contains screenCamera)
                 (flixel.FlxG.cameras.remove screenCamera true))
 
