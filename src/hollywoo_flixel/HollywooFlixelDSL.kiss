@@ -420,6 +420,9 @@
     (set FlxG.sound.volume FlxDirector.masterVolume)
     (createCameras)
     
+    // This silly line of code is like putting @:keep on FlxTween.isTweenOf
+    (FlxTween.cancelTweensOf (new FlxSprite))
+
     // These are set here so they're defined after FlxG.width and height have been set:
     (set STAGE_LEFT_X 150.0)
     (set STAGE_RIGHT_X (- FlxG.width STAGE_LEFT_X))
