@@ -23,10 +23,7 @@
 (method :TweenOptions tweenOpts [&opt :Void->Void cc]
     (object
         onComplete 
-            ->:Void tween {
-                            (tweens.remove tween)
-                            (when cc (cc))
-                        }))
+            ->:Void tween (when cc (cc))))
 
 (method &override :Void _showScene [:Scene scene :Appearance appearance :FlxCamera camera :Continuation cc]
     (super._showScene scene appearance camera
@@ -54,9 +51,9 @@
     (super.moveCharacter actorName newPosition newFacing cc))
 
 (method removeTweensOf [:FlxSprite actorOrProp]
-    (doFor tween (reverse tweens)
+    (doFor [idx tween] (reverse (enumerate tweens))
         (when (callPrivate tween "isTweenOf" actorOrProp)
-            (tweens.remove tween))))
+            (tweens.splice idx 1))))
 
 (method &override removeCharacter [actorName :Continuation cc]
     (let [actor (dictGet actors actorName)]
@@ -336,10 +333,11 @@
     (flxDirector.update)
     (unless paused
         (let [tweenElapsed (* elapsed (if flxDirector.fastForwardAction.triggered FAST_FORWARD_MOD 1))]
-            (doFor tween tweens
+            (doFor [idx tween] (reverse (enumerate tweens))
                 (callPrivate tween "update" tweenElapsed)
                 (when tween.finished
-                    (callPrivate tween "finish"))))
+                    (callPrivate tween "finish")
+                    (tweens.splice idx 1))))
         (when inCamera
             (set inCamera.x inCameraPos.x)
             (set inCamera.y inCameraPos.y)
