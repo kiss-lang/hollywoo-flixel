@@ -236,7 +236,7 @@
                     (resume)
                 }]
 
-        (set pauseMenu (new SimpleWindow "HISTORY" FlxColor.BLACK FlxColor.WHITE 0.6 0.9 true null null null "up" "down" ->:Void (_resume null)))
+        (set pauseMenu (new SimpleWindow "HISTORY" FlxColor.BLACK textColor 0.6 0.9 true null null null "up" "down" ->:Void (_resume null)))
         (pauseMenu.enableVerticalScrolling)
         (pauseMenu.enableGamepadInput true)
         (pauseMenu.makeText "")
@@ -342,10 +342,17 @@
 (method :Void chooseString [:String prompt :Array<String> choices :String->Void submit]
     (_chooseString prompt choices submit))
 
-(savedVar :Int _buttonColor (FlxColor.GRAY.getLightened 0.4))
+// UI color scheme made editable with savedVar for faster testing 
+(savedVar :Int _textColor (FlxColor.GRAY.getLightened 0.4))
+(var :FlxColor textColor (property get null))
+(function get_textColor []
+    (FlxColor.fromInt _textColor))
+
+(savedVar :Int _buttonColor FlxColor.WHITE)
 (var :FlxColor buttonColor (property get null))
 (function get_buttonColor []
     (FlxColor.fromInt _buttonColor))
+
 (savedVar :Int _disabledButtonColor FlxColor.GRAY)
 (var :FlxColor disabledButtonColor (property get null))
 (function get_disabledButtonColor []
@@ -358,7 +365,7 @@
             choices
             submit
             FlxColor.BLACK
-            FlxColor.WHITE
+            textColor
             buttonColor
             0.8
             0.8
