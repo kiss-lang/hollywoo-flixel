@@ -22,7 +22,7 @@
     (tweens.push tween))
 (method :TweenOptions tweenOpts [&opt :Void->Void cc]
     (object
-        onComplete 
+        onComplete
             ->:Void tween (when cc (cc))))
 
 (method &override :Void _showScene [:Scene scene :Appearance appearance :FlxCamera camera :Continuation cc]
@@ -81,7 +81,7 @@
 (method linearMotion [:Bool skipping :FlxSprite sprite :Float destX :Float destY :Float speed &opt :Void->Void cc :String soundLoop :Float volumeMod :Array<FlxSprite> connectedSprites]
     (unless (tweenedPositionsOfSpritesInScenes.exists sceneKey)
         (dictSet tweenedPositionsOfSpritesInScenes sceneKey (new Map)))
-    
+
     (unless connectedSprites (set connectedSprites []))
     (localVar spriteXNow sprite.x)
     (localVar spriteYNow sprite.y)
@@ -100,7 +100,7 @@
         (dictSet (dictGet tweenedPositionsOfSpritesInScenes sceneKey) sprite (FlxPoint.get destX destY))
         (set sprite.x destX)
         (set sprite.y destY))
-    
+
     // Move the sprite and its connected sprites immediately when skipping:
     (when skipping
         (finalPositions)
@@ -127,7 +127,11 @@
 
 @:keep
 (method linearMotionTo [:Bool skipping :FlxSprite sprite :String positionKey :Float speed &opt :Void->Void cc :String soundLoop :Float volumeMod :Array<FlxSprite> connectedSprites]
-    (let [position (resolvePosition positionKey)]
+    (let [holderType (typeCase [sprite]
+                        ([:ActorFlxSprite actorSprite] (hollywoo.Movie.PositionHolder.Actor (getActorName actorSprite)))
+                        ([:FlxSprite propSprite] (hollywoo.Movie.PositionHolder.Prop (getPropName propSprite)))
+                        (never otherwise))
+            position (resolvePosition positionKey holderType)]
         (linearMotion skipping sprite position.x position.y speed cc soundLoop volumeMod connectedSprites)))
 
 (defMacro _linearMotionTo [withMacro await objectKey positionKey speed soundLoop volumeMod]
@@ -152,16 +156,16 @@
         `(_linearMotionTo ,withMacro ,await ,@exps)))
 
 (defReaderMacro "AWAITLINEARMOTIONACTORTO" [stream &builder b]
-    (awaitLMTReaderMacro stream `withActorCC true)) 
+    (awaitLMTReaderMacro stream `withActorCC true))
 
 (defReaderMacro "AWAITLINEARMOTIONPROPTO" [stream &builder b]
-    (awaitLMTReaderMacro stream `withPropCC true)) 
+    (awaitLMTReaderMacro stream `withPropCC true))
 
 (defReaderMacro "LINEARMOTIONACTORTO" [stream &builder b]
-    (awaitLMTReaderMacro stream `withActorCC false)) 
+    (awaitLMTReaderMacro stream `withActorCC false))
 
 (defReaderMacro "LINEARMOTIONPROPTO" [stream &builder b]
-    (awaitLMTReaderMacro stream `withPropCC false)) 
+    (awaitLMTReaderMacro stream `withPropCC false))
 
 
 (defMacro _linearMotion [withMacro await objectKey _x _y speed soundLoop volumeMod]
@@ -184,16 +188,16 @@
         `(_linearMotion ,withMacro ,await ,@exps)))
 
 (defReaderMacro "AWAITLINEARMOTIONACTOR" [stream &builder b]
-    (awaitLMReaderMacro stream `withActorCC true)) 
+    (awaitLMReaderMacro stream `withActorCC true))
 
 (defReaderMacro "AWAITLINEARMOTIONPROP" [stream &builder b]
-    (awaitLMReaderMacro stream `withPropCC true)) 
+    (awaitLMReaderMacro stream `withPropCC true))
 
 (defReaderMacro "LINEARMOTIONACTOR" [stream &builder b]
-    (awaitLMReaderMacro stream `withActorCC false)) 
+    (awaitLMReaderMacro stream `withActorCC false))
 
 (defReaderMacro "LINEARMOTIONPROP" [stream &builder b]
-    (awaitLMReaderMacro stream `withPropCC false)) 
+    (awaitLMReaderMacro stream `withPropCC false))
 
 (defReaderMacro "ACTORPLAYANIMATION" [stream &builder b]
     (let [actor (read stream)
@@ -201,19 +205,19 @@
         `(withActor ,actor a (a.playAnimation ,anim))))
 
 (defReaderMacro "ASSERTLOGSPRITES" [stream &builder b]
-    `(#when debug 
+    `(#when debug
         (kiss_flixel.SpriteTools.assertLogSprites ,(read stream))
-        (cc))) 
+        (cc)))
 (defReaderMacro "ASSERTLOGSPRITESCC" [stream &builder b]
-    `(#when debug 
-        (kiss_flixel.SpriteTools.assertLogSprites ,(read stream)))) 
+    `(#when debug
+        (kiss_flixel.SpriteTools.assertLogSprites ,(read stream))))
 (defReaderMacro "WARNLOGSPRITES" [stream &builder b]
-    `(#when debug 
+    `(#when debug
         (kiss_flixel.SpriteTools.warnLogSprites ,(read stream))
-        (cc))) 
+        (cc)))
 (defReaderMacro "WARNLOGSPRITESCC" [stream &builder b]
-    `(#when debug 
-        (kiss_flixel.SpriteTools.warnLogSprites ,(read stream)))) 
+    `(#when debug
+        (kiss_flixel.SpriteTools.warnLogSprites ,(read stream))))
 
 // Reusable effect: Scan a slightly transparent line side-to-side across a FlxSprite like a scanner
 @:keep
@@ -240,14 +244,14 @@
         (lineSprite.makeGraphic width height lineColor)
         (set lineSprite.cameras sprite.cameras)
         (set lineSprite.alpha alpha)
-        
+
         (set lineSprite.x lineStartX)
         (set lineSprite.y lineStartY)
         (FlxG.state.add lineSprite)
         (linearMotion skipping lineSprite lineEndX lineEndY speed
             ->:Void {
                 (if repeat
-                        (linearMotion skipping lineSprite lineStartX lineStartY speed finish soundLoop volumeMod) 
+                        (linearMotion skipping lineSprite lineStartX lineStartY speed finish soundLoop volumeMod)
                     (finish))
             }
             soundLoop volumeMod)))
@@ -373,7 +377,7 @@
                 (set plate.y (+ actor.y actor.height))
                 (FlxG.state.add plate)
                 plate)))
-    (delay skipping delayLength 
+    (delay skipping delayLength
         (makeCC
             (doFor plate plates (FlxG.state.remove plate true))
             (set plates null)
@@ -419,7 +423,7 @@
     (set FlxDirector.anonProps 0)
     (set FlxG.sound.volume FlxDirector.masterVolume)
     (createCameras)
-    
+
     // This silly line of code is like putting @:keep on FlxTween.isTweenOf
     (FlxTween.cancelTweensOf (new FlxSprite))
 
@@ -433,7 +437,7 @@
     (set DIALOG_Y (- FlxG.height 220.0))
     (set DIALOG_WIDTH (Std.int (- FlxG.width ACTOR_WIDTH ACTOR_WIDTH)))
     (set DIALOG_HEIGHT (Std.int (- FlxG.height DIALOG_Y)))
-    
+
     (putPresetPosition "Left" STAGE_LEFT_X ACTOR_Y 0.0)
     (putPresetPosition "Right" STAGE_RIGHT_X ACTOR_Y 0.0)
     (putPresetPosition "Left2" STAGE_LEFT_X ACTOR_Y STAGE_BEHIND_DY)
@@ -462,7 +466,7 @@
         (putPresetPosition "ScreenLowerRight" right lower layer)
         (putPresetPosition "ScreenLowerCenter" centerX lower layer)
         (putPresetPosition "ScreenUpperCenter" centerX upper layer))
-        
+
     // Prepare the interpreter for this movie's cached instructions
 	(let [v interpVariables]
 		(dictSet v "SpriteTools" kiss_flixel.SpriteTools)
@@ -477,20 +481,20 @@
             (Reflect.setField flixelObject "util" utilObject)
             (Reflect.setField flixelObject "FlxG" FlxG)
             (dictSet v "flixel" flixelObject))
-        
+
         (dictSet v "FlxG" FlxG)
         (dictSet v "Pixels" kiss_flixel.RelativeCoordinate.Pixels)
         (dictSet v "Percent" kiss_flixel.RelativeCoordinate.Percent)
         )
-        
+
     (let [shortcutHandler (director.shortcutHandler)
-            cc ->(resume)]    
+            cc ->(resume)]
         (shortcutHandler.registerItem "[d]efine prop [s]cale"
             ->cc
                 (director.chooseString "Which prop?" (dictGet propsInScene sceneKey)
                     ->propKey
                         (let [lastScale .value (propScales.get propKey)]
-                            (director.enterString "Redefine $propKey scale from ${lastScale}?" 
+                            (director.enterString "Redefine $propKey scale from ${lastScale}?"
                                 ->scaleStr
                                     (let [scale (Std.parseFloat scaleStr)]
                                         (propScales.put propKey (new HFloat scale))
@@ -553,10 +557,10 @@
                             (makeCC
                                 (set sceneKey name)
                                 (cc))))]
-        
+
         (unless (positionsInScene.exists name)
             (dictSet positionsInScene name []))
-        
+
         (set inCamera camera)
         (set inCameraPos (new FlxSprite
                                 (if ?fromLeft
@@ -581,7 +585,7 @@
         (typeCase [thing]
             ([:FlxSound sound]
                 (callPrivate FlxG.sound "destroySound" sound))
-            (otherwise 
+            (otherwise
                 (thing.destroy))))
     (m.clear))
 
@@ -651,7 +655,7 @@
                                 ->cc {
                                     (prepareForSkip)
                                     (runFromNextLabel skipMovie)
-                                })       
+                                })
 
 
                 (.registerItem (director.shortcutHandler) "skip to [l]abel"
