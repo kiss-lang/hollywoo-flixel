@@ -941,10 +941,11 @@
         // Load props uniquely because they can be drawn on
         (propSprite.loadGraphic path false 0 0 true)))
 
+(prop &mut :Bool oldScaleBehavior false)
 (method :Void showProp [:FlxSprite prop :StagePosition position :Appearance appearance :FlxCamera camera :Continuation cc]
     (set prop.cameras [camera])
     (let [width (min (max prop.width PROP_MIN_WIDTH) PROP_MAX_WIDTH)]
-        (unless (flxMovie.textProps.contains prop)
+        (unless (and !oldScaleBehavior (flxMovie.textProps.contains prop))
             (whenLet [FirstAppearance appearance]
                 (when (= 1 prop.scale.x prop.scale.y)
                     (prop.setGraphicSize width)
