@@ -8,7 +8,9 @@
     (Reflect.callMethod obj (Reflect.field obj method) args))
 
 (method newFlxTextProp [:String key :String text :Int size :FlxColor color &opt :String font]
-    (_addProp key (SpriteTools.textPlate text size 0 color FlxColor.TRANSPARENT null font)))
+    (let [prop (SpriteTools.textPlate text size 0 color FlxColor.TRANSPARENT null font)]
+        (_addProp key prop)
+        (textProps.push prop)))
 
 // TODO this should work, but I think when unquotes are used, or the macro has args, this doesn't macroexpand
 // to get handled as a (commands ...) block for some reason in AsyncEmbeddedScript2
