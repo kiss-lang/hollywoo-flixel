@@ -1,5 +1,5 @@
-(prop :FlxActionDigital continueAction) 
-(prop :FlxActionDigital fastForwardAction) 
+(prop :FlxActionDigital continueAction)
+(prop :FlxActionDigital fastForwardAction)
 (prop actionManager (new FlxActionManager))
 (prop &mut :Movie<FlxSprite,ActorFlxSprite,FlxSound,FlxSound,FlxSprite,FlxSound,FlxCamera,FlxLightSource> movie)
 (defAlias &ident flxMovie (cast movie FlxMovie))
@@ -47,7 +47,7 @@
         (doFor [:FlxActionDigital action :FlxInputState trigger] (zipThrow [continueAction fastForwardAction] [JUST_PRESSED PRESSED])
             (action.addKey SPACE trigger)
             (action.addKey ENTER trigger)
-            
+
             (action.addMouse LEFT trigger)
 
             (action.addGamepad FlxGamepadInputID.A trigger FlxInputDeviceID.ALL)
@@ -55,11 +55,11 @@
             (actionManager.addAction action))
 
         (FlxG.inputs.add actionManager)
-        (#when debug 
+        (#when debug
             (kiss_flixel.DebugTools.f1ToRecord actionManager)
             (kiss_flixel.DebugTools.f2ToLogSprites actionManager))
         (set actionManager.resetOnStateSwitch NONE)
-        
+
         (doFor i (range (+ 1 LAYER_MAX))
             (let [g (new FlxTypedGroup<FlxSprite>)]
                 (spriteLayers.push g)
@@ -148,7 +148,7 @@
     // if fullscreen changes while paused, the movie needs to re-load when resuming
     (let [oldResume resume
             previousFullscreen MenuState.fullscreen
-            resume ->:Void 
+            resume ->:Void
                 (if (= previousFullscreen MenuState.fullscreen)
                         (oldResume)
                     (let [m flxMovie
@@ -342,7 +342,7 @@
 (method :Void chooseString [:String prompt :Array<String> choices :String->Void submit]
     (_chooseString prompt choices submit))
 
-// UI color scheme made editable with savedVar for faster testing 
+// UI color scheme made editable with savedVar for faster testing
 (savedVar :Int _textColor (FlxColor.GRAY.getLightened 0.4))
 (var :FlxColor textColor (property get null))
 (function get_textColor []
@@ -409,7 +409,7 @@
     (let [screen (new FlxSprite)]
         (screen.makeGraphic FlxG.width FlxG.height (FlxColor.fromRGBFloat 0 1 0 0.2))
         (set screen.cameras [flxMovie.uiCamera])
-        
+
         (flxMovie.nextFrameActions.push ->:Void {
             (doFor camera FlxG.cameras.list (set camera.zoom 0.5))
             (set flxMovie.uiCamera.zoom 1)
@@ -476,7 +476,7 @@
     (set darkness.cameras [flxMovie.screenCamera])
     (FlxG.state.add darkness)
     (FlxG.state.add lightSprite))
-    
+
 (method :Void hideLighting []
     (when darkness
         (FlxG.state.remove darkness true)
@@ -485,7 +485,7 @@
         (FlxG.state.remove lightSprite true)
         (set lightSprite null)))
 
-(method :Void cleanup [] 
+(method :Void cleanup []
     (when music (stopSong))
 
     (hideTitleCard)
@@ -552,7 +552,7 @@
                 (.add (nth spriteLayers layer) character.actor)))
         (true
             (.add (nth spriteLayers (min (- LAYER_MAX 1) (Std.int character.stagePosition.z))) character.actor)))
-    
+
     (cc))
 
 (method :Void hideCharacter [:Character<ActorFlxSprite> character :FlxCamera camera :Continuation cc]
@@ -633,7 +633,7 @@
     (set bar (new FlxBar 0 0 LEFT_TO_RIGHT (iThird FlxG.width) SimpleWindow.textSize this "barProgress" 0 barMax true))
     (set doneLoadingCC done)
     (set loop (new flixel.addons.util.FlxAsyncLoop (+ 1 _load.length)
-                ->:Void 
+                ->:Void
                     (ifLet [nextLoad (_load.shift)]
                             {
                                 (nextLoad)
@@ -719,7 +719,7 @@
     (unless dialogBox
         (set dialogBox (new FlxSprite flxMovie.DIALOG_X flxMovie.DIALOG_Y))
         (dialogBox.makeGraphic flxMovie.DIALOG_WIDTH flxMovie.DIALOG_HEIGHT DIALOG_BOX_COLOR))
-    
+
     (set dialogBox.cameras [flxMovie.uiCamera])
     (FlxG.state.add dialogBox)
     // show the dialog
@@ -727,7 +727,7 @@
         (set dialogText (new FlxText flxMovie.DIALOG_X flxMovie.DIALOG_Y flxMovie.DIALOG_WIDTH "" DIALOG_SIZE)))
     (set dialogText.cameras [flxMovie.uiCamera])
     (FlxG.state.add dialogText)
-    
+
     // *cyan* for italics
     (set dialogText.text text)
     (applyFormat dialogText)
@@ -763,7 +763,7 @@
     (when dialogBox
         (FlxG.state.remove dialogBox)
         (set dialogBox null))
-    (when superText 
+    (when superText
         (FlxG.state.remove superText true)
         (set superText null)))
 
@@ -886,7 +886,7 @@
                         (when waitForEnd (cc))
                     }]
         (set music (FlxG.sound.play (Reflect.field song "_sound") 0 loop null true onFinish))
-        
+
         // Because music needs to fade in, an array stores its current fade percentage AND its eventual volumeMod target.
         // All of this is modulated to the musicVolume property which represent's the player's music volume setting
         (dictSet currentSoundVolumes music [0 volumeMod])
@@ -926,7 +926,7 @@
                 (when (> prop.height FlxG.height)
                     (prop.setGraphicSize 0 FlxG.height))
                 (flxMovie.propScales.put propKey (new HFloat prop.scale.x))))
-        
+
         (let [:Float scale .value (flxMovie.propScales.get propKey)]
             (when (StringTools.contains propKey "anonProp") (return))
             (unless (flxMovie.propsInScene.exists flxMovie.sceneKey)
@@ -954,7 +954,7 @@
         (set prop.y position.y)
 
         // When using preset positions, automatically move everything around and scale it
-        (cond 
+        (cond
             ((flxMovie.presetPositions.exists (position.stringify))
                 // if the prop is too tall, shrink it heightwise
                 (when (> prop.height flxMovie.DIALOG_Y)
@@ -1063,7 +1063,7 @@
                     (set t3.y textY))
                 (+= textY threeColSize creditMargin))
             (otherwise)))
-    
+
     (let [pixelsToScroll
                 (+ textY .height (last creditsText))
             idealTimeLimit
