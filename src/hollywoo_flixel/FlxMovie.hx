@@ -23,8 +23,8 @@ import flixel.tweens.FlxTween;
 class FlxMovie extends Movie<FlxSprite, ActorFlxSprite, FlxSound, FlxSound, FlxSprite, FlxSound, FlxCamera, FlxLightSource> {
     // Think of HollywooFlixelDSL.kiss as the corresponding Kiss file for this class!
 
-    public function new(director:FlxDirector, lightSourceJsonFile:String, positionsJson:String, delayLengthsJson:String, voiceLineMatchesJson:String, propScalesJson:String, miscFloatsJson:String, miscIntsJson:String) {
-        super(director, lightSourceJsonFile, new FlxLightSource([], FlxColor.TRANSPARENT), positionsJson, delayLengthsJson, voiceLineMatchesJson, miscFloatsJson, miscIntsJson);
+    public function new(director:FlxDirector, lightSourceJsonFile:String, positionsJson:String, delayLengthsJson:String, voiceLineMatchesJson:String, propScalesJson:String, miscFloatsJson:String, miscIntsJson:String, positionRelativityJson:String) {
+        super(director, lightSourceJsonFile, new FlxLightSource([], FlxColor.TRANSPARENT), positionsJson, delayLengthsJson, voiceLineMatchesJson, miscFloatsJson, miscIntsJson, positionRelativityJson);
 
         propScales = new JsonMap(propScalesJson, new HFloat(1.0));
     }
