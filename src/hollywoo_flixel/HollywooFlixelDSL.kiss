@@ -495,15 +495,21 @@
             ->cc
                 (director.chooseString "Which prop?" (dictGet propsInScene sceneKey)
                     ->propKey
-                        (let [lastScale .value (propScales.get propKey)]
-                            (director.enterString "Redefine $propKey scale from ${lastScale}?"
-                                ->scaleStr
-                                    (let [scale (Std.parseFloat scaleStr)]
-                                        (propScales.put propKey (new HFloat scale))
-                                        // Re-scale props immediately
-                                        (doFor prop .props (dictGet scenes sceneKey)
-                                            (flxDirector.scaleProp prop.prop))
-                                        (cc))))))
+                        (withFunctions
+                            [
+                                (definePropScale [cc]
+                                    (let [lastScale .value (propScales.get propKey)]
+                                        (director.enterString "Redefine $propKey scale from ${lastScale}?"
+                                            ->scaleStr
+                                                (let [scale (Std.parseFloat scaleStr)]
+                                                    (propScales.put propKey (new HFloat scale))
+                                                    // Re-scale props immediately
+                                                    (doFor prop .props (dictGet scenes sceneKey)
+                                                        (flxDirector.scaleProp prop.prop))
+                                                    (cc)))))
+                            ]
+                            (set lastCommand definePropScale)
+                            (definePropScale cc))))
         (shortcutHandler.registerItem "[d]efine [z] of a position"
             ->cc
                 (director.chooseString "Which position?" (dictGet positionsInScene sceneKey)
