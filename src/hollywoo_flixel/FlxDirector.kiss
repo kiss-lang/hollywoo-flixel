@@ -612,7 +612,15 @@
     (doneLoadingCC))
 
 (prop &mut :Int lastIp 0)
+(prop &mut :Float inputIconElapsed 0)
+(prop inputIconFluctuation 0.2)
+(prop inputIconFluctuationSpeed 2)
 (method :Void update []
+    (+= inputIconElapsed FlxG.elapsed)
+
+    (let [currentScale (+ 1.0 (* inputIconFluctuation (Math.sin (* inputIconFluctuationSpeed inputIconElapsed))))]
+        (inputIcon?.scale.set currentScale currentScale))
+
     (when movie.skipTarget
         (+= barProgress (- movie.lastInstructionPointer lastIp))
         (set lastIp movie.lastInstructionPointer)
@@ -1092,6 +1100,7 @@
 (prop &mut :FlxSprite inputIcon)
 
 (method :Void showInputIcon []
+    (set inputIconElapsed 0)
     (unless inputIcon
         (set inputIcon (SpriteTools.textPlate "[...]" DIALOG_SIZE SUPER_MARGIN null null applyFormat))
         (flixel.util.FlxSpriteUtil.drawRect inputIcon 0 0 inputIcon.width inputIcon.height FlxColor.TRANSPARENT (object thickness 1 color FlxColor.WHITE)))
