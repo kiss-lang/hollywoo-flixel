@@ -383,10 +383,11 @@
     (pauseMenu.enableGamepadInput true [=>START ""]))
 
 (method :Void enterString [:String prompt :String->Void submit]
+    (sh.cancel)
     (set pauseMenu
         (SimpleWindow.promptForString
             prompt
-            submit
+            ->s {(sh.start)(submit s)}
             null
             null
             null
