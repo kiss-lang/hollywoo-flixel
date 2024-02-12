@@ -521,6 +521,57 @@
                                     (cc)
                                 }))))))
 
+(prop &mut :flixel.ui.FlxBar bar null)
+(prop &mut :Int barProgress 0)
+(prop &mut :Int barMax 0)
+(prop &mut :Bool skippedBar false)
+(method fakeLoadingBar [:Bool skipping :Dynamic position :Dynamic delayV :Int steps :Int width :Int height :FlxColor full :FlxColor empty :Void->Void cc]
+    (when skipping
+        (cc)
+        (return))
+
+    (set skippedBar false)
+    (set barProgress 0)
+    (set barMax steps)
+    (set bar (new flixel.ui.FlxBar 0 0 LEFT_TO_RIGHT width height this "barProgress" 0 barMax true))
+    (bar.createColoredEmptyBar empty true full)
+    (bar.createColoredFilledBar full false)
+    (localVar position (resolvePosition position null))
+    (set bar.x position.x)
+    (set bar.y position.y)
+    (FlxG.state.add bar)
+    (localVar inputDelayKey (inputKey))
+    (localVar delayAmount (/ (resolveDelay delayV) steps))
+    (withFunctions
+        [
+            (:Void wrappedCC []
+                (stopWaitForInput inputDelayKey)
+                (set skippedBar true)
+
+                (FlxG.state.remove bar true)
+                (cc))
+            (:Void checkDelay []
+                (when skippedBar (return))
+
+                (if (= barMax barProgress)
+                        (wrappedCC)
+                    (delay skipping delayAmount
+                        (makeCC
+                            (trace "cc")
+                            (+= barProgress 1)
+                            (checkDelay))
+
+                        true)))
+        ]
+        (startWaitForInput wrappedCC inputDelayKey)
+        (checkDelay)))
+
+(cleanup
+    (when bar
+        (FlxG.state.remove bar true)
+        (bar.destroy)
+        (set bar null)))
+
 (method overlayPropOnCurrentSet [propKey :Void->Void cc]
     (let [propKey (kiss.FuzzyMapTools.bestMatch props propKey)]
         (dictSet shownProps propKey true) // Don't scale when showing

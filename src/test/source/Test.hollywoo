@@ -90,9 +90,9 @@ CLEARCHARACTERS
 		"ScreenCenterLeft"
 		"ScreenCenterRight"
 		"ScreenUpperLeft"
-		"ScreenUpperRight" 
+		"ScreenUpperRight"
 		"ScreenLowerLeft"
-		"ScreenLowerRight" 
+		"ScreenLowerRight"
 		"ScreenLowerCenter"
 		"ScreenUpperCenter"
 	])
