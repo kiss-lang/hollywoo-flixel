@@ -104,7 +104,7 @@ CLEARCHARACTERS
 {
 	(doFor preset PRESET_SCREEN_POSITIONS
 		(addProp preset preset ->:Void {}))
-	(director.startWaitForInput cc)
+	(director._startWaitForInput cc)
 }
 
 // TODO test credits

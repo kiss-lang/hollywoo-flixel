@@ -491,7 +491,7 @@
 
     (hideTitleCard)
     (hideBlackScreen)
-    (hideDialog)
+    (_hideDialog)
     (hideLighting)
 
     (when (and flxMovie.sceneKey (< 0 (Lambda.count flxMovie.scenes)))
@@ -568,12 +568,11 @@
         (set nextCC null)
         (cc)))
 
-(method :Void startWaitForInput [:Continuation cc]
+(method &public :Void _startWaitForInput [:Continuation cc]
     (set nextCC cc))
 
-(method :Void stopWaitForInput [:Continuation cc]
-    (when (= nextCC cc)
-        (set nextCC null)))
+(method &public :Void _stopWaitForInput []
+    (set nextCC null))
 
 (var TITLE_Y 240)
 (var TITLE_SIZE 72)
@@ -700,9 +699,8 @@
             (actor.playAnimation wryly)
         (actor.playAnimation "neutral")))
 
-(method showDialog [:String speakerName :SpeechType<ActorFlxSprite> type :String wryly :String text :Continuation cc]
+(method &public _showDialog [:String speakerName :SpeechType<ActorFlxSprite> type :String wryly :String text :Continuation cc]
     // TODO handle text messages, wrylies, off-screen, from-phone, etc. via (case type)
-    // TODO attribute on-screen dialogue to the character's stageposition
 
     // TODO allow sounds for wrylies, like the dispatch click
     (localVar &mut :Float speakerNameX -1)
@@ -716,7 +714,6 @@
                 (superText.screenCenter)
                 (set superText.y flxMovie.DIALOG_Y)
                 (FlxG.state.add superText)
-                (startWaitForInput cc)
                 (return)))
         ((OnScreen character)
             (set speakerNameX (+ character.actor.x (fHalf character.actor.width))))
@@ -759,10 +756,9 @@
         (set dialogText.y flxMovie.DIALOG_Y))
     (set dialogText.size DIALOG_SIZE)
     (while (< FlxG.height (+ dialogText.y dialogText.height))
-        (-= dialogText.size 6))
-    (startWaitForInput cc))
+        (-= dialogText.size 6)))
 
-(method :Void hideDialog []
+(method &public :Void _hideDialog []
     (when dialogText
         (FlxG.state.remove dialogText)
         (set dialogText null))
