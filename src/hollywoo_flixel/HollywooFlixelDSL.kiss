@@ -493,8 +493,8 @@
             cc ->(resume)]
         (shortcutHandler.registerItem "[d]efine prop [s]cale"
             ->cc
-                (director.chooseString "Which prop?" (dictGet propsInScene sceneKey)
-                    ->propKey
+                (director.chooseString "Which prop?" (withCancel (dictGet propsInScene sceneKey))
+                    (unlessCancel propKey
                         (withFunctions
                             [
                                 (definePropScale [cc]
@@ -509,7 +509,7 @@
                                                     (cc)))))
                             ]
                             (set lastCommand definePropScale)
-                            (definePropScale cc))))
+                            (definePropScale cc)))))
         (shortcutHandler.registerItem "[d]efine [z] of a position"
             ->cc
                 (director.chooseString "Which position?" (dictGet positionsInScene sceneKey)
