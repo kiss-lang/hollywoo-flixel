@@ -571,7 +571,7 @@
         (bar.destroy)
         (set bar null)))
 
-(method overlayPropOnCurrentSet [propKey :Void->Void cc]
+(method overlayPropOnCurrentSet [propKey :Void->Void cc &opt z]
     (let [propKey (kiss.FuzzyMapTools.bestMatch props propKey)]
         (dictSet shownProps propKey true) // Don't scale when showing
         (withProp propKey p
@@ -579,7 +579,7 @@
                 (dictSet overlaidPropsInScenes sceneKey (new Map)))
             (dictSet (dictGet overlaidPropsInScenes sceneKey) p propKey)
             (withSceneSetCC sceneKey bg
-                (addProp propKey (new StagePosition bg.x bg.y 1) cc)
+                (addProp propKey (new StagePosition bg.x bg.y (or z 1)) cc)
                 (p.setGraphicSize (Std.int bg.width) (Std.int bg.height))
                 (p.updateHitbox)))))
 
