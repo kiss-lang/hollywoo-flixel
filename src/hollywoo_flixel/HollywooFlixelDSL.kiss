@@ -502,7 +502,9 @@
                                         (director.enterString "Redefine $propKey scale from ${lastScale}?"
                                             ->scaleStr
                                                 (let [scale (Std.parseFloat scaleStr)]
-                                                    (propScales.put propKey (new HFloat scale))
+                                                    (if (Math.isNaN scale)
+                                                            (print "Failed to parse ${scaleStr}. leaving value the same")
+                                                        (propScales.put propKey (new HFloat scale)))
                                                     // Re-scale props immediately
                                                     (doFor prop .props (dictGet scenes sceneKey)
                                                         (flxDirector.scaleProp prop.prop))
