@@ -514,14 +514,16 @@
                             (definePropScale cc)))))
         (shortcutHandler.registerItem "[d]efine [z] of a position"
             ->cc
-                (director.chooseString "Which position?" (dictGet positionsInScene sceneKey)
-                    ->positionKey
+                (director.chooseString "Which position?" (withCancel (dictGet positionsInScene sceneKey))
+                    (unlessCancel positionKey
                         (let [position (stagePositions.get positionKey)]
                             (director.enterString "Redefine z from ${position.z}?"
                                 ->zStr {
-                                    (stagePositions.put positionKey (new StagePosition position.x position.y (Std.parseFloat zStr)))
-                                    (cc)
-                                }))))))
+                                    (let [z (Std.parseFloat zStr)]
+                                        (if (Math.isNaN z)
+                                                (print "Failed to parse ${zStr}. leaving value the same")
+                                            (stagePositions.put positionKey (new StagePosition position.x position.y z)))
+                                        (cc)) })))))))
 
 (prop &mut :flixel.ui.FlxBar bar null)
 (prop &mut :Int barProgress 0)
