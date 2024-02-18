@@ -557,7 +557,6 @@
                         (wrappedCC)
                     (delay skipping delayAmount
                         (makeCC
-                            (trace "cc")
                             (+= barProgress 1)
                             (checkDelay))
 
