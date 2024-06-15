@@ -130,7 +130,13 @@
 @:keep
 (method linearMotionTo [:Bool skipping :FlxSprite sprite :String positionKey :Float speed &opt :Void->Void cc :String soundLoop :Float volumeMod :Array<FlxSprite> connectedSprites]
     (let [holderType (typeCase [sprite]
-                        ([:ActorFlxSprite actorSprite] (hollywoo.Movie.PositionHolder.Actor (getActorName actorSprite)))
+                        // Try-catch: Sometimes I've used ActorFlxSprite for props
+                        ([:ActorFlxSprite actorSprite] 
+                            (try
+                                    (hollywoo.Movie.PositionHolder.Actor
+                                        (getActorName actorSprite))
+                                (catch [e]
+                                    (hollywoo.Movie.PositionHolder.Prop (getPropName actorSprite)))))
                         ([:FlxSprite propSprite] (hollywoo.Movie.PositionHolder.Prop (getPropName propSprite)))
                         (never otherwise))
             position (resolvePosition positionKey holderType)]
