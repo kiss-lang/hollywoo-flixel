@@ -19,7 +19,7 @@
         (preload (newFlxTextProp (+ "FlxText: " ,text) ,text ,size ,color ,(or font `null)))
         (addProp (+ "FlxText: " ,text) (+ "FlxText: " ,text " position") cc)))
 
-(method tween [:FlxTween tween]
+(method :Void tween [:FlxTween tween]
     (callPrivate FlxTween.globalManager "remove" tween false)
     (set tween.active true)
     (tweens.push tween))
@@ -227,6 +227,14 @@
 (defReaderMacro "WARNLOGSPRITESCC" [stream &builder b]
     `(#when debug
         (kiss_flixel.SpriteTools.warnLogSprites ,(read stream))))
+
+@:keep
+(method :Void scaleTo [:Bool skipping :FlxSprite sprite :Float scale :Float duration &opt :Void->Void cc]
+    (when skipping
+        (sprite.scale.set scale scale)
+        (when cc (cc))
+        (return))
+    (tween (flixel.tweens.FlxTween.tween sprite (object "scale.x" scale "scale.y" scale) duration (object onComplete ->:Void _ (when cc (cc))))))
 
 // Reusable effect: Scan a slightly transparent line side-to-side across a FlxSprite like a scanner
 @:keep
