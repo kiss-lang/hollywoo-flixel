@@ -21,6 +21,7 @@
 
 (method tween [:FlxTween tween]
     (callPrivate FlxTween.globalManager "remove" tween false)
+    (set tween.active true)
     (tweens.push tween))
 (method :TweenOptions tweenOpts [&opt :Void->Void cc]
     (object
