@@ -1109,4 +1109,4 @@
     (set FlxG.mouse.visible false))
 
 (method :FlxLightSource offsetLightSource [:FlxLightSource source :StagePosition offset]
-    (new FlxLightSource (for point source.points (new FlxPoint (+ point.x offset.x) (+ point.y offset.y))) source.color))
+    (new FlxLightSource (for point source.points (FlxPoint.get (+ point.x offset.x) (+ point.y offset.y))) source.color))
