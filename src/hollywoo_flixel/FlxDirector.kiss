@@ -1022,12 +1022,8 @@
 
 (var IDEAL_SCROLL_SPEED 200)
 
-// TODO currently the bg will cover whatever the final scene was - making after credits scenes impossible
 (method :Void rollCredits [:Array<CreditsLine> credits cc &opt :Float timeLimit]
-    (localVar bg (new FlxSprite))
-    (bg.makeGraphic FlxG.width FlxG.height FlxColor.BLACK true)
-    (set bg.cameras [flxMovie.uiCamera])
-    (FlxG.state.add bg)
+    (localVar &mut calledCC false)
     (localVar &mut textY FlxG.height)
     (var oneColSize 64)
     (var twoColSize 48)
@@ -1091,7 +1087,7 @@
                 (tweenArgs.push text.x)
                 (tweenArgs.push (- text.y textY))
                 (tweenArgs.push scrollSpeed)
-                (tweenArgs.push cc)
+                (tweenArgs.push ->:Void (unless calledCC (set calledCC true) (cc)))
                 (Reflect.callMethod flxMovie (Reflect.field flxMovie "linearMotion") tweenArgs)))))
 
 (prop &mut :FlxSprite inputIcon)
