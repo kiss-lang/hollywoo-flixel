@@ -667,6 +667,20 @@
                 (thing.destroy))))
     (m.clear))
 
+(defMacro doOnUpdateWhile [condition &body b]
+    (let [funcName (symbol)]
+        `(withFunctions
+            [
+                (,funcName []
+                    (when ,condition
+                        (nextFrameActions.push
+                            ->:Void {
+                                ,@b
+                                (,funcName)
+                            })))
+            ]
+            (,funcName))))
+
 (defMacro addSkips [flxMovieClass]
     `{
         (method &override :Void prepareForSkip []
