@@ -347,9 +347,10 @@
     (when ccToCall
         (ccToCall))
 
-    (doFor action nextFrameActions
-        (action))
-    (set nextFrameActions [])
+    (let [thisFrameActions (nextFrameActions.copy)]
+        (set nextFrameActions [])
+        (doFor action thisFrameActions
+            (action)))
 
     (flxDirector.update)
     (unless paused
