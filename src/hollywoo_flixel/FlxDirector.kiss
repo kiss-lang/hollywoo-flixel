@@ -930,7 +930,7 @@
                 (prop.updateHitbox)
                 (when (> prop.height FlxG.height)
                     (prop.setGraphicSize 0 FlxG.height))
-                (flxMovie.propScales.put propKey (new HFloat prop.scale.x))))
+                (flxMovie.propScales.put propKey (new JsonFloat prop.scale.x))))
 
         (let [:Float scale .value (flxMovie.propScales.get propKey)]
             (when (StringTools.contains propKey "anonProp") (return))

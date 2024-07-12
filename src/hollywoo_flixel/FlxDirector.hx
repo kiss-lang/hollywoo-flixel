@@ -19,7 +19,7 @@ import hollywoo.Movie;
 import hollywoo.Scene;
 import hollywoo.Director;
 import hollywoo.StagePosition;
-import hollywoo.HFloat;
+import kiss_tools.JsonFloat;
 import hollywoo_flixel.FlxMovie;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;

@@ -13,7 +13,7 @@ import hollywoo_flixel.ActorFlxSprite;
 import kiss_flixel.SpriteTools;
 import kiss_flixel.FlxKeyShortcutHandler;
 import kiss_tools.JsonMap;
-import hollywoo.HFloat;
+import kiss_tools.JsonFloat;
 import openfl.Assets;
 import flixel.tweens.FlxTween;
 
@@ -26,7 +26,7 @@ class FlxMovie extends Movie<FlxSprite, ActorFlxSprite, FlxSound, FlxSound, FlxS
     public function new(director:FlxDirector, lightSourceJsonFile:String, positionsJson:String, delayLengthsJson:String, voiceLineMatchesJson:String, propScalesJson:String, miscFloatsJson:String, miscIntsJson:String, positionRelativityJson:String) {
         super(director, lightSourceJsonFile, new FlxLightSource([], FlxColor.TRANSPARENT), positionsJson, delayLengthsJson, voiceLineMatchesJson, miscFloatsJson, miscIntsJson, positionRelativityJson);
 
-        propScales = new JsonMap(propScalesJson, new HFloat(1.0));
+        propScales = new JsonMap(propScalesJson, new JsonFloat(1.0));
     }
     public var uiCamera:FlxCamera;
     public var screenCamera:FlxCamera;
@@ -35,7 +35,7 @@ class FlxMovie extends Movie<FlxSprite, ActorFlxSprite, FlxSound, FlxSound, FlxS
 
 
     public var textProps:Array<FlxSprite> = [];
-    public var propScales:JsonMap<HFloat>;
+    public var propScales:JsonMap<JsonFloat>;
     public var propsInScene:Map<String,Array<String>> = [];
     public var overlaidPropsInScenes:Map<String,Map<FlxSprite,String>> = [];
     public var tweenedPositionsOfSpritesInScenes:Map<String,Map<FlxSprite,FlxPoint>> = [];

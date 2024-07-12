@@ -520,7 +520,7 @@
                                                 (let [scale (Std.parseFloat scaleStr)]
                                                     (if (Math.isNaN scale)
                                                             (print "Failed to parse ${scaleStr}. leaving value the same")
-                                                        (propScales.put propKey (new HFloat scale)))
+                                                        (propScales.put propKey (new JsonFloat scale)))
                                                     // Re-scale props immediately
                                                     (doFor prop .props (dictGet scenes sceneKey)
                                                         (flxDirector.scaleProp prop.prop))
