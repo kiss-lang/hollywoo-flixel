@@ -681,6 +681,14 @@
             ]
             (,funcName))))
 
+(defMacro underUICamera [&body b]
+    `{
+        (FlxG.cameras.remove uiCamera false)
+        ,@b
+        (FlxG.cameras.add uiCamera false)
+    })
+
+
 (defMacro addSkips [flxMovieClass]
     `{
         (method &override :Void prepareForSkip []
