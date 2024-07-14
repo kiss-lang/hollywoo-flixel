@@ -19,11 +19,13 @@
     (when animations
         (doFor =>name animationArgs animations
             (dictSet animationNames name name)
+            (when (Prelude.isNull animationArgs.looped)
+                (set animationArgs.looped true))
             (animation.add
                 name
                 animationArgs.frames
                 (or animationArgs.frameRate 30)
-                (or animationArgs.looped true)
+                animationArgs.looped
                 ?animationArgs.flipX
                 ?animationArgs.flipY))))
 
