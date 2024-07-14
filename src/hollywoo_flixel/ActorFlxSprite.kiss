@@ -27,11 +27,19 @@
                 ?animationArgs.flipX
                 ?animationArgs.flipY))))
 
-(method :Void playAnimation [fuzzySearchKey]
+(method :Void playAnimation [fuzzySearchKey &opt :Void->Void cc]
     (if (animationNames.exists fuzzySearchKey)
-            (animation.play (dictGet animationNames fuzzySearchKey) true)
-        (#when debug
-            (print "WARNING! No animation matches $fuzzySearchKey for actor with spritesheet $assetPath"))))
+            {
+                (when cc 
+                    (assert !animation.finishCallback)
+                    (set animation.finishCallback ->_ {(set animation.finishCallback null)(cc)}))
+                (animation.play (dictGet animationNames fuzzySearchKey) true)
+            }
+        {
+            (#when debug
+                (print "WARNING! No animation matches $fuzzySearchKey for actor with spritesheet $assetPath"))
+            (when cc (cc))
+        }))
 
 (method :Void stopAnimation []
     (animation.stop))
