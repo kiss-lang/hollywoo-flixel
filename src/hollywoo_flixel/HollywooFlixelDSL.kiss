@@ -30,10 +30,10 @@
 
 (method &override :Void _showScene [:Scene scene :Appearance appearance :FlxCamera camera :Continuation cc]
     (super._showScene scene appearance camera
-        (makeCC
+        (makeCC cc
             (whenLet [overlaidProps (dictGet overlaidPropsInScenes sceneKey)]
                 (doFor =>sprite key overlaidProps
-                    (overlayPropOnCurrentSet key (makeCC null))))
+                    (overlayPropOnCurrentSet key (makeCC null null))))
             (whenLet [tweenedPositions (dictGet tweenedPositionsOfSpritesInScenes sceneKey)]
                 (doFor =>sprite point tweenedPositions
                     (set sprite.x point.x)
@@ -111,13 +111,13 @@
         (return))
     (let [oldCC cc]
         (set cc
-            (makeCC
+            (makeCC oldCC
                 (finalPositions)
                 (when soundLoop
-                    (stopSound skipping soundLoop (makeCC null)))
+                    (stopSound skipping soundLoop (makeCC null null)))
                 (when oldCC (oldCC)))))
     (when soundLoop
-        (loopSound skipping soundLoop (makeCC null) volumeMod))
+        (loopSound skipping soundLoop (makeCC null null) volumeMod))
     (tween
         (FlxTween.linearMotion sprite sprite.x sprite.y destX destY speed false (tweenOpts (unless connectedSprites cc))))
     (when connectedSprites
@@ -281,11 +281,11 @@
     (when soundLoop
         (let [oldCC cc]
             (set cc
-                (makeCC
-                    (stopSound skipping soundLoop (makeCC null))
+                (makeCC oldCC
+                    (stopSound skipping soundLoop (makeCC null null))
                     (when oldCC
                         (oldCC)))))
-        (loopSound skipping soundLoop (makeCC null) volumeMod))
+        (loopSound skipping soundLoop (makeCC null null) volumeMod))
     (tween
         (FlxTween.angle sprite sprite.angle angle duration (tweenOpts cc))))
 
@@ -396,7 +396,7 @@
                 (FlxG.state.add plate)
                 plate)))
     (delay skipping delayLength
-        (makeCC
+        (makeCC (when delayWhileShown cc)
             (doFor plate plates (FlxG.state.remove plate true))
             (set plates null)
             (when delayWhileShown (cc))))
@@ -576,7 +576,7 @@
                 (if (= barMax barProgress)
                         (wrappedCC)
                     (delay skipping delayAmount
-                        (makeCC
+                        (makeCC null
                             (+= barProgress 1)
                             (checkDelay))
 
@@ -623,7 +623,7 @@
             lastScene (dictGet scenes sceneKey)
             scene (dictGet scenes name)
             camera scene.camera
-            finish (makeCC
+            finish (makeCC cc
                         // Needs to be done 1 more time:
                         (set inCamera.x inCameraPos.x)
                         (set outCamera.x outCameraPos.x)
@@ -632,7 +632,7 @@
                         (set outCamera null)
                         (set sceneKey lastSceneKey)
                         (_hideCurrentScene
-                            (makeCC
+                            (makeCC cc
                                 (set sceneKey name)
                                 (cc))))]
 
@@ -654,7 +654,7 @@
             scene
             (hollywoo.Movie.appearanceFlag shownScenes name)
             camera
-            (makeCC
+            (makeCC finish
                 (linearMotion skipping inCameraPos 0 0 speed finish soundLoop volumeMod [outCameraPos])))))
 
 
