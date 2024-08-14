@@ -30,6 +30,7 @@ class FlxMovie extends Movie<FlxSprite, ActorFlxSprite, FlxSound, FlxSound, FlxS
     }
     public var uiCamera:FlxCamera;
     public var screenCamera:FlxCamera;
+    var tempCameras:Map<FlxCamera,Bool> = [];
 
     public var nextFrameActions:Array<Void->Void> = [];
 

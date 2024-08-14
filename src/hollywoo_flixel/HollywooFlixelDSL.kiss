@@ -79,6 +79,37 @@
             (overlaidProps.remove prop)))
     (super.removeProp name cc))
 
+(defMacro underUICamera [&body b]
+    `{
+        (FlxG.cameras.remove uiCamera false)
+        ,@b
+        (FlxG.cameras.add uiCamera false)
+    })
+
+(preload
+    // This is silly. onSkipEnd should just be a virtual function or a proper event handler
+    // object, not a Void->Void field
+    (let [superSkipEnd onSkipEnd]
+        (set onSkipEnd ->{
+            (superSkipEnd)
+
+            (underUICamera
+                (doFor =>camera arg tempCameras
+                    (FlxG.cameras.add camera arg)))
+        })))
+
+// When skipping through, don't add the camera until skipping ends
+(hollywooMethod addTempCamera [:Bool skipping :FlxCamera camera &opt :Bool defaultDrawTarget :Continuation cc]
+    (underUICamera
+        (dictSet tempCameras camera ?defaultDrawTarget)
+        (unless skipping
+            (FlxG.cameras.add camera ?defaultDrawTarget)))
+    (when cc (cc)))
+
+(hollywooMethod removeTempCamera [:FlxCamera camera &opt :Bool destroy :Continuation cc]
+    (tempCameras.remove camera)
+    (when (FlxG.cameras.list.contains camera) (FlxG.cameras.remove camera ?destroy))
+    (when cc (cc)))
 
 @:keep
 (method linearMotion [:Bool skipping :FlxSprite sprite :Float destX :Float destY :Float speed &opt :Void->Void cc :String soundLoop :Float volumeMod :Array<FlxSprite> connectedSprites]
@@ -407,6 +438,11 @@
         (doFor plate plates (FlxG.state.remove plate true))
         (set plates null)))
 
+(cleanup
+    (doFor =>camera _ tempCameras
+        (when (FlxG.cameras.list.contains camera)
+            (FlxG.cameras.remove camera true))))
+
 (method putPresetPosition [key x y z &opt :Bool notSpecial]
     (let [pos (new StagePosition (Std.int x) (Std.int y) (Std.int z))]
         (stagePositions.put key pos)
@@ -680,14 +716,6 @@
                             })))
             ]
             (,funcName))))
-
-(defMacro underUICamera [&body b]
-    `{
-        (FlxG.cameras.remove uiCamera false)
-        ,@b
-        (FlxG.cameras.add uiCamera false)
-    })
-
 
 (defMacro addSkips [flxMovieClass]
     `{
