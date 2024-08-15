@@ -486,6 +486,7 @@
     (when music (stopSong))
 
     (hideTitleCard)
+    (hideTitleCard true)
     (hideBlackScreen)
     (_hideDialog)
     (hideLighting)
@@ -665,13 +666,13 @@
     (dictSet kiss_flixel.SpriteTools.ignoreObjects loop true))
 
 (method :Void hideTitleCard [&opt :Bool loading]
-    (if loading {
-        (FlxG.state.remove loadingCard true)
-        (set loadingCard null)
-    } {
-        (FlxG.state.remove titleCard true)
-        (set titleCard null)
-    }))
+    (if loading
+            (when loadingCard
+                (FlxG.state.remove loadingCard true)
+                (set loadingCard null))
+        (when titleCard
+            (FlxG.state.remove titleCard true)
+            (set titleCard null))))
 
 // TODO these could be customizable to the Actor, wrylies, etc.
 (var DIALOG_BOX_COLOR FlxColor.BLACK)
