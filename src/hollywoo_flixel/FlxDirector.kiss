@@ -576,20 +576,28 @@
 (var SUBTITLES_MARGIN 30)
 (var SUBTITLES_SIZE 48)
 (prop &mut :FlxSprite titleCard null)
-(method :Void showTitleCard [:Array<String> text :Continuation cc]
-    (set titleCard (new FlxSprite))
-    (when flxMovie.isLoading
-        (dictSet kiss_flixel.SpriteTools.ignoreObjects titleCard true))
-    (unless flxMovie.isLoading
-        (set titleCard.cameras [flxMovie.screenCamera]))
-    (titleCard.makeGraphic FlxG.width FlxG.height FlxColor.BLACK true)
-    (SpriteTools.writeOnSprite (text.shift) TITLE_SIZE titleCard (object x (Percent 0.5) y (Pixels TITLE_Y)))
-    (localVar &mut subtitleY (+ TITLE_Y TITLE_SIZE TITLE_MARGIN))
-    (doFor subtitle text
-        (SpriteTools.writeOnSprite subtitle SUBTITLES_SIZE titleCard (object x (Percent 0.5) y (Pixels subtitleY)))
-        (+= subtitleY SUBTITLES_SIZE SUBTITLES_MARGIN))
-    (FlxG.state.add titleCard)
-    (cc))
+(prop &mut :FlxSprite loadingCard null)
+(method :Void showTitleCard [:Array<String> text :Continuation cc &opt :Bool loading]
+    (if loading
+            {
+                (set loadingCard (new FlxSprite))
+                // (dictSet kiss_flixel.SpriteTools.ignoreObjects loadingCard true)
+                (set loadingCard.cameras [flxMovie.uiCamera])
+            }
+        {
+            (set titleCard (new FlxSprite))
+            (set titleCard.cameras [flxMovie.screenCamera])
+        })
+    (let [card (if loading loadingCard titleCard)]
+        (card.makeGraphic FlxG.width FlxG.height FlxColor.BLACK true)
+        (SpriteTools.writeOnSprite (text.shift) TITLE_SIZE card (object x (Percent 0.5) y (Pixels TITLE_Y)))
+        (localVar &mut subtitleY (+ TITLE_Y TITLE_SIZE TITLE_MARGIN))
+        (doFor subtitle text
+            (SpriteTools.writeOnSprite subtitle SUBTITLES_SIZE card (object x (Percent 0.5) y (Pixels subtitleY)))
+            (+= subtitleY SUBTITLES_SIZE SUBTITLES_MARGIN))
+        (FlxG.state.add card)
+        (SpriteTools.logSprites)
+        (cc)))
 
 (prop &mut :Bool isLoading false)
 (var LOAD_CALLS_PER_FRAME 2)
@@ -652,15 +660,20 @@
     (bar.createColoredEmptyBar FlxColor.BLACK true FlxColor.WHITE)
     (bar.createColoredFilledBar FlxColor.WHITE false)
     (bar.screenCenter)
+    (set bar.camera flxMovie.uiCamera)
     (FlxG.state.add bar)
     (FlxG.state.add loop)
     (dictSet kiss_flixel.SpriteTools.ignoreObjects bar true)
     (dictSet kiss_flixel.SpriteTools.ignoreObjects loop true))
 
-(method :Void hideTitleCard []
-    (when titleCard
+(method :Void hideTitleCard [&opt :Bool loading]
+    (if loading {
+        (FlxG.state.remove loadingCard true)
+        (set loadingCard null)
+    } {
         (FlxG.state.remove titleCard true)
-        (set titleCard null)))
+        (set titleCard null)
+    }))
 
 // TODO these could be customizable to the Actor, wrylies, etc.
 (var DIALOG_BOX_COLOR FlxColor.BLACK)

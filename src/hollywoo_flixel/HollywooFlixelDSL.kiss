@@ -449,15 +449,15 @@
         (unless notSpecial (dictSet presetPositions (pos.stringify) true))))
 
 (method &override :Void createCameras []
+    (unless screenCamera
+        (set screenCamera (new flixel.FlxCamera))
+        (set screenCamera.bgColor FlxColor.TRANSPARENT)
+        (FlxG.cameras.add screenCamera))
     (unless uiCamera
         (set uiCamera (new flixel.FlxCamera))
         (set uiCamera.bgColor FlxColor.TRANSPARENT)
         (flixel.FlxG.cameras.add uiCamera)
-        (set kiss_flixel.SimpleWindow.defaultCamera uiCamera))
-    (unless screenCamera
-        (set screenCamera (new flixel.FlxCamera))
-        (set screenCamera.bgColor FlxColor.TRANSPARENT)
-        (FlxG.cameras.add screenCamera)))
+        (set kiss_flixel.SimpleWindow.defaultCamera uiCamera)))
 
 (preload
     // I think it's safe to leave a cleaned-up movie as this reference,
