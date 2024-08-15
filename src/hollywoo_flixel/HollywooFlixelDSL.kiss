@@ -452,11 +452,11 @@
     (unless screenCamera
         (set screenCamera (new flixel.FlxCamera))
         (set screenCamera.bgColor FlxColor.TRANSPARENT)
-        (FlxG.cameras.add screenCamera))
+        (FlxG.cameras.add screenCamera false))
     (unless uiCamera
         (set uiCamera (new flixel.FlxCamera))
         (set uiCamera.bgColor FlxColor.TRANSPARENT)
-        (flixel.FlxG.cameras.add uiCamera)
+        (flixel.FlxG.cameras.add uiCamera false)
         (set kiss_flixel.SimpleWindow.defaultCamera uiCamera)))
 
 (preload

@@ -303,9 +303,9 @@
 
     (FlxG.cameras.remove flxMovie.uiCamera false)
     (FlxG.cameras.remove flxMovie.screenCamera false)
-    (FlxG.cameras.add camera)
-    (FlxG.cameras.add flxMovie.screenCamera)
-    (FlxG.cameras.add flxMovie.uiCamera)
+    (FlxG.cameras.add camera false)
+    (FlxG.cameras.add flxMovie.screenCamera false)
+    (FlxG.cameras.add flxMovie.uiCamera false)
     (set setSprite.cameras [camera])
     (.add (first spriteLayers) setSprite)
     (cc))
