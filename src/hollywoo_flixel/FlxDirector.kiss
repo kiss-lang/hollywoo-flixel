@@ -158,7 +158,6 @@
         // register escape to resume (and register escape to pause when resuming lol)
         (sh.registerItem "{escape} resume" ->cc {
             (pauseMenu.hide)
-            (sh.registerItem "{escape} pause" ->cc (showPauseMenu cc) true)
             (resume)
         } true)
         (let [choices ["" "Resume" "Scene Selection" "Options" "Send Feedback" "Main Menu" "Quit to Desktop"]
@@ -170,7 +169,6 @@
                 ->:Void choice
                     (case choice
                         ("Resume"
-                            (sh.registerItem "{escape} pause" ->cc (showPauseMenu cc) true)
                             (resume))
                         ("Scene Selection"
                             (localFunction backToPause []
@@ -231,8 +229,6 @@
     (let [_resume
                 ->cc {
                     (pauseMenu.hide)
-                    (sh.registerItem "{tab} show history" ->cc (showDialogHistory flxMovie.dialogHistory cc) true)
-                    (sh.registerItem "{escape} pause" ->cc (showPauseMenu cc) true)
                     (resume)
                 }]
 
