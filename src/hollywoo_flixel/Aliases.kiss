@@ -26,6 +26,7 @@
 (defAlias &ident UpperCenter "ScreenUpperCenter")
 (defAlias &ident UpperRight "ScreenUpperRight")
 (defAlias &ident Center "ScreenCenter")
+(defAlias &ident ScreenCenter "ScreenCenter")
 (defAlias &ident CenterLeft "ScreenCenterLeft")
 (defAlias &ident CenterRight "ScreenCenterRight")
 (defAlias &ident LowerLeft "ScreenLowerLeft")
