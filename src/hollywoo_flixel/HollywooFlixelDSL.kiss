@@ -693,6 +693,8 @@
             (makeCC finish
                 (linearMotion skipping inCameraPos 0 0 speed finish soundLoop volumeMod [outCameraPos])))))
 
+(method &override subclassDoPreload []
+    (createCameras))
 
 (function destroyAndClear [:kiss.FuzzyMap<Dynamic> m]
     (doFor =>key thing m
