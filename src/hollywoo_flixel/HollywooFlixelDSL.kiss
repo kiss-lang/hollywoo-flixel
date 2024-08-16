@@ -28,6 +28,21 @@
         onComplete
             ->:Void tween (when cc (cc))))
 
+(method &override moveToScene [:Bool skipping :String name :Continuation cc]
+    // Make sure these maps exist:
+    (unless (tweenedPositionsOfSpritesInScenes.exists name)
+        (dictSet tweenedPositionsOfSpritesInScenes name (new Map)))
+    (unless (tweenedPositionsOfSpritesInScenes.exists sceneKey)
+        (dictSet tweenedPositionsOfSpritesInScenes sceneKey (new Map)))
+
+    // copy over tweened positions when moving scenes:
+    (let [tweenedPositions (dictGet tweenedPositionsOfSpritesInScenes sceneKey)
+            newTweenedPositions (dictGet tweenedPositionsOfSpritesInScenes name)]
+        (doFor sprite (collect (tweenedPositions.keys))
+            (dictSet newTweenedPositions sprite (dictGet tweenedPositions sprite))
+            (tweenedPositions.remove sprite)))
+    (super.moveToScene skipping name cc))
+
 (method &override :Void _showScene [:Scene scene :Appearance appearance :FlxCamera camera :Continuation cc]
     (super._showScene scene appearance camera
         (makeCC cc
