@@ -44,4 +44,5 @@
         }))
 
 (method :Void stopAnimation []
+    (set animation.finishCallback null)
     (animation.stop))
