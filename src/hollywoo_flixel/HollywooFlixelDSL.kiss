@@ -557,43 +557,44 @@
         (dictSet v "Percent" kiss_flixel.RelativeCoordinate.Percent)
         )
 
-    (let [shortcutHandler (director.shortcutHandler)
-            cc ->(resume)]
-        (shortcutHandler.registerItem "[d]efine prop [s]cale"
-            ->cc
-                (unless doingSomething (set doingSomething true)
-                    (director.chooseString "Which prop?" (withCancel (dictGet propsInScene sceneKey))
-                        (unlessCancel propKey
-                            (withFunctions
-                                [
-                                    (definePropScale [cc]
-                                        (let [lastScale .value (propScales.get propKey)]
-                                            (director.enterString "Redefine $propKey scale from ${lastScale}?"
-                                                ->scaleStr
-                                                    (let [scale (Std.parseFloat scaleStr)]
-                                                        (if (Math.isNaN scale)
-                                                                (print "Failed to parse ${scaleStr}. leaving value the same")
-                                                            (propScales.put propKey (new JsonFloat scale)))
-                                                        // Re-scale props immediately
-                                                        (doFor prop .props (dictGet scenes sceneKey)
-                                                            (flxDirector.scaleProp prop.prop))
-                                                        (cc)))))
-                                ]
-                                (set lastCommand definePropScale)
-                                (definePropScale cc))))))
-        (shortcutHandler.registerItem "[d]efine [z] of a position"
-            ->cc
-                (unless doingSomething (set doingSomething true)
-                    (director.chooseString "Which position?" (withCancel (dictGet positionsInScene sceneKey))
-                        (unlessCancel positionKey
-                            (let [position (stagePositions.get positionKey)]
-                                (director.enterString "Redefine z from ${position.z}?"
-                                    ->zStr {
-                                        (let [z (Std.parseFloat zStr)]
-                                            (if (Math.isNaN z)
-                                                    (print "Failed to parse ${zStr}. leaving value the same")
-                                                (stagePositions.put positionKey (new StagePosition position.x position.y z)))
-                                            (cc)) }))))))))
+    (#when debug
+        (let [shortcutHandler (director.shortcutHandler)
+                cc ->(resume)]
+            (shortcutHandler.registerItem "[d]efine prop [s]cale"
+                ->cc
+                    (unless doingSomething (set doingSomething true)
+                        (director.chooseString "Which prop?" (withCancel (dictGet propsInScene sceneKey))
+                            (unlessCancel propKey
+                                (withFunctions
+                                    [
+                                        (definePropScale [cc]
+                                            (let [lastScale .value (propScales.get propKey)]
+                                                (director.enterString "Redefine $propKey scale from ${lastScale}?"
+                                                    ->scaleStr
+                                                        (let [scale (Std.parseFloat scaleStr)]
+                                                            (if (Math.isNaN scale)
+                                                                    (print "Failed to parse ${scaleStr}. leaving value the same")
+                                                                (propScales.put propKey (new JsonFloat scale)))
+                                                            // Re-scale props immediately
+                                                            (doFor prop .props (dictGet scenes sceneKey)
+                                                                (flxDirector.scaleProp prop.prop))
+                                                            (cc)))))
+                                    ]
+                                    (set lastCommand definePropScale)
+                                    (definePropScale cc))))))
+            (shortcutHandler.registerItem "[d]efine [z] of a position"
+                ->cc
+                    (unless doingSomething (set doingSomething true)
+                        (director.chooseString "Which position?" (withCancel (dictGet positionsInScene sceneKey))
+                            (unlessCancel positionKey
+                                (let [position (stagePositions.get positionKey)]
+                                    (director.enterString "Redefine z from ${position.z}?"
+                                        ->zStr {
+                                            (let [z (Std.parseFloat zStr)]
+                                                (if (Math.isNaN z)
+                                                        (print "Failed to parse ${zStr}. leaving value the same")
+                                                    (stagePositions.put positionKey (new StagePosition position.x position.y z)))
+                                                (cc)) })))))))))
 
 (prop &mut :flixel.ui.FlxBar bar null)
 (prop &mut :Int barProgress 0)
