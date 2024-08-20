@@ -189,7 +189,7 @@
             position (resolvePosition positionKey holderType)]
         (linearMotion skipping sprite position.x position.y speed cc soundLoop volumeMod connectedSprites)))
 
-(defMacro _linearMotionTo [withMacro await objectKey positionKey speed soundLoop volumeMod]
+(defMacro _linearMotionTo [withMacro await objectKey positionKey speed soundLoop volumeMod connectedSprites]
     `(,withMacro ,objectKey o
         (linearMotionTo
             skipping
@@ -198,16 +198,13 @@
             ,speed
             ,(if (eval await) `cc `null)
             ,soundLoop
-            ,volumeMod)
+            ,volumeMod
+            (array FlxSprite ,@connectedSprites))
         ,(if (eval await) `null `(cc))))
-
-(defMacroFunction tryRead [stream]
-    (try (read stream)
-        (catch [e] `null)))
 
 (defMacroFunction awaitLMTReaderMacro [stream withMacro await]
     (let [nextLineStream (stream.expect "hollywoo macro line" ->(stream.takeLineAsStream))
-            exps [(read nextLineStream) (read nextLineStream) (read nextLineStream) (tryRead nextLineStream) (tryRead nextLineStream)]]
+            exps [(read nextLineStream) (read nextLineStream) (read nextLineStream) (readOr nextLineStream `null) (readOr nextLineStream `null) (readOr nextLineStream `[])]]
         `(_linearMotionTo ,withMacro ,await ,@exps)))
 
 (defReaderMacro "AWAITLINEARMOTIONACTORTO" [stream &builder b]
@@ -223,7 +220,7 @@
     (awaitLMTReaderMacro stream `withPropCC false))
 
 
-(defMacro _linearMotion [withMacro await objectKey _x _y speed soundLoop volumeMod]
+(defMacro _linearMotion [withMacro await objectKey _x _y speed soundLoop volumeMod connectedSprites]
     `(,withMacro ,objectKey o
         (let [x o.x y o.y]
             (linearMotion
@@ -234,12 +231,16 @@
                 ,speed
                 ,(if (eval await) `cc `null)
                 ,soundLoop
-                ,volumeMod))
+                ,volumeMod
+                (array FlxSprite ,@connectedSprites)))
         ,(if (eval await) `null `(cc))))
+
+// This looks like duplication of the above,
+// but these ones use the version of the function without TO
 
 (defMacroFunction awaitLMReaderMacro [stream withMacro await]
     (let [nextLineStream (stream.expect "hollywoo macro line" ->(stream.takeLineAsStream))
-            exps [(read nextLineStream) (read nextLineStream) (read nextLineStream) (read nextLineStream) (tryRead nextLineStream) (tryRead nextLineStream)]]
+            exps [(read nextLineStream) (read nextLineStream) (read nextLineStream) (read nextLineStream) (readOr nextLineStream `null) (readOr nextLineStream `null) (readOr nextLineStream `[])]]
         `(_linearMotion ,withMacro ,await ,@exps)))
 
 (defReaderMacro "AWAITLINEARMOTIONACTOR" [stream &builder b]
