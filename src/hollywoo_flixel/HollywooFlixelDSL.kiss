@@ -101,6 +101,14 @@
         (FlxG.cameras.add uiCamera false)
     })
 
+(defMacro underAllCameras [&body b]
+    `(let [cameras (.copy FlxG.cameras.list)]
+            (doFor camera cameras
+                (FlxG.cameras.remove camera false))
+            ,@b
+            (doFor camera cameras
+                (FlxG.cameras.add camera (or ?(dictGet tempCameras camera) ?(dictGet tempBgCameras camera))))))
+
 (preload
     // This is silly. onSkipEnd should just be a virtual function or a proper event handler
     // object, not a Void->Void field
@@ -108,21 +116,29 @@
         (set onSkipEnd ->{
             (superSkipEnd)
 
+            // If a background shader camera is hidden, reveal it
+            (underAllCameras
+                (doFor =>camera arg tempBgCameras
+                    (FlxG.cameras.add camera arg)))
+
             (underUICamera
                 (doFor =>camera arg tempCameras
                     (FlxG.cameras.add camera arg)))
         })))
 
 // When skipping through, don't add the camera until skipping ends
-(hollywooMethod addTempCamera [:Bool skipping :FlxCamera camera &opt :Bool defaultDrawTarget :Continuation cc]
-    (underUICamera
-        (dictSet tempCameras camera ?defaultDrawTarget)
-        (unless skipping
-            (FlxG.cameras.add camera ?defaultDrawTarget)))
+(hollywooMethod addTempCamera [:Bool skipping :FlxCamera camera &opt :Bool defaultDrawTarget :Bool bg :Continuation cc]
+    (dictSet (if bg tempBgCameras tempCameras) camera ?defaultDrawTarget)
+    (unless ~skipping
+        (if bg
+                (underAllCameras (FlxG.cameras.add camera ?defaultDrawTarget)))
+            (underUICamera (FlxG.cameras.add camera ?defaultDrawTarget)))
     (when cc (cc)))
 
 (hollywooMethod removeTempCamera [:FlxCamera camera &opt :Bool destroy :Continuation cc]
-    (tempCameras.remove camera)
+    (if (tempCameras.exists camera)
+            (tempCameras.remove camera)
+        (tempBgCameras.remove camera))
     (when (FlxG.cameras.list.contains camera) (FlxG.cameras.remove camera ?destroy))
     (when cc (cc)))
 
@@ -456,6 +472,9 @@
 
 (cleanup
     (doFor =>camera _ tempCameras
+        (when (FlxG.cameras.list.contains camera)
+            (FlxG.cameras.remove camera true)))
+    (doFor =>camera _ tempBgCameras
         (when (FlxG.cameras.list.contains camera)
             (FlxG.cameras.remove camera true))))
 
