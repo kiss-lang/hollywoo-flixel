@@ -118,27 +118,35 @@
 
             // If a background shader camera is hidden, reveal it
             (underAllCameras
-                (doFor =>camera arg tempBgCameras
-                    (FlxG.cameras.add camera arg)))
+                (doFor camera tempBgCamerasOrder
+                    (FlxG.cameras.add camera (dictGet tempBgCameras camera))))
 
             (underUICamera
-                (doFor =>camera arg tempCameras
-                    (FlxG.cameras.add camera arg)))
+                (doFor camera tempCamerasOrder
+                    (FlxG.cameras.add camera (dictGet tempCameras camera))))
         })))
 
 // When skipping through, don't add the camera until skipping ends
 (hollywooMethod addTempCamera [:Bool skipping :FlxCamera camera &opt :Bool defaultDrawTarget :Bool bg :Continuation cc]
     (dictSet (if bg tempBgCameras tempCameras) camera ?defaultDrawTarget)
-    (unless ~skipping
+    (let [order (if bg tempBgCamerasOrder tempCamerasOrder)]
+        (unless (order.contains camera) (order.push camera)))
+    (unless skipping
         (if bg
-                (underAllCameras (FlxG.cameras.add camera ?defaultDrawTarget)))
-            (underUICamera (FlxG.cameras.add camera ?defaultDrawTarget)))
+                (underAllCameras (FlxG.cameras.add camera ?defaultDrawTarget))
+            (underUICamera (FlxG.cameras.add camera ?defaultDrawTarget))))
     (when cc (cc)))
 
 (hollywooMethod removeTempCamera [:FlxCamera camera &opt :Bool destroy :Continuation cc]
     (if (tempCameras.exists camera)
-            (tempCameras.remove camera)
-        (tempBgCameras.remove camera))
+            {
+                (tempCameras.remove camera)
+                (tempCamerasOrder.remove camera)
+            }
+        {
+            (tempBgCameras.remove camera)
+            (tempBgCamerasOrder.remove camera)
+        })
     (when (FlxG.cameras.list.contains camera) (FlxG.cameras.remove camera ?destroy))
     (when cc (cc)))
 

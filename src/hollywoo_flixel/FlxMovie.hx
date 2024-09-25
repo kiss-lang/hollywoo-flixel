@@ -31,8 +31,9 @@ class FlxMovie extends Movie<FlxSprite, ActorFlxSprite, FlxSound, FlxSound, FlxS
     public var uiCamera:FlxCamera;
     public var screenCamera:FlxCamera;
 
-    // TODO order isn't preserved. God help me
+    var tempCamerasOrder:Array<FlxCamera> = [];
     var tempCameras:Map<FlxCamera,Bool> = [];
+    var tempBgCamerasOrder:Array<FlxCamera> = [];
     var tempBgCameras:Map<FlxCamera,Bool> = [];
 
     public var nextFrameActions:Array<Void->Void> = [];
