@@ -1118,3 +1118,12 @@
 
 (method :FlxLightSource offsetLightSource [:FlxLightSource source :StagePosition offset]
     (new FlxLightSource (for point source.points (FlxPoint.get (+ point.x offset.x) (+ point.y offset.y))) source.color))
+
+// I'll be proven wrong, but for now I actually think position
+// is a reasonable indicator of identity for props and actors
+// that are *currently* in the scene:
+(method :Bool propEquals [:FlxSprite propA :FlxSprite propB]
+    (and (= propA.x propB.x) (= propA.y propB.y)))
+
+(method :Bool actorEquals [:ActorFlxSprite actorA :ActorFlxSprite actorB]
+    (and (= actorA.x actorB.x) (= actorA.y actorB.y)))
