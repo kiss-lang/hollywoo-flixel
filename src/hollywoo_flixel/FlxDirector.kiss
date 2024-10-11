@@ -412,6 +412,7 @@
         (flxMovie.nextFrameActions.push ->:Void {
             (doFor camera FlxG.cameras.list (set camera.zoom 0.5))
             (set flxMovie.uiCamera.zoom 1)
+            (set flxMovie.spriteChangeDebugCamera.zoom 1)
             (mm.add screen
                 ->screen {
                     (mm.remove screen)
