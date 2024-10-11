@@ -298,15 +298,17 @@
             (skySprite.makeGraphic (Std.int setSprite.width) (Std.int setSprite.height) skyColor true)))
     (set skySprite.x setSprite.x)
     (set skySprite.y 0)
-    (set skySprite.cameras [camera])
+    (flxMovie.setCameras skySprite [camera])
     (.add (first spriteLayers.members) skySprite)
 
     (FlxG.cameras.remove flxMovie.uiCamera false)
     (FlxG.cameras.remove flxMovie.screenCamera false)
+    (FlxG.cameras.remove flxMovie.spriteChangeDebugCamera false)
     (FlxG.cameras.add camera false)
     (FlxG.cameras.add flxMovie.screenCamera false)
     (FlxG.cameras.add flxMovie.uiCamera false)
-    (set setSprite.cameras [camera])
+    (FlxG.cameras.add flxMovie.spriteChangeDebugCamera false)
+    (flxMovie.setCameras setSprite [camera])
     (.add (first spriteLayers.members) setSprite)
     (cc))
 
@@ -529,7 +531,7 @@
         (character.actor.setGraphicSize flxMovie.ACTOR_WIDTH)
         (character.actor.updateHitbox))
 
-    (set character.actor.cameras [camera])
+    (flxMovie.setCameras character.actor [camera])
     (set character.actor.flipX ?!(= character.stageFacing character.actor.defaultFacing))
     // For characters whose images are forward-facing portraits, it's wrong to flip them based on facing:
     (when character.actor.portraitFacingForward
@@ -956,7 +958,7 @@
 
 (prop &mut :Bool oldScaleBehavior false)
 (method :Void showProp [:FlxSprite prop :StagePosition position :Appearance appearance :FlxCamera camera :Continuation cc]
-    (set prop.cameras [camera])
+    (flxMovie.setCameras prop [camera])
     (let [width (min (max prop.width PROP_MIN_WIDTH) PROP_MAX_WIDTH)]
         (unless (and !oldScaleBehavior (flxMovie.textProps.contains prop))
             (whenLet [FirstAppearance appearance]

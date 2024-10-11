@@ -9,6 +9,20 @@
 (function :Dynamic callPrivate [:Dynamic obj :String method &rest :Array<Dynamic> args]
     (Reflect.callMethod obj (Reflect.field obj method) args))
 
+(defMacro doOnUpdateWhile [condition &body b]
+    (let [funcName (symbol)]
+        `(withFunctions
+            [
+                (,funcName []
+                    (when ,condition
+                        (nextFrameActions.push
+                            ->:Void {
+                                ,@b
+                                (,funcName)
+                            })))
+            ]
+            (,funcName))))
+
 (method newFlxTextProp [:String key :String text :Int size :FlxColor color &opt :String font]
     (let [prop (SpriteTools.textPlate text size 0 color FlxColor.TRANSPARENT null font)]
         (_addProp key prop)
@@ -518,7 +532,28 @@
         (set uiCamera (new flixel.FlxCamera))
         (set uiCamera.bgColor FlxColor.TRANSPARENT)
         (flixel.FlxG.cameras.add uiCamera false)
-        (set kiss_flixel.SimpleWindow.defaultCamera uiCamera)))
+        (set kiss_flixel.SimpleWindow.defaultCamera uiCamera))
+    (unless spriteChangeDebugCamera
+        (set spriteChangeDebugCamera (new flixel.FlxCamera))
+        (set spriteChangeDebugCamera.bgColor FlxColor.TRANSPARENT)
+        (FlxG.cameras.add spriteChangeDebugCamera)
+        (dictSet kiss_flixel.SpriteTools.ignoreCameras spriteChangeDebugCamera true)))
+
+// If a sprite could possibly be targeted for change debugging, then its cameras always need to be set using (flxMovie.setCameras...)
+(preload (set this.setCameras ->:Void [:FlxSprite sprite :Array<flixel.FlxCamera> cameras] {
+    (set sprite.cameras cameras)
+    (when debuggingSprite
+        (debugSpriteChanges debuggingSprite))
+}))
+
+(prop &mut :FlxSprite debuggingSprite null)
+(method :Void debugSpriteChanges [:FlxSprite sprite]
+    (set debuggingSprite sprite)
+    (FlxG.state.add sprite)
+    (unless sprite.cameras
+        (set sprite.cameras []))
+    (sprite.cameras.push spriteChangeDebugCamera)
+    (spriteChangeDebugCamera.follow sprite))
 
 (preload
     // I think it's safe to leave a cleaned-up movie as this reference,
@@ -769,20 +804,6 @@
                 (thing.destroy))))
     (m.clear))
 
-(defMacro doOnUpdateWhile [condition &body b]
-    (let [funcName (symbol)]
-        `(withFunctions
-            [
-                (,funcName []
-                    (when ,condition
-                        (nextFrameActions.push
-                            ->:Void {
-                                ,@b
-                                (,funcName)
-                            })))
-            ]
-            (,funcName))))
-
 (defMacro addSkips [flxMovieClass]
     `{
         (method &override :Void prepareForSkip []
@@ -822,6 +843,8 @@
             (set kiss_flixel.SimpleWindow.defaultCamera FlxG.camera)
             (when (flixel.FlxG.cameras.list.contains screenCamera)
                 (flixel.FlxG.cameras.remove screenCamera true))
+            (when (flixel.FlxG.cameras.list.contains spriteChangeDebugCamera)
+                (flixel.FlxG.cameras.remove spriteChangeDebugCamera true))
 
             // I hope this disposes of references to actors, props, sets, etc.:
             (scenes.clear)

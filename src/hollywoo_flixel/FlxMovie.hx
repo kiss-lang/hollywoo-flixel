@@ -30,6 +30,7 @@ class FlxMovie extends Movie<FlxSprite, ActorFlxSprite, FlxSound, FlxSound, FlxS
     }
     public var uiCamera:FlxCamera;
     public var screenCamera:FlxCamera;
+    public var spriteChangeDebugCamera:FlxCamera;
 
     var tempCamerasOrder:Array<FlxCamera> = [];
     var tempCameras:Map<FlxCamera,Bool> = [];
@@ -38,6 +39,8 @@ class FlxMovie extends Movie<FlxSprite, ActorFlxSprite, FlxSound, FlxSound, FlxS
 
     public var nextFrameActions:Array<Void->Void> = [];
 
+    // This is overridden by HollywooFlixelDSL
+    public dynamic function setCameras(sprite:FlxSprite, cameras:Array<flixel.FlxCamera>):Void {}
 
     public var textProps:Array<FlxSprite> = [];
     public var propScales:JsonMap<JsonFloat>;
