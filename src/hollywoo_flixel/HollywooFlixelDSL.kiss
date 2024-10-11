@@ -4,6 +4,8 @@
 (loadFrom "hollywoo" "src/hollywoo/Movie.kiss")
 (loadFrom "hollywoo-flixel" "src/hollywoo_flixel/Aliases.kiss")
 
+(defAlias &ident flxDirector (cast director FlxDirector))
+
 (function :Dynamic callPrivate [:Dynamic obj :String method &rest :Array<Dynamic> args]
     (Reflect.callMethod obj (Reflect.field obj method) args))
 
@@ -115,6 +117,8 @@
     (let [superSkipEnd onSkipEnd]
         (set onSkipEnd ->{
             (superSkipEnd)
+
+            (FlxG.state.add flxDirector.spriteLayers)
 
             // If a background shader camera is hidden, reveal it
             (underAllCameras
@@ -286,18 +290,34 @@
 
 (defReaderMacro "ASSERTLOGSPRITES" [stream &builder b]
     `(#when debug
+        (when skipping
+            (FlxG.state.add flxDirector.spriteLayers))
         (kiss_flixel.SpriteTools.assertLogSprites ,(read stream))
+        (when skipping
+            (FlxG.state.remove flxDirector.spriteLayers true))
         (cc)))
 (defReaderMacro "ASSERTLOGSPRITESCC" [stream &builder b]
     `(#when debug
-        (kiss_flixel.SpriteTools.assertLogSprites ,(read stream))))
+        (when skipping
+            (FlxG.state.add flxDirector.spriteLayers))
+        (kiss_flixel.SpriteTools.assertLogSprites ,(read stream))
+        (when skipping
+            (FlxG.state.remove flxDirector.spriteLayers true))))
 (defReaderMacro "WARNLOGSPRITES" [stream &builder b]
     `(#when debug
+        (when skipping
+            (FlxG.state.add flxDirector.spriteLayers))
         (kiss_flixel.SpriteTools.warnLogSprites ,(read stream))
+        (when skipping
+            (FlxG.state.remove flxDirector.spriteLayers true))
         (cc)))
 (defReaderMacro "WARNLOGSPRITESCC" [stream &builder b]
     `(#when debug
-        (kiss_flixel.SpriteTools.warnLogSprites ,(read stream))))
+        (when skipping
+            (FlxG.state.add flxDirector.spriteLayers))
+        (kiss_flixel.SpriteTools.warnLogSprites ,(read stream))
+        (when skipping
+            (FlxG.state.remove flxDirector.spriteLayers true))))
 
 @:keep
 (method :Void scaleTo [:Bool skipping :FlxSprite sprite :Float scale :Float duration &opt :Void->Void cc]
@@ -407,8 +427,6 @@
     (new FlxSprite 0 0 asset))
 
 (var FAST_FORWARD_MOD 3)
-
-(defAlias &ident flxDirector (cast director FlxDirector))
 
 (method &override :Void update [:Float elapsed]
     (when skipMovie

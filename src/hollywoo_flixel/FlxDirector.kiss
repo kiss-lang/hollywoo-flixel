@@ -5,7 +5,7 @@
 (defAlias &ident flxMovie (cast movie FlxMovie))
 (loadFrom "hollywoo-flixel" "src/hollywoo_flixel/Aliases.kiss")
 
-(prop :Array<FlxTypedGroup<FlxSprite>> spriteLayers [])
+(prop :FlxTypedGroup<FlxTypedGroup<FlxSprite>> spriteLayers (new FlxTypedGroup))
 (var LAYER_MAX 8)
 
 (savedVar :Map<String,String> lastSceneLabels (new Map))
@@ -60,10 +60,10 @@
             (kiss_flixel.DebugTools.f2ToLogSprites actionManager))
         (set actionManager.resetOnStateSwitch NONE)
 
+        // Create the sprite layers but don't add them until skipping ends (This is how I win)
         (doFor i (range (+ 1 LAYER_MAX))
             (let [g (new FlxTypedGroup<FlxSprite>)]
-                (spriteLayers.push g)
-                (FlxG.state.add g)))))
+                (spriteLayers.add g)))))
 
 (prop :Map<SceneTime,FlxSprite> skySprites (new Map))
 (prop &mut :FlxSprite skySprite)
@@ -299,7 +299,7 @@
     (set skySprite.x setSprite.x)
     (set skySprite.y 0)
     (set skySprite.cameras [camera])
-    (.add (first spriteLayers) skySprite)
+    (.add (first spriteLayers.members) skySprite)
 
     (FlxG.cameras.remove flxMovie.uiCamera false)
     (FlxG.cameras.remove flxMovie.screenCamera false)
@@ -307,15 +307,15 @@
     (FlxG.cameras.add flxMovie.screenCamera false)
     (FlxG.cameras.add flxMovie.uiCamera false)
     (set setSprite.cameras [camera])
-    (.add (first spriteLayers) setSprite)
+    (.add (first spriteLayers.members) setSprite)
     (cc))
 
 (method :Void hideSet [:FlxSprite set :FlxCamera camera :Continuation cc]
     (when (FlxG.cameras.list.contains camera)
         (FlxG.cameras.remove camera false))
 
-    (.remove (first spriteLayers) skySprite true)
-    (.remove (first spriteLayers) set true)
+    (.remove (first spriteLayers.members) skySprite true)
+    (.remove (first spriteLayers.members) set true)
     (cc))
 
 (method :FlxSprite drawLight [:FlxLightSource source]
@@ -547,9 +547,9 @@
             // Display with y adjusted by z:
             (-= character.actor.y character.stagePosition.z)
             (let [layer (- LAYER_MAX 1 (Std.int (/ character.stagePosition.z flxMovie.STAGE_BEHIND_DY)))]
-                (.add (nth spriteLayers layer) character.actor)))
+                (.add (nth spriteLayers.members layer) character.actor)))
         (true
-            (.add (nth spriteLayers (min (- LAYER_MAX 1) (Std.int character.stagePosition.z))) character.actor)))
+            (.add (nth spriteLayers.members (min (- LAYER_MAX 1) (Std.int character.stagePosition.z))) character.actor)))
 
     (cc))
 
@@ -988,7 +988,7 @@
 
         (let [layerNum position.z]
             (assertEquals layerNum (Std.int layerNum))
-            (.add (nth spriteLayers (min LAYER_MAX (+ 1 (Std.int layerNum)))) prop)))
+            (.add (nth spriteLayers.members (min LAYER_MAX (+ 1 (Std.int layerNum)))) prop)))
     (set prop.x (Math.round prop.x))
     (set prop.y (Math.round prop.y))
     (cc))
