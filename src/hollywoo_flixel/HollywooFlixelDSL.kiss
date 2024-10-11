@@ -804,6 +804,8 @@
                 (thing.destroy))))
     (m.clear))
 
+(cleanup (FlxG.state.remove flxDirector.spriteLayers true))
+
 (defMacro addSkips [flxMovieClass]
     `{
         (method &override :Void prepareForSkip []
