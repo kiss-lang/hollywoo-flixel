@@ -5,7 +5,7 @@
 (defAlias &ident flxMovie (cast movie FlxMovie))
 (loadFrom "hollywoo-flixel" "src/hollywoo_flixel/Aliases.kiss")
 
-(prop :FlxTypedGroup<FlxTypedGroup<FlxSprite>> spriteLayers (new FlxTypedGroup))
+(prop :FlxTypedGroup<FlxTypedGroup<FlxBasic>> spriteLayers (new FlxTypedGroup))
 (var LAYER_MAX 8)
 
 (savedVar :Map<String,String> lastSceneLabels (new Map))
@@ -62,7 +62,7 @@
 
         // Create the sprite layers but don't add them until skipping ends (This is how I win)
         (doFor i (range (+ 1 LAYER_MAX))
-            (let [g (new FlxTypedGroup<FlxSprite>)]
+            (let [g (new FlxTypedGroup<FlxBasic>)]
                 (spriteLayers.add g)))))
 
 (prop :Map<SceneTime,FlxSprite> skySprites (new Map))

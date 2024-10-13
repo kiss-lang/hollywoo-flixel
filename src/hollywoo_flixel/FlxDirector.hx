@@ -5,6 +5,7 @@ using StringTools;
 import kiss.Prelude;
 import kiss.List;
 import flixel.FlxG;
+import flixel.FlxBasic;
 import flixel.FlxSprite;
 import flixel.input.actions.FlxAction;
 import flixel.input.FlxInput;
