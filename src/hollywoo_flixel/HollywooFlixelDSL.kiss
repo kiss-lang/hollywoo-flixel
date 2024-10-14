@@ -811,7 +811,7 @@
             set scene.set]
 
         (set camera.x (Math.ceil set.x))
-        (set camera.scroll.x (Math.ceil set.x))
+        (set camera.scroll.x (Math.ceil set.x)) // TODO will need to tighten in like below
         (set camera.width (Std.int set.width))))
 
 (method clipSceneCameraByProp [:String propKey]
