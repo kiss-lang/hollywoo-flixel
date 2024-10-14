@@ -873,6 +873,27 @@
 
         (#when debug
             (preload
+                (withFunctions [(defineLightColor [cc]
+                                    (when doingSomething (return))
+                                    (set doingSomething true)
+                                    (set lastCommand defineLightColor)
+                                    (let [arr (lightSources.get sceneKey)
+                                            stringArr (for ls arr (ls.stringify))
+                                            stringMap (for [key ls] (zipThrow stringArr arr) =>key ls)]
+                                        (director.chooseString "Color which light source?" (withCancel stringArr)
+                                            (unlessCancel choice
+                                                (let [ls (dictGet stringMap choice)]
+                                                    (SimpleWindow.promptForColor "Which color?"
+                                                        ->color {
+                                                            (set ls.color color)
+                                                            (lightSources.put sceneKey arr)
+                                                            (_updateLighting)
+                                                            (cc)
+                                                        }
+                                                        null ls.color true)
+                                                    (return))))))]
+                    (.registerItem (director.shortcutHandler) "[d]efine light [c]olor" defineLightColor))
+
                 (.registerItem (director.shortcutHandler) "[n]ext label"
                                 ->cc
                                     (unless doingSomething (set doingSomething true)
