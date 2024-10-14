@@ -489,19 +489,13 @@
                         (Night NIGHT_COLOR)
                         (otherwise FlxColor.TRANSPARENT)))
     (darkness.makeGraphic FlxG.width FlxG.height darkColor true)
-    // When there are no shaped light sources, don't draw darkness, it's usually just annoying.
-    (localVar &mut lightIsHere false)
-    (doFor source lightSources
-        (set lightIsHere true)
-        (drawLight source))
+    (doFor source lightSources (drawLight source))
     (blackAlphaMaskFlxSprite darkness lightMask darkness)
     (set lightSprite.cameras [flxMovie.screenCamera])
     (set darkness.alpha darkColor.alphaFloat)
     (set darkness.cameras [flxMovie.screenCamera])
-    // TODO put these in defined sprite layers!
-    (when lightIsHere
-        (FlxG.state.add darkness)
-        (FlxG.state.add lightSprite)))
+    (FlxG.state.add darkness)
+    (FlxG.state.add lightSprite))
 
 (method :Void hideLighting []
     (when darkness
