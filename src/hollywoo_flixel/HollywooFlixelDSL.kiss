@@ -59,8 +59,9 @@
             (tweenedPositions.remove sprite)))
     (super.moveToScene skipping name cc))
 
-(method &override :Void _showScene [:Scene scene :Appearance appearance :FlxCamera camera :Continuation cc]
+(method &override :Void _showScene [:Scene scene :Appearance appearance :FlxCamera camera :Bool skipping :Continuation cc]
     (super._showScene scene appearance camera
+        skipping
         (makeCC cc
             (whenLet [overlaidProps (dictGet overlaidPropsInScenes sceneKey)]
                 (doFor =>sprite key overlaidProps
@@ -790,6 +791,7 @@
             scene
             (hollywoo.Movie.appearanceFlag shownScenes name)
             camera
+            skipping
             (makeCC finish
                 (linearMotion skipping inCameraPos 0 0 speed finish soundLoop volumeMod [outCameraPos])))))
 
