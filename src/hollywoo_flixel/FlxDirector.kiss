@@ -301,13 +301,26 @@
     (flxMovie.setCameras skySprite [camera])
     (.add (first spriteLayers.members) skySprite)
 
-    (FlxG.cameras.remove flxMovie.uiCamera false)
-    (FlxG.cameras.remove flxMovie.screenCamera false)
+    // Remove cameras top to bottom:
     (FlxG.cameras.remove flxMovie.spriteChangeDebugCamera false)
+    (FlxG.cameras.remove flxMovie.uiCamera false)
+    (doFor camera flxMovie.tempCamerasOrder
+        (FlxG.cameras.remove camera false))
+    (FlxG.cameras.remove flxMovie.screenCamera false)
+    (doFor camera flxMovie.tempBgCamerasOrder
+        (FlxG.cameras.remove camera false))
+
+    // Add cameras bottom to top
+    (doFor camera flxMovie.tempBgCamerasOrder
+        (FlxG.cameras.add camera (dictGet flxMovie.tempBgCameras camera)))
     (FlxG.cameras.add camera false)
     (FlxG.cameras.add flxMovie.screenCamera false)
+    (doFor camera flxMovie.tempCamerasOrder
+        (FlxG.cameras.add camera (dictGet flxMovie.tempCameras camera)))
     (FlxG.cameras.add flxMovie.uiCamera false)
     (FlxG.cameras.add flxMovie.spriteChangeDebugCamera false)
+    
+    // Add the set
     (flxMovie.setCameras setSprite [camera])
     (.add (first spriteLayers.members) setSprite)
     (cc))
