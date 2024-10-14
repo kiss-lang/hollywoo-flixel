@@ -298,6 +298,7 @@
             (skySprite.makeGraphic (Std.int setSprite.width) (Std.int setSprite.height) skyColor true)))
     (set skySprite.x setSprite.x)
     (set skySprite.y 0)
+    (set skySprite.alpha lastSkyAlpha)
     (flxMovie.setCameras skySprite [camera])
     (.add (first spriteLayers.members) skySprite)
 
@@ -325,10 +326,12 @@
     (.add (first spriteLayers.members) setSprite)
     (cc))
 
+(prop &mut lastSkyAlpha 1.0)
 (method :Void hideSet [:FlxSprite set :FlxCamera camera :Continuation cc]
     (when (FlxG.cameras.list.contains camera)
         (FlxG.cameras.remove camera false))
 
+    (set lastSkyAlpha skySprite.alpha)
     (.remove (first spriteLayers.members) skySprite true)
     (.remove (first spriteLayers.members) set true)
     (cc))
