@@ -243,7 +243,7 @@
                     (pauseMenu.makeText ""))
                 ((Dialog speaker type _wryly text)
                     (pauseMenu.makeText (specialTypesSpeakerName speaker type))
-                    (pauseMenu.makeWrappedText (specialHistoryChars text))
+                    (pauseMenu.makeMultilineText (specialHistoryChars text))
                     (pauseMenu.makeText ""))
                 ((Super text)
                     (pauseMenu.makeText text)
