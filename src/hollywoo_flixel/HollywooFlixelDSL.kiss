@@ -64,6 +64,7 @@
         (makeCC cc
             (whenLet [overlaidProps (dictGet overlaidPropsInScenes sceneKey)]
                 (doFor =>sprite key overlaidProps
+                    // TODO save the z value it was overlaid with and pass it in!
                     (overlayPropOnCurrentSet key (makeCC null null))))
             (whenLet [tweenedPositions (dictGet tweenedPositionsOfSpritesInScenes sceneKey)]
                 (doFor =>sprite point tweenedPositions
@@ -803,6 +804,25 @@
             (otherwise
                 (thing.destroy))))
     (m.clear))
+
+(method clipSceneCameraBySet []
+    (let [scene (_currentScene)
+            camera scene.camera
+            set scene.set]
+
+        (set camera.x (Math.ceil set.x))
+        (set camera.scroll.x (Math.ceil set.x))
+        (set camera.width (Std.int set.width))))
+
+(method clipSceneCameraByProp [:String propKey]
+    (let [scene (_currentScene)
+            camera scene.camera
+            propKey (kiss.FuzzyMapTools.bestMatch props propKey)
+            prop (dictGet props propKey)]
+        (set camera.x (Math.ceil prop.x))
+        (set camera.scroll.x (+ 1 (Math.ceil prop.x))) // TODO idk why the +1 for tightening in is necessary but it is
+        (set camera.width (- (Std.int prop.width) 2)) // TODO same for the -2
+        ))
 
 (cleanup (FlxG.state.remove flxDirector.spriteLayers true))
 
