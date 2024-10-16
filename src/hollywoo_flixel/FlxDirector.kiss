@@ -30,11 +30,15 @@
                                     ("Scene Selection"
                                         (sceneSelection
                                             ->:Void {
+                                                (movie.doCleanup)
                                                 (FlxG.switchState (new MenuState))
                                             }))
                                     ("Start From Beginning" (movie.run))
                                     (never otherwise)) true "escape")
-                (set pauseMenu.onClose ->:Void (FlxG.switchState (new MenuState)))}
+                (set pauseMenu.onClose ->:Void {
+                    (movie.doCleanup)
+                    (FlxG.switchState (new MenuState))
+                })}
 		(movie.run)))
 
 // MenuState uses a director instance to demo the volume. This shouldn't affect flixel globals i.e. by adding an actionManager or sprite layers
