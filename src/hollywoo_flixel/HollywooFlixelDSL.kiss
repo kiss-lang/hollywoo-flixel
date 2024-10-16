@@ -219,18 +219,8 @@
                 (linearMotion skipping cSprite (+ destX xOffset) (+ destY yOffset) speed (when (= lastCSprite cSprite) cc))))))
 
 @:keep
-(method linearMotionTo [:Bool skipping :FlxSprite sprite :String positionKey :Float speed &opt :Void->Void cc :String soundLoop :Float volumeMod :Array<FlxSprite> connectedSprites]
-    (let [holderType (typeCase [sprite]
-                        // Try-catch: Sometimes I've used ActorFlxSprite for props
-                        ([:ActorFlxSprite actorSprite] 
-                            (try
-                                    (hollywoo.Movie.PositionHolder.Actor
-                                        (getActorName actorSprite))
-                                (catch [e]
-                                    (hollywoo.Movie.PositionHolder.Prop (getPropName actorSprite)))))
-                        ([:FlxSprite propSprite] (hollywoo.Movie.PositionHolder.Prop (getPropName propSprite)))
-                        (never otherwise))
-            position (resolvePosition positionKey holderType)]
+(method linearMotionTo [:Bool skipping :FlxSprite sprite :String spriteKey :String positionKey :Float speed &opt :Void->Void cc :String soundLoop :Float volumeMod :Array<FlxSprite> connectedSprites]
+    (let [position (resolvePosition positionKey spriteKey)]
         (linearMotion skipping sprite position.x position.y speed cc soundLoop volumeMod connectedSprites)))
 
 (defMacro _linearMotionTo [withMacro await objectKey positionKey speed soundLoop volumeMod connectedSprites]
@@ -238,6 +228,7 @@
         (linearMotionTo
             skipping
             o
+            realKey_o
             ,positionKey
             ,speed
             ,(if (eval await) `cc `null)
