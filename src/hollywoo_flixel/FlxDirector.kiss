@@ -538,6 +538,11 @@
     (currentSoundVolumes.clear)
     (whileLet [vt (currentVoiceTracks.pop)]
         (stopVoiceTrack vt))
+    
+    (doFor text creditsText
+        (FlxG.state.remove text true)
+        (text.destroy))
+    (set creditsText [])
     )
 
 (method :Option<AutoZConfig> autoZConfig [] (Some (object zPerLayer flxMovie.STAGE_BEHIND_DY frontLayer 0)))
@@ -1037,7 +1042,7 @@
         (layer.remove prop true))
     (cc))
 
-(prop :kiss.List<FlxText> creditsText [])
+(prop &mut :kiss.List<FlxText> creditsText [])
 (method _ctext [:String text :Int size]
     (let [t (new FlxText 0 0 0 text size)]
         (creditsText.push t)
