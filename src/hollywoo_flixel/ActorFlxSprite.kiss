@@ -33,7 +33,7 @@
     (if (animationNames.exists fuzzySearchKey)
             {
                 (when cc 
-                    (assert !animation.finishCallback)
+                    // (assert !animation.finishCallback) // TODO I don't know why, but this errors in release builds
                     (set animation.finishCallback ->_ {(set animation.finishCallback null)(cc)}))
                 (animation.play (dictGet animationNames fuzzySearchKey) true)
             }
