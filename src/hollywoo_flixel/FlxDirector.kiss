@@ -1106,6 +1106,14 @@
                 (+= textY threeColSize creditMargin))
             (otherwise)))
 
+    // Squish overflowing texts inward:
+    (doFor text creditsText
+        (when (< text.x 0)
+            (text.setGraphicSize (- text.width (- text.x)))
+            (set text.x 0))
+        (when (> (+ text.x text.width) FlxG.width)
+            (text.setGraphicSize (- text.width (- (+ text.x text.width) FlxG.width)))))
+
     (let [pixelsToScroll
                 (+ textY .height (last creditsText))
             idealTimeLimit
