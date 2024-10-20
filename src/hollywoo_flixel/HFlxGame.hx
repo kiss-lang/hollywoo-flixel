@@ -13,6 +13,8 @@ class HFlxGame extends FlxGame {
 
     public function new(gameWidth = 0, gameHeight = 0, ?initialState:Class<FlxState>, updateFramerate = 60, drawFramerate = 60, skipSplash = false, startFullscreen = false) {
         super(gameWidth, gameHeight, initialState, updateFramerate, drawFramerate, skipSplash, startFullscreen);
+		// Is this a one-line fix for the memory leak?
+		openfl.Assets.cache.enabled = false;
     }
     
     override function step():Void

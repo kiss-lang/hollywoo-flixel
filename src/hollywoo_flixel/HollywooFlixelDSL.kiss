@@ -880,7 +880,8 @@
             (doFor =>key lightSourceList lightSources
                 (whileLet [lightSource (lightSourceList.elements.pop)]
                     (lightSource.destroy)))
-
+            
+            (flixel.FlxG.bitmap.clearCache)
             (#when cpp
                 (cpp.vm.Gc.run true)
                 (cpp.vm.Gc.compact)))
