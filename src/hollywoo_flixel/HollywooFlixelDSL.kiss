@@ -461,6 +461,10 @@
             (set inCamera.y inCameraPos.y)
             (set outCamera.x outCameraPos.x)
             (set outCamera.y outCameraPos.y)))
+    
+    // Always hide mouse cursor while movie running:
+    (set FlxG.mouse.visible paused)
+    
     (.update (cast (director.shortcutHandler) kiss_flixel.FlxKeyShortcutHandler<Dynamic>)))
 
 (prop &mut :FlxSprite _canvas null)
