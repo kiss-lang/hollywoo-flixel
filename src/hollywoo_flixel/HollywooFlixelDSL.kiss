@@ -821,7 +821,9 @@
         (set camera.width (- (Std.int prop.width) 2)) // TODO same for the -2
         ))
 
-(cleanup (FlxG.state.remove flxDirector.spriteLayers true))
+(cleanup
+    (FlxG.state.remove flxDirector.spriteLayers true)
+    (set FlxG.mouse.visible true))
 
 (defMacro addSkips [flxMovieClass]
     `{
