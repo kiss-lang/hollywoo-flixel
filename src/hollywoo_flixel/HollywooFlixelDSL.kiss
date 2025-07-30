@@ -904,14 +904,16 @@
                                         (director.chooseString "Color which light source?" (withCancel stringArr)
                                             (unlessCancel choice
                                                 (let [ls (dictGet stringMap choice)]
-                                                    (SimpleWindow.promptForColor "Which color?"
+                                                    (SimpleWindow.promptForColorV2 "Which color?"
                                                         ->color {
                                                             (set ls.color color)
                                                             (lightSources.put sceneKey arr)
                                                             (_updateLighting)
                                                             (cc)
                                                         }
-                                                        null ls.color true)
+                                                        (object
+                                                            currentColor ls.color
+                                                            allowAlpha true))
                                                     (return))))))]
                     (.registerItem (director.shortcutHandler) "[d]efine light [c]olor" defineLightColor))
 

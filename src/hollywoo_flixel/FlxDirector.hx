@@ -70,14 +70,14 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	public static var lastSceneLabels(get,set):Map<String,String>;
 	public static function get_lastSceneLabels():Map<String,String>  return {
 		if (Prelude.truthy({
-			final _p6LrZAnE338fNht4xCNZ6S:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
+			final _6W7oc3M6xwrzSHgtjRALx:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
 			{
-				if (Prelude.truthy(_p6LrZAnE338fNht4xCNZ6S)) {
-					final _nLRjC9dmQsBTGRMN3fCofZ:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
+				if (Prelude.truthy(_6W7oc3M6xwrzSHgtjRALx)) {
+					final _paW4tq9PLe9Wnrm8TQejiF:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
 					{
-						_nLRjC9dmQsBTGRMN3fCofZ;
+						_paW4tq9PLe9Wnrm8TQejiF;
 					};
-				} else _p6LrZAnE338fNht4xCNZ6S;
+				} else _6W7oc3M6xwrzSHgtjRALx;
 			};
 		})) {
 			final content = sys.io.File.getContent(".FlxDirector.json"); final json:haxe.DynamicAccess<String> = haxe.Json.parse(content);
@@ -93,14 +93,14 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	}
 	public static function set_lastSceneLabels(v:Map<String,String>):Map<String,String>  return {
 		if (Prelude.truthy({
-			final _dtDEySjaC9Aw3sBcAMSHJv:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
+			final _jPTpPcp7jmu7tzTUYWrQQc:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
 			{
-				if (Prelude.truthy(_dtDEySjaC9Aw3sBcAMSHJv)) {
-					final _wQX87xankXpS8b4yPq79SG:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
+				if (Prelude.truthy(_jPTpPcp7jmu7tzTUYWrQQc)) {
+					final _nPhEdyFWZ4rZ8d6RyFKc4a:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
 					{
-						_wQX87xankXpS8b4yPq79SG;
+						_nPhEdyFWZ4rZ8d6RyFKc4a;
 					};
-				} else _dtDEySjaC9Aw3sBcAMSHJv;
+				} else _jPTpPcp7jmu7tzTUYWrQQc;
 			};
 		})) {
 			final content = sys.io.File.getContent(".FlxDirector.json"); final json:haxe.DynamicAccess<String> = haxe.Json.parse(content);
@@ -125,23 +125,23 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 			final clazz = Type.getClass(m); final className = Type.getClassName(clazz); final currentValue = lastSceneLabels[className];
 			{
 				if (Prelude.truthy(setValue)) {
-					var _chzVccojDUHKgxkVx1PEo2 = null;
+					var _SX9opsn5u2RiebhKMwn4Q = null;
 					{
-						final _wXyzycFJy8zrrc8RQu8wx8 = lastSceneLabels;
+						final _bzq1GRmrvxLtdK6qNgovzc = lastSceneLabels;
 						{
 							{
-								final lastSceneLabels = _wXyzycFJy8zrrc8RQu8wx8;
+								final lastSceneLabels = _bzq1GRmrvxLtdK6qNgovzc;
 								{
-									_chzVccojDUHKgxkVx1PEo2 = {
+									_SX9opsn5u2RiebhKMwn4Q = {
 										lastSceneLabels[className] = setValue;
 										setValue;
 									};
 								};
 							};
-							lastSceneLabels = _wXyzycFJy8zrrc8RQu8wx8;
+							lastSceneLabels = _bzq1GRmrvxLtdK6qNgovzc;
 						};
 					};
-					_chzVccojDUHKgxkVx1PEo2;
+					_SX9opsn5u2RiebhKMwn4Q;
 				} else currentValue;
 			};
 		};
@@ -151,7 +151,7 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 		if (Prelude.truthy(movie.labelRunners().exists(lastSceneForMovie(movie)))) {
 			_chooseString((Prelude.add("Resume from \'", Std.string(lastSceneForMovie(movie)), "\'?") : String), new kiss.List(["", "Resume", "Scene Selection", "Start From Beginning"]), function(choice) return {
 				switch choice {
-					case _cxvhoXcLzjVhByQmXxu7yk if (Prelude.truthy(Prelude.isNull(_cxvhoXcLzjVhByQmXxu7yk))):{
+					case _617WXvvCkdW32Xvuq2qj3V if (Prelude.truthy(Prelude.isNull(_617WXvvCkdW32Xvuq2qj3V))):{
 						{
 							throw kiss.Prelude.runtimeInsertAssertionMessage("case should never match pattern otherwise", "/Users/nat/repos/hollywoo-flixel/src/hollywoo_flixel/FlxDirector.kiss:37:37: Assertion failed: \nFrom:[(never otherwise)]", 4);
 						};
@@ -188,8 +188,8 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 			continueAction = new FlxActionDigital("Continue", onContinue);
 			fastForwardAction = new FlxActionDigital("Fast Forward");
 			{
-				for (_pCtjmr5q3eaZiaiPVhUQ5y in (Prelude.zipThrow(new kiss.List([continueAction, fastForwardAction]), new kiss.List([JUST_PRESSED, PRESSED])) : Array<Array<Dynamic>>)) {
-					final _mWbdR2jcD6J3Vkcv5hxf4x = _pCtjmr5q3eaZiaiPVhUQ5y; final action:FlxActionDigital = _mWbdR2jcD6J3Vkcv5hxf4x[0]; final trigger:FlxInputState = _mWbdR2jcD6J3Vkcv5hxf4x[1];
+				for (_eUF74RxfWgTRE11hKzounJ in (Prelude.zipThrow(new kiss.List([continueAction, fastForwardAction]), new kiss.List([JUST_PRESSED, PRESSED])) : Array<Array<Dynamic>>)) {
+					final _aVq547xCteR7EUauCrhrPz = _eUF74RxfWgTRE11hKzounJ; final action:FlxActionDigital = _aVq547xCteR7EUauCrhrPz[0]; final trigger:FlxInputState = _aVq547xCteR7EUauCrhrPz[1];
 					{
 						action.addKey(SPACE, trigger);
 						action.addKey(ENTER, trigger);
@@ -230,13 +230,13 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 		flixel.FlxG.inputs.remove(actionManager);
 		flixel.FlxG.state.forEach(function(child) {
 			{
-				final _kDTwrkhVP98ZwxVuS55ZJx:Dynamic = child;
+				final _o1XPzXbMUi7vUHJopcrWWr:Dynamic = child;
 				{
-					switch [_kDTwrkhVP98ZwxVuS55ZJx] {
+					switch [_o1XPzXbMUi7vUHJopcrWWr] {
 						case [typeText] if (Prelude.truthy({
-							final _feaU81utVbNP5tFbsMqzhy:Dynamic = Std.isOfType(typeText, FlxTypeText);
+							final _rtENsGZMybv2tJywnB77qW:Dynamic = Std.isOfType(typeText, FlxTypeText);
 							{
-								_feaU81utVbNP5tFbsMqzhy;
+								_rtENsGZMybv2tJywnB77qW;
 							};
 						})):{
 							{
@@ -257,9 +257,9 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 							};
 						};
 						case [sprite] if (Prelude.truthy({
-							final _v7FjvtAQy4K8kw6gZWe13C:Dynamic = Std.isOfType(sprite, flixel.FlxSprite);
+							final _ifSszrSzTTetFuNMcTSNWe:Dynamic = Std.isOfType(sprite, flixel.FlxSprite);
 							{
-								_v7FjvtAQy4K8kw6gZWe13C;
+								_ifSszrSzTTetFuNMcTSNWe;
 							};
 						})):{
 							{
@@ -294,7 +294,7 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 		{
 			for (sound in sounds) {
 				{
-					final _7fn2wexzRy7Ti9mCCCxWRK = currentSoundVolumes[sound]; final original = _7fn2wexzRy7Ti9mCCCxWRK[0]; final mod = _7fn2wexzRy7Ti9mCCCxWRK[1];
+					final _iJBDB1tSirJjnGNwYFGyBh = currentSoundVolumes[sound]; final original = _iJBDB1tSirJjnGNwYFGyBh[0]; final mod = _iJBDB1tSirJjnGNwYFGyBh[1];
 					{
 						sound.volume = Prelude.multiply(original, mod, newVolume);
 						sound.resume();
@@ -311,13 +311,13 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 		flixel.FlxG.inputs.add(actionManager);
 		flixel.FlxG.state.forEach(function(child) {
 			{
-				final _pmVcK9xfvg11X4CzcEAQP5:Dynamic = child;
+				final _j72KdftHEEEPpoA3n11iN9:Dynamic = child;
 				{
-					switch [_pmVcK9xfvg11X4CzcEAQP5] {
+					switch [_j72KdftHEEEPpoA3n11iN9] {
 						case [typeText] if (Prelude.truthy({
-							final _ks5RN4CyR5o6cBgsTLVGs8:Dynamic = Std.isOfType(typeText, FlxTypeText);
+							final _9Yyfs3NYkM4fLC1FY5J9mE:Dynamic = Std.isOfType(typeText, FlxTypeText);
 							{
-								_ks5RN4CyR5o6cBgsTLVGs8;
+								_9Yyfs3NYkM4fLC1FY5J9mE;
 							};
 						})):{
 							{
@@ -338,9 +338,9 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 							};
 						};
 						case [sprite] if (Prelude.truthy({
-							final _9hLuf9ReXyYa7dMiBp1Efy:Dynamic = Std.isOfType(sprite, flixel.FlxSprite);
+							final _pLZABAG1W6om7BARxfKwFc:Dynamic = Std.isOfType(sprite, flixel.FlxSprite);
 							{
-								_9hLuf9ReXyYa7dMiBp1Efy;
+								_pLZABAG1W6om7BARxfKwFc;
 							};
 						})):{
 							{
@@ -413,7 +413,7 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 					{
 						chooseString("PAUSED", choices, function(choice) {
 							switch choice {
-								case _inEZJwqyYwuTe9hEsUmtj4 if (Prelude.truthy(Prelude.isNull(_inEZJwqyYwuTe9hEsUmtj4))):{
+								case _2Z6Vm3wGYSJbgVpy4A28AM if (Prelude.truthy(Prelude.isNull(_2Z6Vm3wGYSJbgVpy4A28AM))):{
 									{
 										throw kiss.Prelude.runtimeInsertAssertionMessage("case should never match pattern otherwise", "/Users/nat/repos/hollywoo-flixel/src/hollywoo_flixel/FlxDirector.kiss:214:25: Assertion failed: \nFrom:[(never otherwise)]", 4);
 									};
@@ -478,7 +478,7 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	}
 	public static function specialTypesSpeakerName(name:String, type:SpeechType<hollywoo_flixel.ActorFlxSprite>) return {
 		switch type {
-			case _oQbPed1sZn9KLbhqz2skjy if (Prelude.truthy(Prelude.isNull(_oQbPed1sZn9KLbhqz2skjy))):{
+			case _eRMU5rHn3TJidmo7ih2sYC if (Prelude.truthy(Prelude.isNull(_eRMU5rHn3TJidmo7ih2sYC))):{
 				{
 					name;
 				};
@@ -519,37 +519,37 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 				};
 			};
 			{
-				pauseMenu = new SimpleWindow("HISTORY", flixel.util.FlxColor.BLACK, textColor, 0.6, 0.9, true, null, null, null, "up", "down", function() {
+				pauseMenu = SimpleWindow.create({ title : "HISTORY", bgColor : flixel.util.FlxColor.BLACK, textColor : textColor, percentWidth : 0.6, percentHeight : 0.9, xButton : true, upKey : "up", downKey : "down", onClose : function() {
 					_resume(null);
-				});
+				} });
 				pauseMenu.enableVerticalScrolling();
 				pauseMenu.enableGamepadInput(true);
-				pauseMenu.makeText("");
+				pauseMenu.makeTextV2("");
 				{
 					for (element in history) {
 						switch element {
-							case _pgEU2vCbamUfhH7u5bZhA9 if (Prelude.truthy(Prelude.isNull(_pgEU2vCbamUfhH7u5bZhA9))):{
+							case _9pJLKSjq4M4pjhGb5scbG3 if (Prelude.truthy(Prelude.isNull(_9pJLKSjq4M4pjhGb5scbG3))):{
 								{
-									throw kiss.Prelude.runtimeInsertAssertionMessage("case should never match pattern otherwise", "/Users/nat/repos/hollywoo-flixel/src/hollywoo_flixel/FlxDirector.kiss:255:17: Assertion failed: \nFrom:[(never otherwise)]", 4);
+									throw kiss.Prelude.runtimeInsertAssertionMessage("case should never match pattern otherwise", "/Users/nat/repos/hollywoo-flixel/src/hollywoo_flixel/FlxDirector.kiss:265:17: Assertion failed: \nFrom:[(never otherwise)]", 4);
 								};
 							};
 							case Sound(caption):{
-								pauseMenu.makeText((Prelude.add("<", Std.string({
+								pauseMenu.makeTextV2((Prelude.add("<", Std.string({
 									caption;
 								}), ">") : String));
-								pauseMenu.makeText("");
+								pauseMenu.makeTextV2("");
 							};
 							case Dialog(speaker, type, _wryly, text):{
-								pauseMenu.makeText(specialTypesSpeakerName(speaker, type));
+								pauseMenu.makeTextV2(specialTypesSpeakerName(speaker, type));
 								pauseMenu.makeMultilineText(specialHistoryChars(text));
-								pauseMenu.makeText("");
+								pauseMenu.makeTextV2("");
 							};
 							case Super(text):{
-								pauseMenu.makeText(text);
-								pauseMenu.makeText("");
+								pauseMenu.makeTextV2(text);
+								pauseMenu.makeTextV2("");
 							};
 							default:{
-								throw kiss.Prelude.runtimeInsertAssertionMessage("case should never match pattern otherwise", "/Users/nat/repos/hollywoo-flixel/src/hollywoo_flixel/FlxDirector.kiss:255:17: Assertion failed: \nFrom:[(never otherwise)]", 4);
+								throw kiss.Prelude.runtimeInsertAssertionMessage("case should never match pattern otherwise", "/Users/nat/repos/hollywoo-flixel/src/hollywoo_flixel/FlxDirector.kiss:265:17: Assertion failed: \nFrom:[(never otherwise)]", 4);
 							};
 						};
 					};
@@ -582,7 +582,7 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 			null;
 		};
 		switch appearance {
-			case _ucU4BiTbA2WaGE1qP3jhBB if (Prelude.truthy(Prelude.isNull(_ucU4BiTbA2WaGE1qP3jhBB))):{
+			case _jJAjmMFqPa5wDrrpneq6kS if (Prelude.truthy(Prelude.isNull(_jJAjmMFqPa5wDrrpneq6kS))):{
 				{ };
 			};
 			case FirstAppearance:{
@@ -596,17 +596,17 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 			default:{ };
 		};
 		{
-			final _9ummKhLkHNvzLL1zcTtR8b = skySprites[time];
+			final _m38YRZvcSKtBEYJtdzPU2 = skySprites[time];
 			{
-				if (Prelude.truthy(_9ummKhLkHNvzLL1zcTtR8b)) switch _9ummKhLkHNvzLL1zcTtR8b {
-					case _pM2nMhQ6DVBhq7sHM7ojCt if (Prelude.truthy(Prelude.isNull(_pM2nMhQ6DVBhq7sHM7ojCt))):{
+				if (Prelude.truthy(Prelude.isNotNull(_m38YRZvcSKtBEYJtdzPU2))) switch _m38YRZvcSKtBEYJtdzPU2 {
+					case _efqkK39jDQ2NDcM46YakHS if (Prelude.truthy(Prelude.isNull(_efqkK39jDQ2NDcM46YakHS))):{
 						{
 							{
 								final skyColor = switch time {
-									case _sfQH6VGwEKfSZva7FNHqCw if (Prelude.truthy(Prelude.isNull(_sfQH6VGwEKfSZva7FNHqCw))):{
+									case _5ahuwW2JMWjKs8p2SDJn4u if (Prelude.truthy(Prelude.isNull(_5ahuwW2JMWjKs8p2SDJn4u))):{
 										{
 											{
-												throw kiss.Prelude.runtimeInsertAssertionMessage("case should never match pattern null", "/Users/nat/repos/hollywoo-flixel/src/hollywoo_flixel/FlxDirector.kiss:300:29: Assertion failed: \nFrom:[(never null)]", 4);
+												throw kiss.Prelude.runtimeInsertAssertionMessage("case should never match pattern null", "/Users/nat/repos/hollywoo-flixel/src/hollywoo_flixel/FlxDirector.kiss:310:29: Assertion failed: \nFrom:[(never null)]", 4);
 											};
 										};
 									};
@@ -653,9 +653,9 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 					default:{
 						{
 							final skyColor = switch time {
-								case _sfQH6VGwEKfSZva7FNHqCw if (Prelude.truthy(Prelude.isNull(_sfQH6VGwEKfSZva7FNHqCw))):{
+								case _5ahuwW2JMWjKs8p2SDJn4u if (Prelude.truthy(Prelude.isNull(_5ahuwW2JMWjKs8p2SDJn4u))):{
 									{
-										throw kiss.Prelude.runtimeInsertAssertionMessage("case should never match pattern null", "/Users/nat/repos/hollywoo-flixel/src/hollywoo_flixel/FlxDirector.kiss:300:29: Assertion failed: \nFrom:[(never null)]", 4);
+										throw kiss.Prelude.runtimeInsertAssertionMessage("case should never match pattern null", "/Users/nat/repos/hollywoo-flixel/src/hollywoo_flixel/FlxDirector.kiss:310:29: Assertion failed: \nFrom:[(never null)]", 4);
 									};
 								};
 								case Morning | Day:{
@@ -676,9 +676,9 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 					};
 				} else {
 					final skyColor = switch time {
-						case _b41NqV9BmzMPPGYgZVezsy if (Prelude.truthy(Prelude.isNull(_b41NqV9BmzMPPGYgZVezsy))):{
+						case _hEhdXznuetkpvxUVePW6WV if (Prelude.truthy(Prelude.isNull(_hEhdXznuetkpvxUVePW6WV))):{
 							{
-								throw kiss.Prelude.runtimeInsertAssertionMessage("case should never match pattern null", "/Users/nat/repos/hollywoo-flixel/src/hollywoo_flixel/FlxDirector.kiss:300:29: Assertion failed: \nFrom:[(never null)]", 4);
+								throw kiss.Prelude.runtimeInsertAssertionMessage("case should never match pattern null", "/Users/nat/repos/hollywoo-flixel/src/hollywoo_flixel/FlxDirector.kiss:310:29: Assertion failed: \nFrom:[(never null)]", 4);
 							};
 						};
 						case Morning | Day:{
@@ -776,14 +776,14 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	private static var _textColor(get,set):Int;
 	public static function get__textColor():Int  return {
 		if (Prelude.truthy({
-			final _3njSJxNvKkvHhvf9bKsNdT:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
+			final _jDr6ZMgCi25NnpErbKzUpb:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
 			{
-				if (Prelude.truthy(_3njSJxNvKkvHhvf9bKsNdT)) {
-					final _qrGXCQFeEN1a1hjLs78DdP:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
+				if (Prelude.truthy(_jDr6ZMgCi25NnpErbKzUpb)) {
+					final _n9nkDuzcfnmT8e7qm4xBsN:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
 					{
-						_qrGXCQFeEN1a1hjLs78DdP;
+						_n9nkDuzcfnmT8e7qm4xBsN;
 					};
-				} else _3njSJxNvKkvHhvf9bKsNdT;
+				} else _jDr6ZMgCi25NnpErbKzUpb;
 			};
 		})) {
 			final content = sys.io.File.getContent(".FlxDirector.json"); final json:haxe.DynamicAccess<String> = haxe.Json.parse(content);
@@ -799,14 +799,14 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	}
 	public static function set__textColor(v:Int):Int  return {
 		if (Prelude.truthy({
-			final _dod86LyW8RhJjA2J2zSr4T:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
+			final _raUZwprrfYdfYmdSWKHcbf:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
 			{
-				if (Prelude.truthy(_dod86LyW8RhJjA2J2zSr4T)) {
-					final _3AWjKpyLnC4kE193N8ufJ1:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
+				if (Prelude.truthy(_raUZwprrfYdfYmdSWKHcbf)) {
+					final _qXAwGhnjrJZaNCn8vVnDtE:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
 					{
-						_3AWjKpyLnC4kE193N8ufJ1;
+						_qXAwGhnjrJZaNCn8vVnDtE;
 					};
-				} else _dod86LyW8RhJjA2J2zSr4T;
+				} else _raUZwprrfYdfYmdSWKHcbf;
 			};
 		})) {
 			final content = sys.io.File.getContent(".FlxDirector.json"); final json:haxe.DynamicAccess<String> = haxe.Json.parse(content);
@@ -833,14 +833,14 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	private static var _buttonColor(get,set):Int;
 	public static function get__buttonColor():Int  return {
 		if (Prelude.truthy({
-			final _45KE5qa66W3DfwQqUAwx7q:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
+			final _6xcsxyuCK4jbsVVuSjgchQ:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
 			{
-				if (Prelude.truthy(_45KE5qa66W3DfwQqUAwx7q)) {
-					final _2VJ14jhu4ALszNHtLYChzv:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
+				if (Prelude.truthy(_6xcsxyuCK4jbsVVuSjgchQ)) {
+					final _hg1UAJNcpLLxk7wSFULDkU:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
 					{
-						_2VJ14jhu4ALszNHtLYChzv;
+						_hg1UAJNcpLLxk7wSFULDkU;
 					};
-				} else _45KE5qa66W3DfwQqUAwx7q;
+				} else _6xcsxyuCK4jbsVVuSjgchQ;
 			};
 		})) {
 			final content = sys.io.File.getContent(".FlxDirector.json"); final json:haxe.DynamicAccess<String> = haxe.Json.parse(content);
@@ -856,14 +856,14 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	}
 	public static function set__buttonColor(v:Int):Int  return {
 		if (Prelude.truthy({
-			final _bGCG49efRec9xxoKyNpLy3:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
+			final _oSmY69NbN9q7n7Kn2YA3g7:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
 			{
-				if (Prelude.truthy(_bGCG49efRec9xxoKyNpLy3)) {
-					final _qPP94H5uu4DkwU2Q2HukuS:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
+				if (Prelude.truthy(_oSmY69NbN9q7n7Kn2YA3g7)) {
+					final _rSz6cZJ42ySePRtrkwgFvm:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
 					{
-						_qPP94H5uu4DkwU2Q2HukuS;
+						_rSz6cZJ42ySePRtrkwgFvm;
 					};
-				} else _bGCG49efRec9xxoKyNpLy3;
+				} else _oSmY69NbN9q7n7Kn2YA3g7;
 			};
 		})) {
 			final content = sys.io.File.getContent(".FlxDirector.json"); final json:haxe.DynamicAccess<String> = haxe.Json.parse(content);
@@ -890,14 +890,14 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	private static var _disabledButtonColor(get,set):Int;
 	public static function get__disabledButtonColor():Int  return {
 		if (Prelude.truthy({
-			final _vDNEFWXyqLXoUaZvV8R5RX:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
+			final _sRcg5n7eSMaKmiMrD3MSQP:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
 			{
-				if (Prelude.truthy(_vDNEFWXyqLXoUaZvV8R5RX)) {
-					final _oRedZfYNLMyNeJuK3zRrBc:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
+				if (Prelude.truthy(_sRcg5n7eSMaKmiMrD3MSQP)) {
+					final _3a2aC4G3MnVmVusg3i1NKq:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
 					{
-						_oRedZfYNLMyNeJuK3zRrBc;
+						_3a2aC4G3MnVmVusg3i1NKq;
 					};
-				} else _vDNEFWXyqLXoUaZvV8R5RX;
+				} else _sRcg5n7eSMaKmiMrD3MSQP;
 			};
 		})) {
 			final content = sys.io.File.getContent(".FlxDirector.json"); final json:haxe.DynamicAccess<String> = haxe.Json.parse(content);
@@ -913,14 +913,14 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	}
 	public static function set__disabledButtonColor(v:Int):Int  return {
 		if (Prelude.truthy({
-			final _ix1S38uKcxmrc7rnqWUgQo:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
+			final _cDv7bnnwE3shZUFTkVUGAB:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
 			{
-				if (Prelude.truthy(_ix1S38uKcxmrc7rnqWUgQo)) {
-					final _7DYAgkpTixpBc4kJSK18GA:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
+				if (Prelude.truthy(_cDv7bnnwE3shZUFTkVUGAB)) {
+					final _4sGDGJsrd3G3bWGiw2JiP8:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
 					{
-						_7DYAgkpTixpBc4kJSK18GA;
+						_4sGDGJsrd3G3bWGiw2JiP8;
 					};
-				} else _ix1S38uKcxmrc7rnqWUgQo;
+				} else _cDv7bnnwE3shZUFTkVUGAB;
 			};
 		})) {
 			final content = sys.io.File.getContent(".FlxDirector.json"); final json:haxe.DynamicAccess<String> = haxe.Json.parse(content);
@@ -945,28 +945,28 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 		flixel.util.FlxColor.fromInt(_disabledButtonColor);
 	}
 	private function _chooseString(prompt:String, choices:Array<String>, submit:(String)->Void, ?xButton:Bool, ?xKey:String):Void  {
-		pauseMenu = kiss_flixel.SimpleWindow.promptForChoice(prompt, choices, submit, flixel.util.FlxColor.BLACK, textColor, buttonColor, 0.8, 0.8, Prelude.truthy(xButton), {
-			final _uZ3KA1DF92ALHSgGxxjQXk:Dynamic = xKey;
+		pauseMenu = kiss_flixel.SimpleWindow.promptForChoiceV2(prompt, choices, submit, { bgColor : flixel.util.FlxColor.BLACK, titleColor : textColor, choiceColor : buttonColor, percentWidth : 0.8, percentHeight : 0.8, xButton : Prelude.truthy(xButton), xKey : {
+			final _mnTZ1YNr7uyNWq9FyYbPpZ:Dynamic = xKey;
 			{
-				if (Prelude.truthy(_uZ3KA1DF92ALHSgGxxjQXk)) _uZ3KA1DF92ALHSgGxxjQXk else {
-					final _4pBG9YrcYhv7AiGyCngse:Dynamic = "";
+				if (Prelude.truthy(_mnTZ1YNr7uyNWq9FyYbPpZ)) _mnTZ1YNr7uyNWq9FyYbPpZ else {
+					final _gZcXRfQAt4K3PYbfGbuMB:Dynamic = "";
 					{
-						_4pBG9YrcYhv7AiGyCngse;
+						_gZcXRfQAt4K3PYbfGbuMB;
 					};
 				};
 			};
-		}, "left", "right", "up", "down", "enter", null, false, true);
+		}, leftKey : "left", rightKey : "right", upKey : "up", downKey : "down", enterKey : "enter", wrapPrompt : true });
 		pauseMenu.setUIControlColor(buttonColor);
 		pauseMenu.enableGamepadInput(true, [START => ""]);
 	}
 	public function enterString(prompt:String, submit:(String)->Void):Void  {
 		sh.cancel();
-		pauseMenu = SimpleWindow.promptForString(prompt, function(s) return {
+		pauseMenu = SimpleWindow.promptForStringV2(prompt, function(s) return {
 			{
 				sh.start();
 				submit(s);
 			};
-		}, null, null, null, null, null, false, null, null, null, null, null, null, null, true);
+		}, { wrapPrompt : true });
 	}
 	public function defineFlxPoint(submit:(flixel.math.FlxPoint)->Void):Void  {
 		if (Prelude.truthy(!Prelude.truthy(mm))) {
@@ -1025,12 +1025,12 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 					{
 						flixel.FlxG.state.remove(db, true);
 						submit(new StagePosition(point.x, point.y, {
-							final _jKkoBaEMzSbXr5DCBvrzg3:Dynamic = oldPos?.z;
+							final _UbZkAjDfTbkiejhXK44Gz:Dynamic = oldPos?.z;
 							{
-								if (Prelude.truthy(_jKkoBaEMzSbXr5DCBvrzg3)) _jKkoBaEMzSbXr5DCBvrzg3 else {
-									final _uVgyRin8HuQ4SFtMtohdCq:Dynamic = 5.0;
+								if (Prelude.truthy(_UbZkAjDfTbkiejhXK44Gz)) _UbZkAjDfTbkiejhXK44Gz else {
+									final _fhU1rNbjdgVRrekQtEzSyA:Dynamic = 5.0;
 									{
-										_uVgyRin8HuQ4SFtMtohdCq;
+										_fhU1rNbjdgVRrekQtEzSyA;
 									};
 								};
 							};
@@ -1055,11 +1055,11 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 					};
 					getNextPoint();
 					sh.registerItem("{enter} submit light source", {
-						var _tQf3Mc5LqvQi52TRgtjC86 = false;
+						var _oithV8EGnqtXJpLB6Ti4NL = false;
 						{
 							function(cc) return {
-								if (Prelude.truthy(!Prelude.truthy(_tQf3Mc5LqvQi52TRgtjC86))) {
-									_tQf3Mc5LqvQi52TRgtjC86 = true;
+								if (Prelude.truthy(!Prelude.truthy(_oithV8EGnqtXJpLB6Ti4NL))) {
+									_oithV8EGnqtXJpLB6Ti4NL = true;
 									{
 										for (camera in flixel.FlxG.cameras.list) {
 											camera.zoom = 1;
@@ -1085,7 +1085,7 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 		lightMask.makeGraphic(flixel.FlxG.width, flixel.FlxG.height, flixel.util.FlxColor.WHITE, true);
 		darkness = new flixel.FlxSprite();
 		darkColor = switch sceneTime {
-			case _2T8azGfQKrwjX5fH6pBTwh if (Prelude.truthy(Prelude.isNull(_2T8azGfQKrwjX5fH6pBTwh))):{
+			case _sPojmCftDSYLvLVmPm6RXg if (Prelude.truthy(Prelude.isNull(_sPojmCftDSYLvLVmPm6RXg))):{
 				{
 					flixel.util.FlxColor.TRANSPARENT;
 				};
@@ -1134,14 +1134,14 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 		_hideDialog();
 		hideLighting();
 		if (Prelude.truthy({
-			final _6CZoffC2FXFyzAorWZZRN2:Dynamic = cast(movie, FlxMovie).sceneKey;
+			final _8sNdXZfVQDyAiXKMvvn9ag:Dynamic = cast(movie, FlxMovie).sceneKey;
 			{
-				if (Prelude.truthy(_6CZoffC2FXFyzAorWZZRN2)) {
-					final _kAANnru6KAveaGrEREQmMJ:Dynamic = Prelude.lessThan(0, Lambda.count(cast(movie, FlxMovie).scenes));
+				if (Prelude.truthy(_8sNdXZfVQDyAiXKMvvn9ag)) {
+					final _77AyGZuREndt4QskC2Cb9i:Dynamic = Prelude.lessThan(0, Lambda.count(cast(movie, FlxMovie).scenes));
 					{
-						_kAANnru6KAveaGrEREQmMJ;
+						_77AyGZuREndt4QskC2Cb9i;
 					};
-				} else _6CZoffC2FXFyzAorWZZRN2;
+				} else _8sNdXZfVQDyAiXKMvvn9ag;
 			};
 		})) {
 			{
@@ -1178,10 +1178,10 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 		restoreOriginalVolumes.clear();
 		while (true) {
 			{
-				final _6aUNWRz4n8HfynMkQYqsia = currentSounds.pop();
+				final _seChw4YCNYyZ9cuShmcYB4 = currentSounds.pop();
 				{
-					if (Prelude.truthy(_6aUNWRz4n8HfynMkQYqsia)) switch _6aUNWRz4n8HfynMkQYqsia {
-						case _6dbHayLXMCCCrHpsTnxUup if (Prelude.truthy(Prelude.isNull(_6dbHayLXMCCCrHpsTnxUup))):{
+					if (Prelude.truthy(Prelude.isNotNull(_seChw4YCNYyZ9cuShmcYB4))) switch _seChw4YCNYyZ9cuShmcYB4 {
+						case _74jxHK5cJUpa4yWvMU8CYf if (Prelude.truthy(Prelude.isNull(_74jxHK5cJUpa4yWvMU8CYf))):{
 							{
 								break;
 							};
@@ -1201,10 +1201,10 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 		currentSoundVolumes.clear();
 		while (true) {
 			{
-				final _kgAZDzNvpgALJF9svTuKXk = currentVoiceTracks.pop();
+				final _xySDt6WjPQLj9Jpp8V9XWK = currentVoiceTracks.pop();
 				{
-					if (Prelude.truthy(_kgAZDzNvpgALJF9svTuKXk)) switch _kgAZDzNvpgALJF9svTuKXk {
-						case _mvcNnR98w4YxTZxEbP8bAX if (Prelude.truthy(Prelude.isNull(_mvcNnR98w4YxTZxEbP8bAX))):{
+					if (Prelude.truthy(Prelude.isNotNull(_xySDt6WjPQLj9Jpp8V9XWK))) switch _xySDt6WjPQLj9Jpp8V9XWK {
+						case _cG53ZvUdA3JMwLnAFXLB39 if (Prelude.truthy(Prelude.isNull(_cG53ZvUdA3JMwLnAFXLB39))):{
 							{
 								break;
 							};
@@ -1238,10 +1238,10 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	}
 	public function showCharacter(character:Character<hollywoo_flixel.ActorFlxSprite>, appearance:Appearance, camera:flixel.FlxCamera, cc:Continuation):Void  {
 		{
-			final _pkv1WGjoWxdF2MynVrYjVb = appearance;
+			final _v6anR1vrz1C1LZ5eVXDUfB = appearance;
 			{
-				if (Prelude.truthy(_pkv1WGjoWxdF2MynVrYjVb)) switch _pkv1WGjoWxdF2MynVrYjVb {
-					case _fe2rMKuigHw11UwDR4zM1N if (Prelude.truthy(Prelude.isNull(_fe2rMKuigHw11UwDR4zM1N))):{
+				if (Prelude.truthy(Prelude.isNotNull(_v6anR1vrz1C1LZ5eVXDUfB))) switch _v6anR1vrz1C1LZ5eVXDUfB {
+					case _6Fum6NoxPirge3ox4L6yiT if (Prelude.truthy(Prelude.isNull(_6Fum6NoxPirge3ox4L6yiT))):{
 						{
 							null;
 						};
@@ -1299,10 +1299,10 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	public var nextCC:Null<Continuation>;
 	public function onContinue(continueAction:FlxActionDigital) return {
 		{
-			final _6nPPVd5aH9QvChYiHSvSvr = nextCC;
+			final _mc7ovV4JdbqCQPgGeC9WpE = nextCC;
 			{
-				if (Prelude.truthy(_6nPPVd5aH9QvChYiHSvSvr)) switch _6nPPVd5aH9QvChYiHSvSvr {
-					case _jUhCstzW6WwSyqbk8P3fje if (Prelude.truthy(Prelude.isNull(_jUhCstzW6WwSyqbk8P3fje))):{
+				if (Prelude.truthy(Prelude.isNotNull(_mc7ovV4JdbqCQPgGeC9WpE))) switch _mc7ovV4JdbqCQPgGeC9WpE {
+					case _hX61VXPeWaaDmDTuzCmCco if (Prelude.truthy(Prelude.isNull(_hX61VXPeWaaDmDTuzCmCco))):{
 						{
 							null;
 						};
@@ -1407,12 +1407,12 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 		barProgress = 0;
 		lastIp = 0;
 		barMax = Prelude.add(_load.length, {
-			final _dkaCFkpyKRfM4qf3dbjgeX:Dynamic = movie.skipTarget;
+			final _bdux7VghyXvg6onCLtQwe2:Dynamic = movie.skipTarget;
 			{
-				if (Prelude.truthy(_dkaCFkpyKRfM4qf3dbjgeX)) _dkaCFkpyKRfM4qf3dbjgeX else {
-					final _iMks8Ci6oo41HNa7f8kNrb:Dynamic = 1;
+				if (Prelude.truthy(_bdux7VghyXvg6onCLtQwe2)) _bdux7VghyXvg6onCLtQwe2 else {
+					final _wAfesbYY6BDmvhF8h3cLt9:Dynamic = 1;
 					{
-						_iMks8Ci6oo41HNa7f8kNrb;
+						_wAfesbYY6BDmvhF8h3cLt9;
 					};
 				};
 			};
@@ -1421,10 +1421,10 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 		doneLoadingCC = done;
 		loop = new flixel.addons.util.FlxAsyncLoop(Prelude.add(1, _load.length), function() {
 			{
-				final _u6yf3DYa1xUDFaHiVJjWFv = _load.shift();
+				final _uYJHokAyhhjCPsQNPQkGB2 = _load.shift();
 				{
-					if (Prelude.truthy(_u6yf3DYa1xUDFaHiVJjWFv)) switch _u6yf3DYa1xUDFaHiVJjWFv {
-						case _q1Tsjhp3jzCX49HFiEoWgE if (Prelude.truthy(Prelude.isNull(_q1Tsjhp3jzCX49HFiEoWgE))):{
+					if (Prelude.truthy(Prelude.isNotNull(_uYJHokAyhhjCPsQNPQkGB2))) switch _uYJHokAyhhjCPsQNPQkGB2 {
+						case _ry3U3zUTiTa8iczcZ6bRU5 if (Prelude.truthy(Prelude.isNull(_ry3U3zUTiTa8iczcZ6bRU5))):{
 							{
 								{
 									if (Prelude.truthy(!Prelude.truthy(movie.skipTarget))) {
@@ -1506,7 +1506,7 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	public function _showDialog(speakerName:String, type:SpeechType<hollywoo_flixel.ActorFlxSprite>, wryly:String, text:String, cc:Continuation) return {
 		var speakerNameX:Float = -1;
 		switch type {
-			case _3YEntcDf5U5ay9HNf8fUWC if (Prelude.truthy(Prelude.isNull(_3YEntcDf5U5ay9HNf8fUWC))):{
+			case _t2CcEJPbTcb3CJAMQTXSJD if (Prelude.truthy(Prelude.isNull(_t2CcEJPbTcb3CJAMQTXSJD))):{
 				{ };
 			};
 			case Super:{
@@ -1596,14 +1596,14 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	public static var soundVolume(get,set):Float;
 	public static function get_soundVolume():Float  return {
 		if (Prelude.truthy({
-			final _32b1c5GPC2yiRnqqxjGiCD:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
+			final _nr5TCZ1TAEDyZBfvNtHHE5:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
 			{
-				if (Prelude.truthy(_32b1c5GPC2yiRnqqxjGiCD)) {
-					final _8N6k3YczunfgANyfqg9ozQ:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
+				if (Prelude.truthy(_nr5TCZ1TAEDyZBfvNtHHE5)) {
+					final _wj5a6sdJT53c4nisccb3Vi:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
 					{
-						_8N6k3YczunfgANyfqg9ozQ;
+						_wj5a6sdJT53c4nisccb3Vi;
 					};
-				} else _32b1c5GPC2yiRnqqxjGiCD;
+				} else _nr5TCZ1TAEDyZBfvNtHHE5;
 			};
 		})) {
 			final content = sys.io.File.getContent(".FlxDirector.json"); final json:haxe.DynamicAccess<String> = haxe.Json.parse(content);
@@ -1619,14 +1619,14 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	}
 	public static function set_soundVolume(v:Float):Float  return {
 		if (Prelude.truthy({
-			final _ji2fTjxtzfEgDY7N7Gsfu4:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
+			final _gmv53FrWGQHqjYjmuqmYdy:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
 			{
-				if (Prelude.truthy(_ji2fTjxtzfEgDY7N7Gsfu4)) {
-					final _mX49QVYa8DNmekR7Xbwvk:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
+				if (Prelude.truthy(_gmv53FrWGQHqjYjmuqmYdy)) {
+					final _sFiQgzGuzptdsqzKmve7d9:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
 					{
-						_mX49QVYa8DNmekR7Xbwvk;
+						_sFiQgzGuzptdsqzKmve7d9;
 					};
-				} else _ji2fTjxtzfEgDY7N7Gsfu4;
+				} else _gmv53FrWGQHqjYjmuqmYdy;
 			};
 		})) {
 			final content = sys.io.File.getContent(".FlxDirector.json"); final json:haxe.DynamicAccess<String> = haxe.Json.parse(content);
@@ -1649,14 +1649,14 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	public static var masterVolume(get,set):Float;
 	public static function get_masterVolume():Float  return {
 		if (Prelude.truthy({
-			final _ibJnTyWqhFFRC8nVWWPC7T:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
+			final _hYk6sxVHpsBGKfnhL73eib:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
 			{
-				if (Prelude.truthy(_ibJnTyWqhFFRC8nVWWPC7T)) {
-					final _pvnwGf9L8wppDbKPWw13fp:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
+				if (Prelude.truthy(_hYk6sxVHpsBGKfnhL73eib)) {
+					final _e6s5BQgkGbSRi4KVEsBeT2:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
 					{
-						_pvnwGf9L8wppDbKPWw13fp;
+						_e6s5BQgkGbSRi4KVEsBeT2;
 					};
-				} else _ibJnTyWqhFFRC8nVWWPC7T;
+				} else _hYk6sxVHpsBGKfnhL73eib;
 			};
 		})) {
 			final content = sys.io.File.getContent(".FlxDirector.json"); final json:haxe.DynamicAccess<String> = haxe.Json.parse(content);
@@ -1672,14 +1672,14 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	}
 	public static function set_masterVolume(v:Float):Float  return {
 		if (Prelude.truthy({
-			final _rXCpn1qcBrFMukz3YCG1yC:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
+			final _kvVcD8JhCywMT5ovpTLPxa:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
 			{
-				if (Prelude.truthy(_rXCpn1qcBrFMukz3YCG1yC)) {
-					final _eySGREcdg5NQ7VDKNq63CS:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
+				if (Prelude.truthy(_kvVcD8JhCywMT5ovpTLPxa)) {
+					final _fk5fdoZS2TZG78578USB6K:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
 					{
-						_eySGREcdg5NQ7VDKNq63CS;
+						_fk5fdoZS2TZG78578USB6K;
 					};
-				} else _rXCpn1qcBrFMukz3YCG1yC;
+				} else _kvVcD8JhCywMT5ovpTLPxa;
 			};
 		})) {
 			final content = sys.io.File.getContent(".FlxDirector.json"); final json:haxe.DynamicAccess<String> = haxe.Json.parse(content);
@@ -1746,7 +1746,7 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 		} else null;
 		{
 			final firstNull = captions.getFirstNull(); final row = switch firstNull {
-				case _pFptSSihjiSbmdGbT3863D if (Prelude.truthy(Prelude.isNull(_pFptSSihjiSbmdGbT3863D))):{
+				case _vMGWEY74DBryQLMfcmbVBR if (Prelude.truthy(Prelude.isNull(_vMGWEY74DBryQLMfcmbVBR))):{
 					{
 						firstNull;
 					};
@@ -1788,9 +1788,9 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 			final song = flixel.FlxG.sound.load(path);
 			{
 				{
-					final _8HZ3AtdvMqywTExfYhotHP = !Prelude.truthy(Prelude.areEqual(0, song.length));
+					final _sybJy4kcTRkygdjVkPTSab = !Prelude.truthy(Prelude.areEqual(0, song.length));
 					{
-						if (Prelude.truthy(_8HZ3AtdvMqywTExfYhotHP)) _8HZ3AtdvMqywTExfYhotHP else throw kiss.Prelude.runtimeInsertAssertionMessage((Prelude.add("song from ", Std.string(path), " has 0 length! avoid mp3s for this reason") : String), "/Users/nat/repos/hollywoo-flixel/src/hollywoo_flixel/FlxDirector.kiss:873:9: Assertion failed: \nFrom:[(assert (not (= 0 song.length)) (the String (+ \"song from \" (Std.string path) \" has 0 length! avoid mp3s for this reason\")))]", 4);
+						if (Prelude.truthy(_sybJy4kcTRkygdjVkPTSab)) _sybJy4kcTRkygdjVkPTSab else throw kiss.Prelude.runtimeInsertAssertionMessage((Prelude.add("song from ", Std.string(path), " has 0 length! avoid mp3s for this reason") : String), "/Users/nat/repos/hollywoo-flixel/src/hollywoo_flixel/FlxDirector.kiss:869:9: Assertion failed: \nFrom:[(assert (not (= 0 song.length)) (the String (+ \"song from \" (Std.string path) \" has 0 length! avoid mp3s for this reason\")))]", 4);
 					};
 				};
 				song.persist = true;
@@ -1805,14 +1805,14 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	public static var voiceVolume(get,set):Float;
 	public static function get_voiceVolume():Float  return {
 		if (Prelude.truthy({
-			final _uUZwKCQxMynr1hrWMeEeDC:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
+			final _aGWUKU5WUvMaC39UeP8xfW:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
 			{
-				if (Prelude.truthy(_uUZwKCQxMynr1hrWMeEeDC)) {
-					final _bE5EA8B4LAtSP5TbaTf88n:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
+				if (Prelude.truthy(_aGWUKU5WUvMaC39UeP8xfW)) {
+					final _222mGhNFnZH9CZjSCJHqWx:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
 					{
-						_bE5EA8B4LAtSP5TbaTf88n;
+						_222mGhNFnZH9CZjSCJHqWx;
 					};
-				} else _uUZwKCQxMynr1hrWMeEeDC;
+				} else _aGWUKU5WUvMaC39UeP8xfW;
 			};
 		})) {
 			final content = sys.io.File.getContent(".FlxDirector.json"); final json:haxe.DynamicAccess<String> = haxe.Json.parse(content);
@@ -1828,14 +1828,14 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	}
 	public static function set_voiceVolume(v:Float):Float  return {
 		if (Prelude.truthy({
-			final _m4jKeED5Kx5CGnNFWYWDjZ:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
+			final _u2L5wDCeKtqTGEH7qKovXN:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
 			{
-				if (Prelude.truthy(_m4jKeED5Kx5CGnNFWYWDjZ)) {
-					final _wcnUNNSB5Hytm4vfKQTc7G:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
+				if (Prelude.truthy(_u2L5wDCeKtqTGEH7qKovXN)) {
+					final _bJYq6UgrooMw6pDBkiJVKU:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
 					{
-						_wcnUNNSB5Hytm4vfKQTc7G;
+						_bJYq6UgrooMw6pDBkiJVKU;
 					};
-				} else _m4jKeED5Kx5CGnNFWYWDjZ;
+				} else _u2L5wDCeKtqTGEH7qKovXN;
 			};
 		})) {
 			final content = sys.io.File.getContent(".FlxDirector.json"); final json:haxe.DynamicAccess<String> = haxe.Json.parse(content);
@@ -1905,14 +1905,14 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	public static var musicVolume(get,set):Float;
 	public static function get_musicVolume():Float  return {
 		if (Prelude.truthy({
-			final _4p22YUMz252TCTXDKFmLRJ:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
+			final _kh9Uqw9v6bcsnd1zCm6Aon:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
 			{
-				if (Prelude.truthy(_4p22YUMz252TCTXDKFmLRJ)) {
-					final _7m38c2RqM5ywgZjvMwSwA8:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
+				if (Prelude.truthy(_kh9Uqw9v6bcsnd1zCm6Aon)) {
+					final _5stNDWD8ivaST9t4ZksGxQ:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
 					{
-						_7m38c2RqM5ywgZjvMwSwA8;
+						_5stNDWD8ivaST9t4ZksGxQ;
 					};
-				} else _4p22YUMz252TCTXDKFmLRJ;
+				} else _kh9Uqw9v6bcsnd1zCm6Aon;
 			};
 		})) {
 			final content = sys.io.File.getContent(".FlxDirector.json"); final json:haxe.DynamicAccess<String> = haxe.Json.parse(content);
@@ -1928,14 +1928,14 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	}
 	public static function set_musicVolume(v:Float):Float  return {
 		if (Prelude.truthy({
-			final _n8pKXvMCfPnfkKVWdQthSP:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
+			final _czXKPLTbBmYLwP7NJHhSS2:Dynamic = sys.FileSystem.exists(".FlxDirector.json");
 			{
-				if (Prelude.truthy(_n8pKXvMCfPnfkKVWdQthSP)) {
-					final _itpFFQm2frqzAsaPF7xUQW:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
+				if (Prelude.truthy(_czXKPLTbBmYLwP7NJHhSS2)) {
+					final _rdV1hSi8mQQAF4U2jyq77Z:Dynamic = !Prelude.truthy(sys.FileSystem.isDirectory(".FlxDirector.json"));
 					{
-						_itpFFQm2frqzAsaPF7xUQW;
+						_rdV1hSi8mQQAF4U2jyq77Z;
 					};
-				} else _n8pKXvMCfPnfkKVWdQthSP;
+				} else _czXKPLTbBmYLwP7NJHhSS2;
 			};
 		})) {
 			final content = sys.io.File.getContent(".FlxDirector.json"); final json:haxe.DynamicAccess<String> = haxe.Json.parse(content);
@@ -1997,7 +1997,7 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	}
 	public function changeSongVolume(volumeMod:Float, cc:Continuation):Void  {
 		{
-			final _xeD7RncvoYkPGf11exYbDk = currentSoundVolumes[music]; final fade = _xeD7RncvoYkPGf11exYbDk[0]; final oldMod = _xeD7RncvoYkPGf11exYbDk[1];
+			final _q4EpgkatpbooxmrpbqzfyM = currentSoundVolumes[music]; final fade = _q4EpgkatpbooxmrpbqzfyM[0]; final oldMod = _q4EpgkatpbooxmrpbqzfyM[1];
 			{
 				music.volume = Prelude.multiply(fade, volumeMod, musicVolume);
 				currentSoundVolumes[music] = new kiss.List([fade, volumeMod]);
@@ -2068,21 +2068,21 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 			final width = Prelude.min(Prelude.max(prop.width, PROP_MIN_WIDTH), PROP_MAX_WIDTH);
 			{
 				if (Prelude.truthy(!Prelude.truthy({
-					final _t6cKwGq1xua5QBd6AbJQ5A:Dynamic = !Prelude.truthy(oldScaleBehavior);
+					final _cNzS4dtigHJ6L7zz9Kc6Md:Dynamic = !Prelude.truthy(oldScaleBehavior);
 					{
-						if (Prelude.truthy(_t6cKwGq1xua5QBd6AbJQ5A)) {
-							final _vjCyAqqi6dnfYhZWQQPrUk:Dynamic = cast(movie, FlxMovie).textProps.contains(prop);
+						if (Prelude.truthy(_cNzS4dtigHJ6L7zz9Kc6Md)) {
+							final _eHacT3PfULM9oNrRfmQxjW:Dynamic = cast(movie, FlxMovie).textProps.contains(prop);
 							{
-								_vjCyAqqi6dnfYhZWQQPrUk;
+								_eHacT3PfULM9oNrRfmQxjW;
 							};
-						} else _t6cKwGq1xua5QBd6AbJQ5A;
+						} else _cNzS4dtigHJ6L7zz9Kc6Md;
 					};
 				}))) {
 					{
-						final _wiDyL2H4THY6bh9FucMqA4 = appearance;
+						final _udXCTCSLXPgwbA3jugpntG = appearance;
 						{
-							if (Prelude.truthy(_wiDyL2H4THY6bh9FucMqA4)) switch _wiDyL2H4THY6bh9FucMqA4 {
-								case _o2vRfwZf3qJf22XxVPfJVr if (Prelude.truthy(Prelude.isNull(_o2vRfwZf3qJf22XxVPfJVr))):{
+							if (Prelude.truthy(Prelude.isNotNull(_udXCTCSLXPgwbA3jugpntG))) switch _udXCTCSLXPgwbA3jugpntG {
+								case _wkdCqN6stGVCc5srR2p5iR if (Prelude.truthy(Prelude.isNull(_wkdCqN6stGVCc5srR2p5iR))):{
 									{
 										null;
 									};
@@ -2126,12 +2126,12 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 					final layerNum = position.z;
 					{
 						{
-							final _gnQLzEAcdCp3jYasxu14tp = layerNum; final _iHW1PSDYkBSjqWhnbD1fYw = Std.int(layerNum);
+							final _fa19QjbEFX9ffbVXrkVTCw = layerNum; final _8WzGtTJ3r1k7ZVuGjoG6Uh = Std.int(layerNum);
 							{
 								{
-									final _pm3og1nusV5HS5CmvJHHft = Prelude.areEqual(_gnQLzEAcdCp3jYasxu14tp, _iHW1PSDYkBSjqWhnbD1fYw);
+									final _8T38scFcNEcAMFhefjgmkw = Prelude.areEqual(_fa19QjbEFX9ffbVXrkVTCw, _8WzGtTJ3r1k7ZVuGjoG6Uh);
 									{
-										if (Prelude.truthy(_pm3og1nusV5HS5CmvJHHft)) _pm3og1nusV5HS5CmvJHHft else throw kiss.Prelude.runtimeInsertAssertionMessage(Prelude.add("expected ", _gnQLzEAcdCp3jYasxu14tp, " but it was ", _iHW1PSDYkBSjqWhnbD1fYw), "/Users/nat/repos/hollywoo-flixel/src/hollywoo_flixel/FlxDirector.kiss:1022:13: Assertion failed: \nFrom:[(assert (= _gnQLzEAcdCp3jYasxu14tp _iHW1PSDYkBSjqWhnbD1fYw) (+ \"expected \" _gnQLzEAcdCp3jYasxu14tp \" but it was \" _iHW1PSDYkBSjqWhnbD1fYw))]", 4);
+										if (Prelude.truthy(_8T38scFcNEcAMFhefjgmkw)) _8T38scFcNEcAMFhefjgmkw else throw kiss.Prelude.runtimeInsertAssertionMessage(Prelude.add("expected ", _fa19QjbEFX9ffbVXrkVTCw, " but it was ", _8WzGtTJ3r1k7ZVuGjoG6Uh), "/Users/nat/repos/hollywoo-flixel/src/hollywoo_flixel/FlxDirector.kiss:1018:13: Assertion failed: \nFrom:[(assert (= _fa19QjbEFX9ffbVXrkVTCw _8WzGtTJ3r1k7ZVuGjoG6Uh) (+ \"expected \" _fa19QjbEFX9ffbVXrkVTCw \" but it was \" _8WzGtTJ3r1k7ZVuGjoG6Uh))]", 4);
 									};
 								};
 							};
@@ -2149,20 +2149,20 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 	public static var anonProps = 0;
 	private static function _propKey(prop:flixel.FlxSprite) return {
 		{
-			final _kGw2dWa2znyEWNdSeCX6p9 = _propKeys[prop];
+			final _vssZRUHdRGPinVfM8gLTa4 = _propKeys[prop];
 			{
-				if (Prelude.truthy(_kGw2dWa2znyEWNdSeCX6p9)) switch _kGw2dWa2znyEWNdSeCX6p9 {
-					case _aUUQpBqVAdjeD2Kow2H3Ni if (Prelude.truthy(Prelude.isNull(_aUUQpBqVAdjeD2Kow2H3Ni))):{
+				if (Prelude.truthy(Prelude.isNotNull(_vssZRUHdRGPinVfM8gLTa4))) switch _vssZRUHdRGPinVfM8gLTa4 {
+					case _8vPzzvpyZqCMq7gNxar7Ci if (Prelude.truthy(Prelude.isNull(_8vPzzvpyZqCMq7gNxar7Ci))):{
 						{
 							_propKeys[prop] = {
-								final _avso2EwiGjh98xubRBNqJN:Dynamic = prop.graphic.assetsKey;
+								final _wZtXDdBCBuPym2i5gv7k2y:Dynamic = prop.graphic.assetsKey;
 								{
-									if (Prelude.truthy(_avso2EwiGjh98xubRBNqJN)) _avso2EwiGjh98xubRBNqJN else {
-										final _rJXDvupZu5qCzbwp6SHnLC:Dynamic = ((Prelude.add("anonProp#", Std.string({
+									if (Prelude.truthy(_wZtXDdBCBuPym2i5gv7k2y)) _wZtXDdBCBuPym2i5gv7k2y else {
+										final _7qAxZ5cQditLHb4Mm5sZJf:Dynamic = ((Prelude.add("anonProp#", Std.string({
 											anonProps++;
 										}), "") : String));
 										{
-											_rJXDvupZu5qCzbwp6SHnLC;
+											_7qAxZ5cQditLHb4Mm5sZJf;
 										};
 									};
 								};
@@ -2174,28 +2174,28 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 					};
 					default:{
 						_propKeys[prop] = {
-							final _avso2EwiGjh98xubRBNqJN:Dynamic = prop.graphic.assetsKey;
+							final _wZtXDdBCBuPym2i5gv7k2y:Dynamic = prop.graphic.assetsKey;
 							{
-								if (Prelude.truthy(_avso2EwiGjh98xubRBNqJN)) _avso2EwiGjh98xubRBNqJN else {
-									final _rJXDvupZu5qCzbwp6SHnLC:Dynamic = (Prelude.add("anonProp#", Std.string({
+								if (Prelude.truthy(_wZtXDdBCBuPym2i5gv7k2y)) _wZtXDdBCBuPym2i5gv7k2y else {
+									final _7qAxZ5cQditLHb4Mm5sZJf:Dynamic = (Prelude.add("anonProp#", Std.string({
 										anonProps++;
 									}), "") : String);
 									{
-										_rJXDvupZu5qCzbwp6SHnLC;
+										_7qAxZ5cQditLHb4Mm5sZJf;
 									};
 								};
 							};
 						};
 					};
 				} else _propKeys[prop] = {
-					final _26grs6Svi5dCeF1jaGRuXP:Dynamic = prop.graphic.assetsKey;
+					final _fDG6J1nm6kMQCTw2tMp5Ev:Dynamic = prop.graphic.assetsKey;
 					{
-						if (Prelude.truthy(_26grs6Svi5dCeF1jaGRuXP)) _26grs6Svi5dCeF1jaGRuXP else {
-							final _bqnYakvstE4vhBxPEVEovF:Dynamic = (Prelude.add("anonProp#", Std.string({
+						if (Prelude.truthy(_fDG6J1nm6kMQCTw2tMp5Ev)) _fDG6J1nm6kMQCTw2tMp5Ev else {
+							final _sS5Mvs2AcJNGeYxTLQZeWy:Dynamic = (Prelude.add("anonProp#", Std.string({
 								anonProps++;
 							}), "") : String);
 							{
-								_bqnYakvstE4vhBxPEVEovF;
+								_sS5Mvs2AcJNGeYxTLQZeWy;
 							};
 						};
 					};
@@ -2262,7 +2262,7 @@ class FlxDirector implements Director<FlxSprite, ActorFlxSprite, FlxSound, FlxSo
 		{
 			for (line in credits) {
 				switch line {
-					case _rBRjFBXYX5T9jeJuXgdSxb if (Prelude.truthy(Prelude.isNull(_rBRjFBXYX5T9jeJuXgdSxb))):{
+					case _4Be4zzKoUmsPzAaE2ZUjQj if (Prelude.truthy(Prelude.isNull(_4Be4zzKoUmsPzAaE2ZUjQj))):{
 						{ };
 					};
 					case Break:{

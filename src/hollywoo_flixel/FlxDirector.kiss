@@ -236,22 +236,32 @@
                     (resume)
                 }]
 
-        (set pauseMenu (new SimpleWindow "HISTORY" FlxColor.BLACK textColor 0.6 0.9 true null null null "up" "down" ->:Void (_resume null)))
+        (set pauseMenu (SimpleWindow.create
+                            (object 
+                                title "HISTORY"
+                                bgColor FlxColor.BLACK
+                                textColor textColor
+                                percentWidth 0.6
+                                percentHeight 0.9
+                                xButton true 
+                                upKey "up"
+                                downKey "down"
+                                onClose ->:Void (_resume null))))
         (pauseMenu.enableVerticalScrolling)
         (pauseMenu.enableGamepadInput true)
-        (pauseMenu.makeText "")
+        (pauseMenu.makeTextV2 "")
         (doFor element history
             (case element
                 ((Sound caption)
-                    (pauseMenu.makeText "<${caption}>")
-                    (pauseMenu.makeText ""))
+                    (pauseMenu.makeTextV2 "<${caption}>")
+                    (pauseMenu.makeTextV2 ""))
                 ((Dialog speaker type _wryly text)
-                    (pauseMenu.makeText (specialTypesSpeakerName speaker type))
+                    (pauseMenu.makeTextV2 (specialTypesSpeakerName speaker type))
                     (pauseMenu.makeMultilineText (specialHistoryChars text))
-                    (pauseMenu.makeText ""))
+                    (pauseMenu.makeTextV2 ""))
                 ((Super text)
-                    (pauseMenu.makeText text)
-                    (pauseMenu.makeText ""))
+                    (pauseMenu.makeTextV2 text)
+                    (pauseMenu.makeTextV2 ""))
                 (never otherwise)))
         (sh.registerItem "{tab} resume" _resume true)
         (sh.registerItem "{escape} resume" _resume true)
@@ -382,48 +392,34 @@
 
 (method :Void _chooseString [:String prompt :Array<String> choices :String->Void submit &opt :Bool xButton :String xKey]
     (set pauseMenu
-        (kiss_flixel.SimpleWindow.promptForChoice
+        (kiss_flixel.SimpleWindow.promptForChoiceV2
             prompt
             choices
             submit
-            FlxColor.BLACK
-            textColor
-            buttonColor
-            0.8
-            0.8
-            ?xButton
-            (or xKey "")
-            "left"
-            "right"
-            "up"
-            "down"
-            "enter"
-            null
-            false
-            true))
+            (object
+                bgColor FlxColor.BLACK
+                titleColor textColor
+                choiceColor buttonColor
+                percentWidth 0.8
+                percentHeight 0.8
+                xButton ?xButton
+                xKey (or xKey "")
+                leftKey "left"
+                rightKey "right"
+                upKey "up"
+                downKey "down"
+                enterKey "enter"
+                wrapPrompt true)))
     (pauseMenu.setUIControlColor buttonColor)
     (pauseMenu.enableGamepadInput true [=>START ""]))
 
 (method :Void enterString [:String prompt :String->Void submit]
     (sh.cancel)
     (set pauseMenu
-        (SimpleWindow.promptForString
+        (SimpleWindow.promptForStringV2
             prompt
             ->s {(sh.start)(submit s)}
-            null
-            null
-            null
-            null
-            null
-            false
-            null
-            null
-            null
-            null
-            null
-            null
-            null
-            true)))
+            (object wrapPrompt true))))
 
 (method :Void defineFlxPoint [:FlxPoint->Void submit]
     (unless mm
